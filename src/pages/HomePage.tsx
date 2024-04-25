@@ -1,3 +1,12 @@
+import LeftSideBar from "./LeftSideBar";
+
 export default function HomePage() {
-  return <h1>This is the Home page</h1>;
+  return (
+    <div>
+    <h1>
+      This is the Home page
+    </h1>
+    <LeftSideBar />
+    </div>
+  );
 }

@@ -1,0 +1,63 @@
+#message-history {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: end;
+
+    font-family: inter;
+
+    height: 90vh;
+
+}
+#message-history-data {
+    display: flex;
+    flex-direction: column;
+}
+#message-comp {
+    display: flex;
+
+    width: 44rem;
+
+    margin: 2rem;
+}
+img {
+    width: 2.81rem;
+    height: 2.81rem;
+
+    margin-right: 0.5rem;
+
+    border-radius: 50%;
+}
+#message-data {
+    display: flex;
+    flex-direction: column;
+}
+#name-date-delete {
+    display: flex;
+    align-items: center;
+}
+#name {
+    font-size: 1.25rem;
+    font-weight: 700;
+
+    margin-right: 0.5rem;
+}
+#date {
+    font-size: 0.75rem;
+    color:rgba(0, 0, 0, 0.534);
+
+    margin-right: 0.5rem;
+
+}
+#delete {
+    color: red;
+}
+#message-history-input {
+    background-color: #D9D9D9;
+
+    width: 44rem;
+    padding: 1rem;
+
+    border-radius: 1.2rem;
+    border-style: none;
+}
