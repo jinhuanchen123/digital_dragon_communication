@@ -10,7 +10,7 @@ ReactDOM.render(
 );
 export default function AddChannel() {
     return <div >
-    <button className="flex mx-auto p-2 bg-purple-500 m-5">Add Channel</button>
+    <button className="flex mx-auto p-2 bg-purple-500 m-5 hover:scale-105">Add Channel</button>
   </div>;
   }
   
