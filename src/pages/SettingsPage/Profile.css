@@ -1,0 +1,51 @@
+html body {
+    background-color: rgb(217, 217, 217);
+}
+
+.container1_profile {
+    display: flex;
+    background-color: rgb(71, 57, 151);
+    width: 100vw;
+    height: 100px;
+}
+
+.content {
+    width: 100vw;
+    height: 100vh;
+}
+
+h1 {
+    font-size: 50px;
+    padding: 0px 20px;
+}
+
+.info {
+    display: flex;
+    flex-direction: column;
+    width: 200px;
+}
+
+/* Use commas to separate selectors */
+#username, #email, #password, #newPassword {
+    width: 200px;
+    height: 30px;
+}
+
+
+#saveChanges {
+    border-radius: 20px;
+    padding: 20px;
+    background-color: rgb(140, 132, 189);
+    font-size: larger;
+    border: 2px solid white;
+    
+  }
+  
+.save_button{
+ 
+    display: flex;
+    margin: 20px auto;
+    
+
+
+}
