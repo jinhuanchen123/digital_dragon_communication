@@ -100,17 +100,24 @@
 // export default FormComponent;
 
 
-import'./LoginPage.css'; // Import your CSS file for styling if needed
-
+import React, { useState } from 'react';
+import'./LoginPage.css'; 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGoogle, faFacebookF, faGithub, faMicrosoft } from '@fortawesome/free-brands-svg-icons';
 export default function LoginPage() {
+
+  const [isActive, setIsActive] = useState(false); 
+
+  const showLogin = () => setIsActive(false); 
+  const showSignup = () => setIsActive(true);
+
   return (
-    <div className="container" id="container">
+
+    <div className={`container ${isActive ? 'active' : ''}`} id="container">
       {/* Sign Up Section */}
       <div className="form-container sign-up">
         <form>
-          <h1>Create Account</h1>
+          <h1 className='form-heading'>Create Account</h1>
 
           {/* Social Icons */}
           <div className="social-icons">
@@ -121,10 +128,10 @@ export default function LoginPage() {
               { <FontAwesomeIcon icon={faFacebookF} /> }
             </a>
             <a href="#" className="icon">
-              { <FontAwesomeIcon icon={faGithub} /> }
+              { <FontAwesomeIcon icon={faMicrosoft} /> }
             </a>
             <a href="#" className="icon">
-              
+              { <FontAwesomeIcon icon={faGithub} /> }
             </a>
           </div>
 
@@ -143,7 +150,7 @@ export default function LoginPage() {
       {/* Sign In Section */}
       <div className="form-container sign-in">
         <form>
-          <h1>Sign In</h1>
+          <h1 className='form-heading'>Sign In</h1>
 
           {/* Social Icons */}
           <div className="social-icons">
@@ -155,6 +162,9 @@ export default function LoginPage() {
             </a>
             <a href="#" className="icon">
               { <FontAwesomeIcon icon={faMicrosoft} /> }
+            </a>
+            <a href="#" className="icon">
+              { <FontAwesomeIcon icon={faGithub} /> }
             </a>
           </div>
 
@@ -175,13 +185,15 @@ export default function LoginPage() {
       {/* Toggle Section */}
       <div className="toggle-container">
         <div className="toggle">
-          <div className="toggle-panel toggle-left">
+          {/* <div className="toggle-panel toggle-left"> */}
+          <div className="toggle-panel toggle-left" onClick={showLogin}>
             <h1>Welcome Back!</h1>
             <p>Enter your personal details to use all site features</p>
             <button className="hidden" id="login">Sign In</button>
           </div>
 
-          <div className="toggle-panel toggle-right">
+          {/* <div className="toggle-panel toggle-right"> */}
+          <div className="toggle-panel toggle-right" onClick={showSignup}>
             <h1>Hello, Friend!</h1>
             <p>Register with your personal details to use all site features</p>
             <button className="hidden" id="register">Sign Up</button>
