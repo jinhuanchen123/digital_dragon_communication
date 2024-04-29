@@ -102,8 +102,8 @@
 
 import'./LoginPage.css'; // Import your CSS file for styling if needed
 
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-// import { faGoogle, faFacebookF, faGithub } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faGoogle, faFacebookF, faGithub, faMicrosoft } from '@fortawesome/free-brands-svg-icons';
 export default function LoginPage() {
   return (
     <div className="container" id="container">
@@ -115,15 +115,13 @@ export default function LoginPage() {
           {/* Social Icons */}
           <div className="social-icons">
             <a href="#" className="icon">
-              {/* <FontAwesomeIcon icon={faGoogle} /> */}
-             
-              
+              {<FontAwesomeIcon icon={faGoogle} /> }      
             </a>
             <a href="#" className="icon">
-              {/* <FontAwesomeIcon icon={faFacebookF} /> */}
+              { <FontAwesomeIcon icon={faFacebookF} /> }
             </a>
             <a href="#" className="icon">
-              {/* <FontAwesomeIcon icon={faGithub} /> */}
+              { <FontAwesomeIcon icon={faGithub} /> }
             </a>
             <a href="#" className="icon">
               
@@ -149,14 +147,14 @@ export default function LoginPage() {
 
           {/* Social Icons */}
           <div className="social-icons">
-            <a href="#" className="icon">
-              <i className="fa-brands fa-google"></i>
+          <a href="#" className="icon">
+              { <FontAwesomeIcon icon={faGoogle} /> }
             </a>
             <a href="#" className="icon">
-              <i className="fa-brands fa-facebook"></i>
+              { <FontAwesomeIcon icon={faFacebookF} /> }
             </a>
             <a href="#" className="icon">
-              <i className="fa-brands fa-microsoft"></i>
+              { <FontAwesomeIcon icon={faMicrosoft} /> }
             </a>
           </div>
 
