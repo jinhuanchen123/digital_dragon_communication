@@ -10,15 +10,15 @@ export default function Message(props) {
                     <AvatarImage src="https://github.com/shadcn.png" />
                     <AvatarFallback>CN</AvatarFallback>
                 </Avatar> */}
-                <img src="https://github.com/shadcn.png"></img>
+                <img className="message-history-avatar" src={props.account.pfp}></img>
 
                 <div id="message-data">
                     <div id="name-date-delete">
-                        <div id="name">{props.name}</div>
-                        <div id="date">{props.date.day} at {props.date.time}</div>
+                        <div id="name">{props.account.name}</div>
+                        <div id="date">{props.messageData.date.day} at {props.messageData.date.time}</div>
                         <i id="delete" className="fa-regular fa-trash-can"></i>
                     </div>
-                    {props.messageText}
+                    {props.messageData.messageText}
                 </div>
             </div>
         </>
