@@ -7,7 +7,7 @@
 //     return (
 //         <div className={isActive ? `${styles.container} ${styles.active}` : styles.container}>
 //             <div className={`${styles.formContainer} ${styles.signUp}`}>
-                
+
 //                 <form>
 //                     <h1>
 //                       Create Account
@@ -15,22 +15,22 @@
 
 //                     <div className={styles.socialIcons}>
 //                         <a href="#" className={styles.icon}><i className="fa-brands fa-google"></i></a>
-                        
+
 //                         <a href="#" className={styles.icon}><i className="fa-brands fa-facebook"></i></a>
-                        
+
 //                         <a href="#" className={styles.icon}><i className="fa-brands fa-microsoft"></i></a>
 //                     </div>
 
 //                     <span>
 //                       or use your email for registration
 //                     </span>
-                    
+
 //                     <input type="text" placeholder="Name" />
-                    
+
 //                     <input type="email" placeholder="Email" />
-                    
+
 //                     <input type="password" placeholder="Password" />
-                    
+
 //                     <button type="button">
 //                       Sign Up
 //                     </button>
@@ -45,9 +45,9 @@
 
 //                     <div className={styles.socialIcons}>
 //                         <a href="#" className={styles.icon}><i className="fa-brands fa-google"></i></a>
-                        
+
 //                         <a href="#" className={styles.icon}><i className="fa-brands fa-facebook"></i></a>
-                        
+
 //                         <a href="#" className={styles.icon}><i className="fa-brands fa-microsoft"></i></a>
 //                     </div>
 
@@ -56,11 +56,11 @@
 //                     </span>
 
 //                     <input type="email" placeholder="Email" />
-                    
+
 //                     <input type="password" placeholder="Password" />
-                    
+
 //                     <a href="#">Forget Your Password?</a>
-                    
+
 //                     <button type="button">
 //                       Sign In
 //                     </button>
@@ -99,48 +99,94 @@
 
 // export default FormComponent;
 
-
-import React, { useState } from 'react';
-import'./LoginPage.css'; 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faGoogle, faFacebookF, faGithub, faMicrosoft } from '@fortawesome/free-brands-svg-icons';
+import React, { useState } from "react";
+import "./LoginPage.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faGoogle,
+  faFacebookF,
+  faGithub,
+  faMicrosoft,
+} from "@fortawesome/free-brands-svg-icons";
+import { auth } from "../../firebase.ts";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 export default function LoginPage() {
+  const [isActive, setIsActive] = useState(false);
 
-  const [isActive, setIsActive] = useState(false); 
-
-  const showLogin = () => setIsActive(false); 
+  const showLogin = () => setIsActive(false);
   const showSignup = () => setIsActive(true);
 
-  return (
+  const [formData, setFormData] = useState({
+    signUpName: "",
+    signUpEmail: "",
+    signUpPassword: "",
+    signInEmail: "",
+    signInPassword: "",
+  });
 
-    <div className={`container ${isActive ? 'active' : ''}`} id="container">
+  function handleChange(e: ChangeEvent<HTMLInputElement>) {
+    const { name, value } = e.target;
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: value,
+    }));
+  }
+
+  async function signUp() {
+    await createUserWithEmailAndPassword(
+      auth,
+      formData.signUpEmail,
+      formData.signUpPassword,
+    );
+  }
+
+  return (
+    <div className={`container ${isActive ? "active" : ""}`} id="container">
       {/* Sign Up Section */}
       <div className="form-container sign-up">
-        <form>
-          <h1 className='form-heading'>Create Account</h1>
+        <form onSubmit={signUp}>
+          <h1 className="form-heading">Create Account</h1>
 
           {/* Social Icons */}
           <div className="social-icons">
             <a href="#" className="icon">
-              {<FontAwesomeIcon icon={faGoogle} /> }      
+              {<FontAwesomeIcon icon={faGoogle} />}
             </a>
             <a href="#" className="icon">
-              { <FontAwesomeIcon icon={faFacebookF} /> }
+              {<FontAwesomeIcon icon={faFacebookF} />}
             </a>
             <a href="#" className="icon">
-              { <FontAwesomeIcon icon={faMicrosoft} /> }
+              {<FontAwesomeIcon icon={faMicrosoft} />}
             </a>
             <a href="#" className="icon">
-              { <FontAwesomeIcon icon={faGithub} /> }
+              {<FontAwesomeIcon icon={faGithub} />}
             </a>
           </div>
 
           <span>or use your email for registration</span>
 
           {/* Input Fields */}
-          <input type="text" placeholder="Name" />
-          <input type="email" placeholder="Email" />
-          <input type="password" placeholder="Password" />
+          <input
+            name="signUpName"
+            type="text"
+            onChange={handleChange}
+            value={formData.signUpName}
+            placeholder="Name"
+          />
+          <input
+            name="signUpEmail"
+            type="email"
+            onChange={handleChange}
+            value={formData.signUpEmail}
+            placeholder="Email"
+          />
+          <input
+            name="signUpPassword"
+            type="password"
+            onChange={handleChange}
+            value={formData.signUpPassword}
+            placeholder="Password"
+          />
 
           {/* Sign Up Button */}
           <button>Sign Up</button>
@@ -150,21 +196,21 @@ export default function LoginPage() {
       {/* Sign In Section */}
       <div className="form-container sign-in">
         <form>
-          <h1 className='form-heading'>Sign In</h1>
+          <h1 className="form-heading">Sign In</h1>
 
           {/* Social Icons */}
           <div className="social-icons">
-          <a href="#" className="icon">
-              { <FontAwesomeIcon icon={faGoogle} /> }
+            <a href="#" className="icon">
+              {<FontAwesomeIcon icon={faGoogle} />}
             </a>
             <a href="#" className="icon">
-              { <FontAwesomeIcon icon={faFacebookF} /> }
+              {<FontAwesomeIcon icon={faFacebookF} />}
             </a>
             <a href="#" className="icon">
-              { <FontAwesomeIcon icon={faMicrosoft} /> }
+              {<FontAwesomeIcon icon={faMicrosoft} />}
             </a>
             <a href="#" className="icon">
-              { <FontAwesomeIcon icon={faGithub} /> }
+              {<FontAwesomeIcon icon={faGithub} />}
             </a>
           </div>
 
@@ -189,18 +235,21 @@ export default function LoginPage() {
           <div className="toggle-panel toggle-left" onClick={showLogin}>
             <h1>Welcome Back!</h1>
             <p>Enter your personal details to use all site features</p>
-            <button className="hidden" id="login">Sign In</button>
+            <button className="hidden" id="login">
+              Sign In
+            </button>
           </div>
 
           {/* <div className="toggle-panel toggle-right"> */}
           <div className="toggle-panel toggle-right" onClick={showSignup}>
             <h1>Hello, Friend!</h1>
             <p>Register with your personal details to use all site features</p>
-            <button className="hidden" id="register">Sign Up</button>
+            <button className="hidden" id="register">
+              Sign Up
+            </button>
           </div>
         </div>
       </div>
-  
     </div>
   );
 }
