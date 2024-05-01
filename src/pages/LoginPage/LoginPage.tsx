@@ -1,105 +1,4 @@
-// import React, { useState } from 'react';
-// import styles from './LoginPage.css';
-
-// const FormComponent: React.FC = () => {
-//     const [isActive, setIsActive] = useState<boolean>(false);
-
-//     return (
-//         <div className={isActive ? `${styles.container} ${styles.active}` : styles.container}>
-//             <div className={`${styles.formContainer} ${styles.signUp}`}>
-
-//                 <form>
-//                     <h1>
-//                       Create Account
-//                     </h1>
-
-//                     <div className={styles.socialIcons}>
-//                         <a href="#" className={styles.icon}><i className="fa-brands fa-google"></i></a>
-
-//                         <a href="#" className={styles.icon}><i className="fa-brands fa-facebook"></i></a>
-
-//                         <a href="#" className={styles.icon}><i className="fa-brands fa-microsoft"></i></a>
-//                     </div>
-
-//                     <span>
-//                       or use your email for registration
-//                     </span>
-
-//                     <input type="text" placeholder="Name" />
-
-//                     <input type="email" placeholder="Email" />
-
-//                     <input type="password" placeholder="Password" />
-
-//                     <button type="button">
-//                       Sign Up
-//                     </button>
-//                 </form>
-//             </div>
-
-//             <div className={`${styles.formContainer} ${styles.signIn}`}>
-//                 <form>
-//                     <h1>
-//                       Sign In
-//                     </h1>
-
-//                     <div className={styles.socialIcons}>
-//                         <a href="#" className={styles.icon}><i className="fa-brands fa-google"></i></a>
-
-//                         <a href="#" className={styles.icon}><i className="fa-brands fa-facebook"></i></a>
-
-//                         <a href="#" className={styles.icon}><i className="fa-brands fa-microsoft"></i></a>
-//                     </div>
-
-//                     <span>
-//                       or use your email password
-//                     </span>
-
-//                     <input type="email" placeholder="Email" />
-
-//                     <input type="password" placeholder="Password" />
-
-//                     <a href="#">Forget Your Password?</a>
-
-//                     <button type="button">
-//                       Sign In
-//                     </button>
-//                 </form>
-//             </div>
-
-//             <div className={styles.toggleContainer}>
-//                 <div className={styles.toggle}>
-
-//                     <div className={`${styles.togglePanel} ${styles.toggleLeft}`}>
-//                         <h1>
-//                           Welcome Back!
-//                         </h1>
-
-//                         <p>
-//                           Enter your personal details and start journey with us
-//                         </p>
-
-//                         <button className={styles.hidden} onClick={() => setIsActive(false)}>
-//                           Sign In
-//                         </button>
-//                     </div>
-
-//                     <div className={`${styles.togglePanel} ${styles.toggleRight}`}>
-//                         <h1>
-//                           Hello, Friend!
-//                         </h1>
-//                         <p>Enter your personal details and start your journey with us</p>
-//                         <button className={styles.hidden} onClick={() => setIsActive(true)}>Sign Up</button>
-//                     </div>
-//                 </div>
-//             </div>
-//         </div>
-//     );
-// }
-
-// export default FormComponent;
-
-import React, { useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 import "./LoginPage.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -109,9 +8,17 @@ import {
   faMicrosoft,
 } from "@fortawesome/free-brands-svg-icons";
 import { auth } from "../../firebase.ts";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  updateProfile,
+} from "firebase/auth";
+import { useNavigate } from "react-router-dom";
 export default function LoginPage() {
+  const navigate = useNavigate();
   const [isActive, setIsActive] = useState(false);
+  const [isSignInError, setIsSignInError] = useState(false);
+  const [isSignUpError, setIsSignUpError] = useState(false);
 
   const showLogin = () => setIsActive(false);
   const showSignup = () => setIsActive(true);
@@ -132,12 +39,42 @@ export default function LoginPage() {
     }));
   }
 
-  async function signUp() {
-    await createUserWithEmailAndPassword(
-      auth,
-      formData.signUpEmail,
-      formData.signUpPassword,
-    );
+  async function signUp(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    try {
+      const userCredentials = await createUserWithEmailAndPassword(
+        auth,
+        formData.signUpEmail,
+        formData.signUpPassword,
+      );
+      await updateProfile(userCredentials.user, {
+        displayName: formData.signUpName,
+      });
+      setIsSignUpError(false);
+
+      navigate("/");
+    } catch (err) {
+      setIsSignUpError(true);
+      console.error(err);
+    }
+  }
+
+  async function signIn(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    try {
+      const userCredentials = await signInWithEmailAndPassword(
+        auth,
+        formData.signInEmail,
+        formData.signInPassword,
+      );
+      setIsSignInError(false);
+      console.log("Signed In!", userCredentials);
+
+      navigate("/");
+    } catch (err) {
+      setIsSignInError(true);
+      console.error(err);
+    }
   }
 
   return (
@@ -171,7 +108,9 @@ export default function LoginPage() {
             type="text"
             onChange={handleChange}
             value={formData.signUpName}
+            minLength={3}
             placeholder="Name"
+            required
           />
           <input
             name="signUpEmail"
@@ -179,23 +118,27 @@ export default function LoginPage() {
             onChange={handleChange}
             value={formData.signUpEmail}
             placeholder="Email"
+            required
           />
           <input
             name="signUpPassword"
             type="password"
             onChange={handleChange}
             value={formData.signUpPassword}
+            minLength={6}
             placeholder="Password"
+            required
           />
 
           {/* Sign Up Button */}
           <button>Sign Up</button>
+          {isSignUpError && <span className="error">Invalid Credentials</span>}
         </form>
       </div>
 
       {/* Sign In Section */}
       <div className="form-container sign-in">
-        <form>
+        <form onSubmit={signIn}>
           <h1 className="form-heading">Sign In</h1>
 
           {/* Social Icons */}
@@ -217,14 +160,29 @@ export default function LoginPage() {
           <span>or use your email password</span>
 
           {/* Input Fields */}
-          <input type="email" placeholder="Email" />
-          <input type="password" placeholder="Password" />
+          <input
+            name="signInEmail"
+            type="email"
+            onChange={handleChange}
+            value={formData.signInEmail}
+            placeholder="Email"
+            required
+          />
+          <input
+            name="signInPassword"
+            type="password"
+            onChange={handleChange}
+            value={formData.signInPassword}
+            placeholder="Password"
+            required
+          />
 
           {/* Forgot Password Link */}
           <a href="#">Forgot Your Password?</a>
 
           {/* Sign In Button */}
           <button>Sign In</button>
+          {isSignInError && <span className="error">Invalid Credentials</span>}
         </form>
       </div>
 
