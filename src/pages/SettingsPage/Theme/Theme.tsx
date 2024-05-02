@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import RightSidebar from '../LeftSidebar';
+import RightSidebar from '../SettingLeftSide';
 import { Link } from 'react-router-dom'; 
 
 function Theme() {

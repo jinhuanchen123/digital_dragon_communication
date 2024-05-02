@@ -1,8 +1,13 @@
 // Inside your Profile component
 
 import React, { useState, useRef } from 'react';
-import RightSidebar from '../LeftSidebar';
-import styles from './Profile.module.css';
+import RightSidebar from '../SettingLeftSide';
+import Profile_styles from './Profile.module.css';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTimesCircle } from "@fortawesome/free-regular-svg-icons";
+import { useNavigate } from 'react-router-dom';
+
+
 
 function Profile() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -20,22 +25,43 @@ function Profile() {
       fileInputRef.current.click();
     }
   };
+  const handleEditUsername=()=>{
+
+
+  }
+ 
+  const navigate = useNavigate();
+
+  const handleRedictMainPage = () => {
+  navigate("/"); // Redirect to the main page
+};
+
 
   return (
-    <div className={styles.container1_profile}>
+    <div className={Profile_styles.container1_profile}>
       <RightSidebar />
-      <div className={styles.profile_section}>
-        <div className={styles.header}>
+      <div className={Profile_styles.profile_section}>
+        <div className={Profile_styles.header}>
           <h1>Profile</h1>
         </div>
-        <div className={styles.big_card}>
-          <div className={styles.card}>
-            <div className={styles.avatar}>
+        <div className={Profile_styles.icon_container}>
+        <FontAwesomeIcon
+              icon={faTimesCircle}
+              className={Profile_styles.customIconStyle}
+              onClick={handleRedictMainPage}
+          />
+
+
+        </div>
+
+        <div className={Profile_styles.big_card}>
+          <div className={Profile_styles.card}>
+            <div className={Profile_styles.avatar}>
               {/* Original Image */}
-              
+
               
               {/* Custom button to trigger file input */}
-              <button className={styles.editButton} onClick={handleEditProfileClick}>
+              <button className={Profile_styles.editButton} onClick={handleEditProfileClick}>
                 Edit Profile
               </button>
               {/* Hidden file input */}
@@ -44,7 +70,7 @@ function Profile() {
                 accept=".jpg,.jpeg,.png"
                 ref={fileInputRef}
                 onChange={handleFileSelect}
-                className={styles.hiddenInput}
+                className={Profile_styles.hiddenInput}
               />
               {/* Display the selected image */}
               {selectedFile && (
@@ -52,16 +78,18 @@ function Profile() {
                   <img
                     src={URL.createObjectURL(selectedFile)}
                     alt="Selected Image"
-                    className={styles.profile_image}
+                    className={Profile_styles.profile_image}
                   />
                 </div>
               )}
             </div>
             {/* Rest of your profile content */}
-            <div className={styles.form}>
-              <form className={styles.info}>
+            <div className={Profile_styles.ProfileForm}>
+              <form className={Profile_styles.info}>
                 <label htmlFor="username">Username:</label>
-                <input type="text" id="username" name="username" />
+                <button type="button" onClick={handleEditUsername}>Edit</button>
+
+                
                 <label htmlFor="email">Email:</label>
                 <input type="email" id="email" name="email" />
                 <label htmlFor="password">Password:</label>
@@ -70,7 +98,7 @@ function Profile() {
                 <input type="password" id="newPassword" name="newPassword" />
               </form>
             </div>
-            <div className={styles.save_button}>
+            <div className={Profile_styles.save_button}>
               <button type="submit" id="saveChanges">Save Changes</button>
             </div>
           </div>

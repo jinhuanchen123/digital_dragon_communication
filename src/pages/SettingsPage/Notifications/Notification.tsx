@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
-import RightSidebar from '../LeftSidebar';
+import RightSidebar from '../SettingLeftSide';
 import notiStyles from './Notification.module.css'; // Import Notification CSS module with a unique alias
-
-
 
 
 function Notifications() {

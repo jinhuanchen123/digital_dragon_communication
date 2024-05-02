@@ -1,70 +1,223 @@
-import styles from './LoginPage.module.css';
-
+import { ChangeEvent, FormEvent, useState } from "react";
+import "./LoginPage.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faGoogle,
+  faFacebookF,
+  faGithub,
+  faMicrosoft,
+} from "@fortawesome/free-brands-svg-icons";
+import { auth } from "../../firebase.ts";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  updateProfile,
+} from "firebase/auth";
+import { useNavigate } from "react-router-dom";
 export default function LoginPage() {
+  const navigate = useNavigate();
+  const [isActive, setIsActive] = useState(false);
+  const [isSignInError, setIsSignInError] = useState(false);
+  const [isSignUpError, setIsSignUpError] = useState(false);
+
+  const showLogin = () => setIsActive(false);
+  const showSignup = () => setIsActive(true);
+
+  const [formData, setFormData] = useState({
+    signUpName: "",
+    signUpEmail: "",
+    signUpPassword: "",
+    signInEmail: "",
+    signInPassword: "",
+  });
+
+  
+  
+  function handleChange(e: ChangeEvent<HTMLInputElement>) {
+    const { name, value } = e.target;
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: value,
+    }));
+  }
+ 
+
+  async function signUp(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    try {
+      const userCredentials = await createUserWithEmailAndPassword(
+        auth,
+        formData.signUpEmail,
+        formData.signUpPassword,
+      );
+      await updateProfile(userCredentials.user, {
+        displayName: formData.signUpName,
+      });
+      setIsSignUpError(false);
+ 
+ 
+      navigate("/");
+    } catch (err) {
+      setIsSignUpError(true);
+      console.error(err);
+    }
+  }
+
+
+  async function signIn(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    try {
+      const userCredentials = await signInWithEmailAndPassword(
+        auth,
+        formData.signInEmail,
+        formData.signInPassword,
+      );
+      setIsSignInError(false);
+      console.log("Signed In!", userCredentials);
+ 
+ 
+      navigate("/");
+    } catch (err) {
+      setIsSignInError(true);
+      console.error(err);
+    }
+  }
+ 
+
   return (
-    <div className={styles.container} id="container">
+    <div className="container_Login">
+      <div className={`container ${isActive ? "active" : ""}`} id="container">
       {/* Sign Up Section */}
-      <div className={`${styles['form-container']} ${styles['sign-up']}`}>
-        <form>
-          <h1>Create Account</h1>
+      <div className="form-container sign-up">
+        <form onSubmit={signUp}>
+          <h1 className="form-heading">Create Account</h1>
 
           {/* Social Icons */}
-          <div className={styles['social-icons']}>
-            <a href="#" className={styles.icon}>
-              {/* Icon content */}
+          <div className="social-icons">
+            <a href="#" className="icon">
+              {<FontAwesomeIcon icon={faGoogle} />}
             </a>
-            {/* Add other social icons here */}
+            <a href="#" className="icon">
+              {<FontAwesomeIcon icon={faFacebookF} />}
+            </a>
+            <a href="#" className="icon">
+              {<FontAwesomeIcon icon={faMicrosoft} />}
+            </a>
+            <a href="#" className="icon">
+              {<FontAwesomeIcon icon={faGithub} />}
+            </a>
           </div>
 
           <span>or use your email for registration</span>
 
           {/* Input Fields */}
-          {/* Add input fields here */}
+          <input
+            name="signUpName"
+            type="text"
+            onChange={handleChange}
+            value={formData.signUpName}
+            minLength={3}
+            placeholder="Name"
+            required
+          />
+          <input
+            name="signUpEmail"
+            type="email"
+            onChange={handleChange}
+            value={formData.signUpEmail}
+            placeholder="Email"
+            required
+          />
+          <input
+            name="signUpPassword"
+            type="password"
+            onChange={handleChange}
+            value={formData.signUpPassword}
+            minLength={6}
+            placeholder="Password"
+            required
+          />
 
           {/* Sign Up Button */}
           <button>Sign Up</button>
+          {isSignUpError && <span className="error">Invalid Credentials</span>}
         </form>
       </div>
 
       {/* Sign In Section */}
-      <div className={`${styles['form-container']} ${styles['sign-in']}`}>
-        <form>
-          <h1>Sign In</h1>
+      <div className="form-container sign-in">
+        <form onSubmit={signIn}>
+          <h1 className="form-heading">Sign In</h1>
 
           {/* Social Icons */}
-          <div className={styles['social-icons']}>
-            {/* Add social icons here */}
+          <div className="social-icons">
+            <a href="#" className="icon">
+              {<FontAwesomeIcon icon={faGoogle} />}
+            </a>
+            <a href="#" className="icon">
+              {<FontAwesomeIcon icon={faFacebookF} />}
+            </a>
+            <a href="#" className="icon">
+              {<FontAwesomeIcon icon={faMicrosoft} />}
+            </a>
+            <a href="#" className="icon">
+              {<FontAwesomeIcon icon={faGithub} />}
+            </a>
           </div>
 
           <span>or use your email password</span>
 
           {/* Input Fields */}
-          {/* Add input fields here */}
+          <input
+            name="signInEmail"
+            type="email"
+            onChange={handleChange}
+            value={formData.signInEmail}
+            placeholder="Email"
+            required
+          />
+          <input
+            name="signInPassword"
+            type="password"
+            onChange={handleChange}
+            value={formData.signInPassword}
+            placeholder="Password"
+            required
+          />
 
           {/* Forgot Password Link */}
           <a href="#">Forgot Your Password?</a>
 
           {/* Sign In Button */}
           <button>Sign In</button>
+          {isSignInError && <span className="error">Invalid Credentials</span>}
         </form>
       </div>
 
       {/* Toggle Section */}
-      <div className={styles['toggle-container']}>
-        <div className={styles.toggle}>
-          <div className={`${styles['toggle-panel']} ${styles['toggle-left']}`}>
+      <div className="toggle-container">
+        <div className="toggle">
+          {/* <div className="toggle-panel toggle-left"> */}
+          <div className="toggle-panel toggle-left" onClick={showLogin}>
             <h1>Welcome Back!</h1>
             <p>Enter your personal details to use all site features</p>
-            <button className={styles.hidden} id="login">Sign In</button>
+            <button className="hidden" id="login">
+              Sign In
+            </button>
           </div>
 
-          <div className={`${styles['toggle-panel']} ${styles['toggle-right']}`}>
+          {/* <div className="toggle-panel toggle-right"> */}
+          <div className="toggle-panel toggle-right" onClick={showSignup}>
             <h1>Hello, Friend!</h1>
             <p>Register with your personal details to use all site features</p>
-            <button className={styles.hidden} id="register">Sign Up</button>
+            <button className="hidden" id="register">
+              Sign Up
+            </button>
           </div>
         </div>
       </div>
     </div>
+    </div>
+    
   );
 }

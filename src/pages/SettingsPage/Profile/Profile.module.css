@@ -48,6 +48,7 @@ h1 {
     height:100px;
     justify-content: space-between;
     align-items: center;
+    background-color: #512da8;
 
     
   
@@ -81,16 +82,18 @@ h1 {
   .hiddenInput {
     display: none;
   }
-  .form{
+
+  .ProfileForm{
     display:flex;
-    justify-content: center;
+    
+
+
   }
   
 .info {
     display: flex;
     flex-direction: column;
-    width: 300px;
-    height:200px;
+   
    
 }
 
@@ -118,4 +121,9 @@ h1 {
     
 
 
+}
+.customIconStyle {
+    width: 100px;
+    height: 100px;
+    cursor: pointer;
 }
