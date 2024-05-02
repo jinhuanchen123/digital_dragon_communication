@@ -1,0 +1,29 @@
+body {
+    background-color: rgb(217, 217, 217);
+}
+
+.container1_notification {
+    display: flex;
+    width: calc(100vw - 180px);
+    height: 100%;  
+}
+
+.header {
+    display: flex; /* Use flexbox */
+    align-items: center; /* Vertically center the items */
+    padding: 0;
+    margin: 0;
+    width: 100vw;
+    height: 180px;
+    background-color: #512da8;
+}
+
+h1 {
+    margin: 0;
+    padding: 0;
+}
+.MainContent{
+    
+
+}
+
