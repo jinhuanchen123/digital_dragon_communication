@@ -1,17 +1,13 @@
 import { ChangeEvent, FormEvent, useState } from "react";
 import "./LoginPage.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faGoogle,
-  faFacebookF,
-  faGithub,
-  faMicrosoft,
-} from "@fortawesome/free-brands-svg-icons";
-import { auth } from "../../firebase.ts";
+import { faGoogle } from "@fortawesome/free-brands-svg-icons";
+import { auth, googleProvider } from "../../firebase.ts";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   updateProfile,
+  signInWithPopup,
 } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 export default function LoginPage() {
@@ -77,6 +73,16 @@ export default function LoginPage() {
     }
   }
 
+  async function signInWithGoogle() {
+    try {
+      await signInWithPopup(auth, googleProvider);
+      navigate("/");
+    } catch (err) {
+      setIsSignInError(true);
+      console.error(err);
+    }
+  }
+
   return (
     <div className={`container ${isActive ? "active" : ""}`} id="container">
       {/* Sign Up Section */}
@@ -86,18 +92,9 @@ export default function LoginPage() {
 
           {/* Social Icons */}
           <div className="social-icons">
-            <a href="#" className="icon">
+            <button onClick={signInWithGoogle} className="icon">
               {<FontAwesomeIcon icon={faGoogle} />}
-            </a>
-            <a href="#" className="icon">
-              {<FontAwesomeIcon icon={faFacebookF} />}
-            </a>
-            <a href="#" className="icon">
-              {<FontAwesomeIcon icon={faMicrosoft} />}
-            </a>
-            <a href="#" className="icon">
-              {<FontAwesomeIcon icon={faGithub} />}
-            </a>
+            </button>
           </div>
 
           <span>or use your email for registration</span>
@@ -143,18 +140,9 @@ export default function LoginPage() {
 
           {/* Social Icons */}
           <div className="social-icons">
-            <a href="#" className="icon">
+            <button onClick={signInWithGoogle} className="icon">
               {<FontAwesomeIcon icon={faGoogle} />}
-            </a>
-            <a href="#" className="icon">
-              {<FontAwesomeIcon icon={faFacebookF} />}
-            </a>
-            <a href="#" className="icon">
-              {<FontAwesomeIcon icon={faMicrosoft} />}
-            </a>
-            <a href="#" className="icon">
-              {<FontAwesomeIcon icon={faGithub} />}
-            </a>
+            </button>
           </div>
 
           <span>or use your email password</span>
