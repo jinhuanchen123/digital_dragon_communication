@@ -1,6 +1,7 @@
 import ReactDOM from 'react-dom';
 import React, { useState } from 'react';
 import LeftSideBar from './LeftSideBar';
+import PopupChannel from './PopupChannel';
 //import './index.css';
 
 
@@ -19,10 +20,10 @@ export default function AddChannel() {
         <div key={`input-${index}`}>{item}</div>
       ))}
       <button
-        className="flex mx-auto p-2 bg-purple-500 m-5 hover:scale-105"
+        className="block mx-auto p-2 bg-purple-500 m-5 hover:scale-105"
 
         onClick={() => {
-          setInput([...input, <LeftSideBar />]);
+          setInput([...input, <PopupChannel />]);
         }}
         >Add Channel</button>
     </div>;

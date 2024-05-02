@@ -4,6 +4,8 @@ import LoginPage from "./pages/LoginPage";
 import LeftSideBar from "./pages/LeftSideBar";
 import AddChannel from "./pages/AddChannel";
 import SettingsBar from "./pages/SettingsBar";
+import PopupChannel from "./pages/PopupChannel";
+
 
 export default function App() {
   return (
@@ -13,6 +15,8 @@ export default function App() {
       <Route path="/LSB" element={<LeftSideBar />} />
       <Route path="/Add" element={<AddChannel />} />
       <Route path="/Bar" element={<SettingsBar />} />
+      <Route path="/pop" element={<PopupChannel />} />
+
 
     </Routes>
   );
