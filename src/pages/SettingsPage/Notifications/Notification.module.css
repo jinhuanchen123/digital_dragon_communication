@@ -1,8 +1,7 @@
-body {
-    background-color: rgb(217, 217, 217);
-}
+
 
 .container1_notification {
+    background-color: rgb(217, 217, 217);
     display: flex;
     width: calc(100vw - 180px);
     height: 100%;  
@@ -22,8 +21,5 @@ h1 {
     margin: 0;
     padding: 0;
 }
-.MainContent{
-    
 
-}
 

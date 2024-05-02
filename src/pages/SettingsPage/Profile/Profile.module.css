@@ -1,8 +1,5 @@
-body{
-    background-color: rgb(217, 217, 217);
-}
-
 .container1_profile {
+    background-color: rgb(217, 217, 217);
     display: flex;
     width: 100vw;
     height: 100vh;
