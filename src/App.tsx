@@ -11,7 +11,6 @@ import LogOut from "./pages/SettingsPage/LogOut/LogOut";
 import LeftSideBar from "./pages/HomePage/LeftSideBar";
 import AddChannel from "./pages/HomePage/AddChannel";
 import SettingsBar from "./pages/HomePage/SettingsBar";
->>>>>>> danielG
 
 export default function App() {
   return (
