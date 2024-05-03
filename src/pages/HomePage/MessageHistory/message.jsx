@@ -13,7 +13,7 @@ export default function Message(props) {
                     <AvatarFallback>CN</AvatarFallback>
                 </Avatar>
 
-                <div id="message-data">
+                <div id="message-data" className="text-2xl">
                     <div id="name-date-delete">
                         <div id="name">{props.account.name}</div>
                         <div id="date">{props.messageData.date.day} at {props.messageData.date.time}</div>
