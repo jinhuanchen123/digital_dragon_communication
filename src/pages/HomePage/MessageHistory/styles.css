@@ -13,7 +13,7 @@
     display: flex;
     flex-direction: column;
 }
-#message-comp {
+#message-component {
     display: flex;
 
     width: 44rem;

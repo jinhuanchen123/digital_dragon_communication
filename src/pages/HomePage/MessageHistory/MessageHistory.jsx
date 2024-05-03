@@ -1,15 +1,15 @@
 import React from 'react';
-import historyData from "./historyData"
+import messageHistory from "./historyData"
 import Message from "./message"
 import './styles.css'
 
 export default function MessageHistory() {
 
-    const [messages, setMessages] = React.useState(historyData.digitalDragonsChannel.map(dataPoint => 
+    const [messages, setMessages] = React.useState(messageHistory.digitalDragonsChannel.map(message => 
     <Message 
-    key={dataPoint.id} 
-    account={dataPoint.account} 
-    messageData={dataPoint.messageData} 
+    key={message.id} 
+    account={message.account} 
+    messageData={message.messageData} 
     />))
 
     return (

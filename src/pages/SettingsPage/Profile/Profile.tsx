@@ -42,7 +42,7 @@ function Profile() {
       <RightSidebar />
       <div className={Profile_styles.profile_section}>
         <div className={Profile_styles.header}>
-          <h1>Profile</h1>
+          <h1 className={Profile_styles.setting_profile_h1}>Profile</h1>
         </div>
         <div className={Profile_styles.icon_container}>
         <FontAwesomeIcon

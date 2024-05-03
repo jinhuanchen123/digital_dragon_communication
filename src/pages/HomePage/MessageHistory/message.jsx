@@ -1,16 +1,17 @@
-// import { Avatar, AvatarFallback, AvatarImage } from './avatar/avatar'
+import { Avatar, AvatarFallback, AvatarImage } from "./msg-history-avatar"; // Assuming correct import path for Avatar components
+
 
 
 
 export default function Message(props) {
     return (
         <>
-            <div id="message-comp">
-                {/* <Avatar>
-                    <AvatarImage src="https://github.com/shadcn.png" />
+            <div id="message-component">
+                    
+                <Avatar>
+                    <AvatarImage src={props.account.pfp} />
                     <AvatarFallback>CN</AvatarFallback>
-                </Avatar> */}
-                <img className="message-history-avatar" src={props.account.pfp}></img>
+                </Avatar>
 
                 <div id="message-data">
                     <div id="name-date-delete">
