@@ -22,25 +22,10 @@
 }
 
 /**
- - FIXATIONS
- */
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Montserrat", sans-serif;
-}
-
-/*-----------------------------------*\
-  - STRUCTURE
-\*-----------------------------------*/
-
-/**
  - BODY
  */
 
-body {
+.fullWrapper {
   background-color: #c9d6ff;
   background: linear-gradient(to right, #e2e2e2, #c9d6ff);
   display: flex;
@@ -48,6 +33,17 @@ body {
   justify-content: center;
   flex-direction: column;
   height: 100vh;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Montserrat", sans-serif;
+}
+
+.fullWrapper>* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Montserrat", sans-serif;
 }
 
 /**
@@ -123,7 +119,7 @@ body {
   outline: none;
 }
 
-.form-container {
+.formContainer {
   position: absolute;
   top: 0;
   height: 100%;
@@ -134,13 +130,13 @@ body {
  - SIGN IN
  */
 
-.sign-in {
+.signIn {
   left: 0;
   width: 50%;
   z-index: 2;
 }
 
-.container.active .sign-in {
+.container.active .signIn {
   transform: translateX(100%);
 }
 
@@ -148,14 +144,14 @@ body {
  - SIGN UP
  */
 
-.sign-up {
+.signUp {
   left: 0;
   width: 50%;
   opacity: 0;
   z-index: 1;
 }
 
-.container.active .sign-up {
+.container.active .signUp {
   transform: translateX(100%);
   opacity: 1;
   z-index: 5;
@@ -167,11 +163,13 @@ body {
 \*-----------------------------------*/
 
 @keyframes move {
+
   0%,
   49.99% {
     opacity: 0;
     z-index: 1;
   }
+
   50%,
   100% {
     opacity: 1;
@@ -183,11 +181,11 @@ body {
   - SOCIAL ICONS
 \*-----------------------------------*/
 
-.social-icons {
-  margin: 20px 0;
+.socialIcons {
+  margin: 10px 0;
 }
 
-.social-icons button {
+.socialIcons button {
   border: 1px solid #ccc;
   border-radius: 20%;
   display: inline-flex;
@@ -207,7 +205,7 @@ body {
  - CONTAINER
  */
 
-.toggle-container {
+.toggleContainer {
   position: absolute;
   top: 0;
   left: 50%;
@@ -219,7 +217,7 @@ body {
   z-index: 1000;
 }
 
-.container.active .toggle-container {
+.container.active .toggleContainer {
   transform: translateX(-100%);
   border-radius: 0 150px 100px 0;
 }
@@ -245,7 +243,7 @@ body {
  - PANEL
  */
 
-.toggle-panel {
+.togglePanel {
   position: absolute;
   width: 50%;
   height: 100%;
@@ -253,7 +251,6 @@ body {
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  padding: 0 30px;
   text-align: center;
   top: 0;
   transform: translateX(0);
@@ -268,11 +265,11 @@ body {
  - LEFT
  */
 
-.toggle-left {
+.toggleLeft {
   transform: translateX(-200%);
 }
 
-.container.active .toggle-left {
+.container.active .toggleLeft {
   transform: translateX(0);
 }
 
@@ -280,17 +277,18 @@ body {
  - RIGHT
  */
 
-.toggle-right {
+.toggleRight {
   right: 0;
   transform: translateX(0);
 }
 
-.container.active .toggle-right {
+.container.active .toggleRight {
   transform: translateX(200%);
 }
 
-.form-heading {
+.formHeading {
   text-align: center;
+  margin-bottom: -5px;
 }
 
 .error {
