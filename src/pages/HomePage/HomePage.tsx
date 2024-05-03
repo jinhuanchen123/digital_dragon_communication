@@ -6,11 +6,20 @@ import './home-page.css'
 
 
 export default function HomePage() {
+
+  const [channel, setChannel] = React.useState();
+
+  function changeChannel(chosenChannel) {
+    setChannel(() => chosenChannel)
+  }
+
   return (
     <>
     <h1>This is the Home page</h1>
     <div id="home-page">
-      <AddChannel />
+      <AddChannel 
+        changeChannel={changeChannel}
+      />
       <div id="middle-components">
         <TopBar />
         <MessageHistory />

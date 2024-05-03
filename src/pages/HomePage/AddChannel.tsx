@@ -14,7 +14,7 @@ export default function AddChannel() {
   
   const [input, setInput] = useState([<LeftSideBar />]);
 
-    return <div className="flex mx-auto flex-col-reverse">
+    return <div className="flex  flex-col">
           {input.map((item, index) => (
         <div key={`input-${index}`}>{item}</div>
       ))}
