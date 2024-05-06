@@ -1,22 +1,6 @@
-/*-----------------------------------*\
- - GOOGLE FONT
-\*-----------------------------------*/
-
-
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap");
 
-
-/*-----------------------------------*\
- - STYLING
-\*-----------------------------------*/
-
-
 :root {
- /**
-- COLOR PALETTE
-*/
-
-
  --standard-purple: rgb(107, 0, 107);
  --darker-blue: rgb(32, 57, 92);
  --standard-white: rgb(255, 255, 255);
@@ -26,27 +10,12 @@
 }
 
 
-/**
-- FIXATIONS
-*/
-
-
 * {
  margin: 0;
  padding: 0;
  box-sizing: border-box;
  font-family: "Montserrat", sans-serif;
 }
-
-
-/*-----------------------------------*\
- - STRUCTURE
-\*-----------------------------------*/
-
-
-/**
-- BODY
-*/
 
 
 .container_Login{
@@ -58,11 +27,6 @@
  flex-direction: column;
  height: 100vh;
 }
-
-
-/**
-- CONTAINER
-*/
 
 
 .container {
@@ -118,7 +82,6 @@
  border-color: #fff;
 }
 
-
 .container form {
  background-color: #fff;
  display: flex;
@@ -150,11 +113,6 @@
 }
 
 
-/**
-- SIGN IN
-*/
-
-
 .sign-in {
  left: 0;
  width: 50%;
@@ -165,11 +123,6 @@
 .container.active .sign-in {
  transform: translateX(100%);
 }
-
-
-/**
-- SIGN UP
-*/
 
 
 .sign-up {
@@ -188,11 +141,6 @@
 }
 
 
-/*-----------------------------------*\
- - KEYFRAMES
-\*-----------------------------------*/
-
-
 @keyframes move {
  0%,
  49.99% {
@@ -205,11 +153,6 @@
    z-index: 5;
  }
 }
-
-
-/*-----------------------------------*\
- - SOCIAL ICONS
-\*-----------------------------------*/
 
 
 .social-icons {
@@ -227,16 +170,6 @@
  width: 40px;
  height: 40px;
 }
-
-
-/*-----------------------------------*\
- - TOGGLING
-\*-----------------------------------*/
-
-
-/**
-- CONTAINER
-*/
 
 
 .toggle-container {
@@ -277,11 +210,6 @@
 }
 
 
-/**
-- PANEL
-*/
-
-
 .toggle-panel {
  position: absolute;
  width: 50%;
@@ -298,16 +226,6 @@
 }
 
 
-/*-----------------------------------*\
- - DIRECTIONS
-\*-----------------------------------*/
-
-
-/**
-- LEFT
-*/
-
-
 .toggle-left {
  transform: translateX(-200%);
 }
@@ -316,11 +234,6 @@
 .container.active .toggle-left {
  transform: translateX(0);
 }
-
-
-/**
-- RIGHT
-*/
 
 
 .toggle-right {
@@ -342,4 +255,3 @@
 .error {
  color: red;
 }
-
