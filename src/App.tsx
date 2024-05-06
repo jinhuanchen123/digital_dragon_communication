@@ -1,12 +1,13 @@
 import { Route, Routes } from "react-router-dom";
-import MessageHistory from './pages/HomePage/MessageHistory/MessageHistory.jsx'
 import HomePage from "./pages/HomePage/HomePage";
-import Login from "./pages/LoginPage/LoginPage";
-import Profile from "./pages/SettingsPage/Profile/Profile"
-import Notifications from "./pages/SettingsPage/Notifications/Notification";
-import Privacy from "./pages/SettingsPage/Privacy/Privacy";
+import LoginPage from "./pages/LoginPage/LoginPage";
+import Profile from "./pages/SettingsPage/Profile"
+import Notifications from "./pages/SettingsPage/Notification";
+import Privacy from "./pages/SettingsPage/Privacy";
+import Theme from "./pages/SettingsPage/Theme";
+import LogOut from "./pages/SettingsPage/LogOut";
+import MessageHistory from './pages/HomePage/MessageHistory/MessageHistory.jsx'
 import Theme from "./pages/SettingsPage/Theme/Theme";
-import LogOut from "./pages/SettingsPage/LogOut/LogOut";
 import LeftSideBar from "./pages/HomePage/LeftSideBar";
 import AddChannel from "./pages/HomePage/AddChannel";
 import SettingsBar from "./pages/HomePage/SettingsBar";
@@ -16,8 +17,8 @@ export default function App() {
     <>
     <Routes>
       <Route path="/" element={<HomePage />} />
+      <Route path="/login" element={<LoginPage />} />
 
-      <Route path="/login" element={<Login />} />
       <Route path="/setting/profile" element={<Profile />} />
       <Route path="/setting/notifications" element={<Notifications/>}/>
       <Route path="/setting/privacy" element={<Privacy />} />

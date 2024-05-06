@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom';
 import './Setting.css'; // Correct import statement
 import RightSidebar from './RightSidebar';
 import { Link } from 'react-router-dom'; 
+
+
 import "./Setting.css";
 import "./Privacy.module.css";
 
