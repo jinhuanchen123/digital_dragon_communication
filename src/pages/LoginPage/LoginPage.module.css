@@ -294,3 +294,9 @@
 .error {
   color: red;
 }
+
+.container >* .forgotPassword {
+  background-color: transparent;
+  color: black;
+  text-decoration: underline;
+}

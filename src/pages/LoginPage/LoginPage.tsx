@@ -8,6 +8,7 @@ import {
   signInWithEmailAndPassword,
   updateProfile,
   signInWithPopup,
+  sendPasswordResetEmail,
 } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 export default function LoginPage() {
@@ -15,6 +16,7 @@ export default function LoginPage() {
   const [isActive, setIsActive] = useState(false);
   const [isSignInError, setIsSignInError] = useState(false);
   const [isSignUpError, setIsSignUpError] = useState(false);
+  const [isPasswordResetError, setIsPasswordResetError] = useState(false);
 
   const showLogin = () => setIsActive(false);
   const showSignup = () => setIsActive(true);
@@ -58,13 +60,12 @@ export default function LoginPage() {
   async function signIn(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     try {
-      const userCredentials = await signInWithEmailAndPassword(
+      await signInWithEmailAndPassword(
         auth,
         formData.signInEmail,
         formData.signInPassword,
       );
       setIsSignInError(false);
-      console.log("Signed In!", userCredentials);
 
       navigate("/");
     } catch (err) {
@@ -79,6 +80,17 @@ export default function LoginPage() {
       navigate("/");
     } catch (err) {
       setIsSignInError(true);
+      console.error(err);
+    }
+  }
+
+  async function onForgotPassword() {
+    try {
+      await sendPasswordResetEmail(auth, formData.signInEmail);
+      setIsPasswordResetError(false);
+      alert("Email has been sent to reset your password.");
+    } catch (err) {
+      setIsPasswordResetError(true);
       console.error(err);
     }
   }
@@ -168,14 +180,20 @@ export default function LoginPage() {
               onChange={handleChange}
               value={formData.signInPassword}
               placeholder="Password"
-              required
             />
 
             {/* Forgot Password Link */}
-            <a href="#">Forgot Your Password?</a>
+            <button onClick={onForgotPassword} className={style.forgotPassword}>
+              Forgot Your Password?
+            </button>
+            {isPasswordResetError && (
+              <span className={style.error}>
+                Enter an email to reset your password.
+              </span>
+            )}
 
             {/* Sign In Button */}
-            <button>Sign In</button>
+            <button type="submit">Sign In</button>
             {isSignInError && (
               <span className={style.error}>Invalid Credentials</span>
             )}
@@ -203,7 +221,9 @@ export default function LoginPage() {
               onClick={showSignup}
             >
               <h1>Hello, Friend!</h1>
-              <p>Register with your personal details to use all site features</p>
+              <p>
+                Register with your personal details to use all site features
+              </p>
               <button className={style.Hidden} id="register">
                 Sign Up
               </button>
