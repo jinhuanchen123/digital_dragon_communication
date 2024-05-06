@@ -10,7 +10,6 @@ ReactDOM.render(
   document.getElementById('root')
 );
 
-
 export default function AddChannel() {
   
   const [input, setInput] = useState([<LeftSideBar />]);
