@@ -1,17 +1,23 @@
-import LeftSideBar from "./LeftSideBar";
+
+import TopBar from "@/components/ui/TopBar";
 import AddChannel from "./AddChannel";
-import SettingsBar from "./SettingsBar";
+import MessageHistory from './MessageHistory/MessageHistory'
+import './home-page.css'
+
+
 
 export default function HomePage() {
   return (
-    <div>
-    <h1>
-      This is the Home page
-    </h1>
-    <LeftSideBar />
-    <AddChannel/>
-    <SettingsBar/>
-    
+    <>
+    <h1>This is the Home page</h1>
+    <div id="home-page">
+      <AddChannel />
+      <div id="middle-components">
+        <TopBar />
+        <MessageHistory />
+      </div>
     </div>
+    
+    </>
   );
 }
