@@ -3,7 +3,6 @@ import style from "./LoginPage.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 import { auth, googleProvider } from "../../firebase.ts";
-
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -29,7 +28,6 @@ export default function LoginPage() {
     signInEmail: "",
     signInPassword: "",
   });
-
 
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
     const { name, value } = e.target;
@@ -59,20 +57,16 @@ export default function LoginPage() {
     }
   }
 
-
-
   async function signIn(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     try {
-      const userCredentials = await signInWithEmailAndPassword(
+      await signInWithEmailAndPassword(
         auth,
         formData.signInEmail,
         formData.signInPassword,
       );
       setIsSignInError(false);
 
- 
- 
       navigate("/");
     } catch (err) {
       setIsSignInError(true);
@@ -234,11 +228,9 @@ export default function LoginPage() {
                 Sign Up
               </button>
             </div>
-
           </div>
         </div>
       </div>
     </div>
-    
   );
 }
