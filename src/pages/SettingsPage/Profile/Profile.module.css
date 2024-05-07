@@ -1,9 +1,11 @@
-.container1_profile {
+.container1_profile{
     background-color: rgb(217, 217, 217);
     display: flex;
     width: 100vw;
     height: 100vh;
 }
+
+
 .profile_section{
     width: calc(100vw - 180px); 
     height: 100%;
@@ -19,7 +21,7 @@
    
 }
 
-.setting_profile_h1 {
+h1 {
     font-size: 50px;
     color:white;
 }
@@ -35,33 +37,38 @@
 .card{
     margin:60px;
     width:50%;
-    height:400px;
     box-shadow: 0 4px 8px rgba(20, 19, 19, 0.3); 
   
 }
-.avatar{
-    display:flex;
-    flex-direction: row-reverse; 
-    height:100px;
+.avatar {
+    display: flex;
+    height: 100px;
     justify-content: space-between;
     align-items: center;
     background-color: #512da8;
-
-    
+    flex-direction: row-reverse;
+  }
   
-}
-/* Profile.module.css */
-
-.profile_image {
+  .hiddenInput {
+    display: none;
+  }
+  
+  .profile_image {
     display: flex;
-    width:80px;
-    height:80px;
+    width: 80px;
+    height: 80px;
     border-radius: 50%;
-    margin: 20px 30px;
-  
    
   }
   
+  .avatarImage {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+  }
+  
+/* 
+
 
 .editButton {
     background-color: rgb(137, 194, 72);
@@ -75,15 +82,11 @@
 
   }
   
-  /* Hide the default file input */
-  .hiddenInput {
-    display: none;
-  }
+  Hide the default file input
+  
 
   .ProfileForm{
     display:flex;
-    
-
 
   }
   
@@ -94,7 +97,7 @@
    
 }
 
-/* Use commas to separate selectors */
+
 #username, #email, #password, #newPassword {
     width: 200px;
     height: 50px;
@@ -118,7 +121,7 @@
     
 
 
-}
+} */
 .customIconStyle {
     width: 100px;
     height: 100px;
