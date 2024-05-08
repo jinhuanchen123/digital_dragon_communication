@@ -1,27 +1,35 @@
-import { ChangeEvent, FormEvent, useState } from "react";
+import React, { ChangeEvent, FormEvent, useState } from "react";
 import style from "./LoginPage.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGoogle } from "@fortawesome/free-brands-svg-icons";
-import { auth, googleProvider } from "../../firebase.ts";
+import { auth, googleProvider, db } from "../../firebase.ts";
 import {
   createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
   updateProfile,
+  signInWithEmailAndPassword,
   signInWithPopup,
-  sendPasswordResetEmail,
 } from "firebase/auth";
+import { setDoc, doc, Firestore } from 'firebase/firestore';
 import { useNavigate } from "react-router-dom";
+
+interface FormData {
+  signUpName: string;
+  signUpEmail: string;
+  signUpPassword: string;
+  signInEmail: string;
+  signInPassword: string;
+}
+
 export default function LoginPage() {
   const navigate = useNavigate();
   const [isActive, setIsActive] = useState(false);
   const [isSignInError, setIsSignInError] = useState(false);
   const [isSignUpError, setIsSignUpError] = useState(false);
-  const [isPasswordResetError, setIsPasswordResetError] = useState(false);
 
   const showLogin = () => setIsActive(false);
   const showSignup = () => setIsActive(true);
 
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     signUpName: "",
     signUpEmail: "",
     signUpPassword: "",
@@ -29,7 +37,7 @@ export default function LoginPage() {
     signInPassword: "",
   });
 
-  function handleChange(e: ChangeEvent<HTMLInputElement>) {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prevFormData) => ({
       ...prevFormData,
@@ -37,19 +45,28 @@ export default function LoginPage() {
     }));
   }
 
-  async function signUp(e: FormEvent<HTMLFormElement>) {
+  const signUp = async (db: Firestore, e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const userCredentials = await createUserWithEmailAndPassword(
+      const userCredential = await createUserWithEmailAndPassword(
         auth,
         formData.signUpEmail,
-        formData.signUpPassword,
+        formData.signUpPassword
       );
-      await updateProfile(userCredentials.user, {
-        displayName: formData.signUpName,
-      });
-      setIsSignUpError(false);
 
+      // Update user's profile with display name
+      await updateProfile(userCredential.user, {
+        displayName: formData.signUpName
+      });
+
+      // Update Firestore document with user's display name
+      await setDoc(doc(db, 'users', userCredential.user.uid), {
+        displayName: formData.signUpName,
+        email: formData.signUpEmail,
+        createdAt: new Date().toISOString()
+      });
+
+      setIsSignUpError(false);
       navigate("/");
     } catch (err) {
       setIsSignUpError(true);
@@ -57,16 +74,16 @@ export default function LoginPage() {
     }
   }
 
-  async function signIn(e: FormEvent<HTMLFormElement>) {
+  const signIn = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      await signInWithEmailAndPassword(
+      const userCredential = await signInWithEmailAndPassword(
         auth,
         formData.signInEmail,
-        formData.signInPassword,
+        formData.signInPassword
       );
       setIsSignInError(false);
-
+      console.log("Signed In!", userCredential);
       navigate("/");
     } catch (err) {
       setIsSignInError(true);
@@ -74,23 +91,12 @@ export default function LoginPage() {
     }
   }
 
-  async function signInWithGoogle() {
+  const signInWithGoogle = async () => {
     try {
       await signInWithPopup(auth, googleProvider);
       navigate("/");
     } catch (err) {
       setIsSignInError(true);
-      console.error(err);
-    }
-  }
-
-  async function onForgotPassword() {
-    try {
-      await sendPasswordResetEmail(auth, formData.signInEmail);
-      setIsPasswordResetError(false);
-      alert("Email has been sent to reset your password.");
-    } catch (err) {
-      setIsPasswordResetError(true);
       console.error(err);
     }
   }
@@ -103,7 +109,7 @@ export default function LoginPage() {
       >
         {/* Sign Up Section */}
         <div className={`${style.formContainer} ${style.signUp}`}>
-          <form onSubmit={signUp}>
+          <form onSubmit={(e) => signUp(db, e)}>
             <h1 className={style.formHeading}>Create Account</h1>
 
             {/* Social Icons */}
@@ -152,7 +158,8 @@ export default function LoginPage() {
         </div>
 
         {/* Sign In Section */}
-        <div className={`${style.formContainer} ${style.signIn}`}>
+         {/* Sign In Section */}
+         <div className={`${style.formContainer} ${style.signIn}`}>
           <form onSubmit={signIn}>
             <h1 className={style.formHeading}>Sign In</h1>
 
@@ -180,20 +187,14 @@ export default function LoginPage() {
               onChange={handleChange}
               value={formData.signInPassword}
               placeholder="Password"
+              required
             />
 
             {/* Forgot Password Link */}
-            <button onClick={onForgotPassword} className={style.forgotPassword}>
-              Forgot Your Password?
-            </button>
-            {isPasswordResetError && (
-              <span className={style.error}>
-                Enter an email to reset your password.
-              </span>
-            )}
+            <a href="#">Forgot Your Password?</a>
 
             {/* Sign In Button */}
-            <button type="submit">Sign In</button>
+            <button>Sign In</button>
             {isSignInError && (
               <span className={style.error}>Invalid Credentials</span>
             )}
@@ -221,9 +222,7 @@ export default function LoginPage() {
               onClick={showSignup}
             >
               <h1>Hello, Friend!</h1>
-              <p>
-                Register with your personal details to use all site features
-              </p>
+              <p>Register with your personal details to use all site features</p>
               <button className={style.Hidden} id="register">
                 Sign Up
               </button>

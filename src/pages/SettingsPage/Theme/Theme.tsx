@@ -25,7 +25,7 @@ function Theme() {
       <RightSidebar/>
       <div className={Theme_styles.theme_section}>
         <div className={Theme_styles.header}>
-          <h1>Theme</h1>
+          <h1 className={Theme_styles.header1}>Theme</h1>
         </div>
 
         <div className={Theme_styles.theme_rectangles}>

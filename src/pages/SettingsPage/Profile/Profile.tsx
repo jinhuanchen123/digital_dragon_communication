@@ -1,65 +1,129 @@
-// Inside your Profile component
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import RightSidebar from '../SettingLeftSide';
 import Profile_styles from './Profile.module.css';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimesCircle } from "@fortawesome/free-regular-svg-icons";
-import { useNavigate } from 'react-router-dom';
-import avatarImage from '/./avatar.png';
-
+import { useNavigate } from "react-router-dom";
+import avatarImage from '/./avatar.png'; // Import your default avatar image
+import "firebase/storage";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { auth ,db} from '../../../firebase'; // Import your Firebase config
+import { Firestore, getFirestore, collection, getDocs,doc, setDoc, } from "firebase/firestore";
 function Profile() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [defaultAvatar, setDefaultAvatar] = useState(true)
+  const [downloadURL, setDownloadURL] = useState<string | null>(null);
+  const [userData, setUserData] = useState<any[]>([]);
+  //const [userData, setUserData] = useState<string | null>(null); // State variable to store user data
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const navigate = useNavigate();
+ 
+  const storage = getStorage();
 
-  const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileSelect = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
     if (files && files.length > 0) {
-      setSelectedFile(files[0]);
-      setDefaultAvatar(false)
+      const selectedFile = files[0];
+      setSelectedFile(selectedFile);
+
+      try {
+        const storageRef = ref(storage, `avatars/${selectedFile.name}`);
+
+        // Upload file to Firebase Storage
+        const snapshot = await uploadBytes(storageRef, selectedFile);
+        console.log("File uploaded successfully!");
+
+        // Get download URL
+        const downloadURL = await getDownloadURL(storageRef);
+        console.log("Download URL:", downloadURL);
+
+        // Set the download URL to state
+        setDownloadURL(downloadURL);
+
+        // // Update user profile with the download URL (assuming user ID is available)
+        // if (currentUser) {
+        //   await updateProfileWithDownloadURL(currentUser.uid, downloadURL);
+        // }
+
+        const currentUser = auth.currentUser;
+        if (!currentUser) {
+        console.error("Current user not found.");
+        return;
+        }
+        const userId = currentUser.uid;
+
+        // Reference the 'users' collection and the current user's document
+        const userDocRef = doc(db, 'users', userId);
+        await setDoc(userDocRef, { profilePictureUrl: downloadURL });
+        
+        const path=`avatars/${selectedFile.name}`
+        // const usersCollection = collection(db, 'users');
+        // const userDoc = doc(usersCollection); // This creates a new document with a generated ID
+        // const data = { url: path }; // Assuming downloadURL is defined elsewhere
+        // await setDoc(userDoc, data);
+
+        // Save the download URL in local storage
+        localStorage.setItem("downloadURL", downloadURL);
+      } catch (error) {
+        console.error("Error uploading file:", error);
+      }
     }
   };
+
 
   const handleEditProfileClick = () => {
     if (fileInputRef.current) {
       fileInputRef.current.click(); 
     }
-
-
-
   };
-  const handleEditUsername=()=>{
-    
-
-
-  }
- 
-  const navigate = useNavigate();
 
   const handleRedictMainPage = () => {
-  navigate("/"); // Redirect to the main page
-};
+    navigate("/"); // Redirect to the main page
+  };
 
+  useEffect(() => {
+    // Check if downloadURL exists in local storage and update state
+    const storedDownloadURL = localStorage.getItem("downloadURL");
+    if (storedDownloadURL) {
+      setDownloadURL(storedDownloadURL);
+    }
+  }, []);
+  
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const usersCollection = collection(db, 'users');
+        const querySnapshot = await getDocs(usersCollection);
+        const userDataArray: any[] = [];
+        querySnapshot.forEach((doc) => {
+          userDataArray.push({ id: doc.id, ...doc.data() });
+        });
+        setUserData(userDataArray);
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <div className={Profile_styles.container1_profile}>
       <RightSidebar />
       <div className={Profile_styles.profile_section}>
         <div className={Profile_styles.header}>
-          <h1>Profile</h1>
+          <h1 className={Profile_styles.header1}>Profile</h1>
         </div>
         <div className={Profile_styles.icon_container}>
           <FontAwesomeIcon
-                icon={faTimesCircle}
-                className={Profile_styles.customIconStyle}
-                onClick={handleRedictMainPage}
-            />
+            icon={faTimesCircle}
+            className={Profile_styles.customIconStyle}
+            onClick={handleRedictMainPage}
+          />
         </div>
 
         <div className={Profile_styles.big_card}>
           <div className={Profile_styles.card}>
             <div className={Profile_styles.avatar}>
-              
               {/* Custom button to trigger file input */}
               <button className={Profile_styles.editButton} onClick={handleEditProfileClick}>
                 Edit Profile
@@ -67,40 +131,45 @@ function Profile() {
               {/* Hidden file input */}
               <input
                 type="file"
-                accept=".jpg,.jpeg,.png"
+                accept=".jpg"
                 ref={fileInputRef}
                 onChange={handleFileSelect}
                 className={Profile_styles.hiddenInput}
               />
-              {/* Original Image */}
-              {defaultAvatar&&(
-                 <img src={avatarImage} alt="Avatar Image" className={Profile_styles.avatarImage} />
-
-              )}
-              {/* Display the selected image */}
-              {selectedFile && (
+              {/* Display the selected image or default avatar */}
+              {downloadURL ? (
                 <div>
                   <img
-                    src={URL.createObjectURL(selectedFile)}
-                    alt="Selected Image"
+                    src={downloadURL}
+                    alt="Downloaded Image"
                     className={Profile_styles.profile_image}
                   />
-
                 </div>
+              ) : (
+                <img
+                  src={avatarImage}
+                  alt="Default Avatar"
+                  className={Profile_styles.avatarImage}
+                />
               )}
             </div>
             {/* Rest of your profile content */}
             <div className={Profile_styles.ProfileForm}>
-              <form className={Profile_styles.info}>
-                <label htmlFor="username">Username:</label>
-                <button type="button" onClick={handleEditUsername}>Edit</button>
-                <label htmlFor="email">Email:</label>
-                <input type="email" id="email" name="email" />
-                <label htmlFor="password">Password:</label>
-                <input type="password" id="password" name="password" />
-                <label htmlFor="newPassword">New Password:</label>
-                <input type="password" id="newPassword" name="newPassword" />
-              </form>
+            <form className={Profile_styles.info}>
+            {userData && userData.length > 0 ? (
+              <div key={userData[0].id}>
+                <p>Username: {userData[0].displayName}</p>
+                
+                <p>Email:{userData[0].email}</p>
+                {/* Add other user data fields as needed */}
+              </div>
+            ) : (
+              <p>No user data found.</p>
+            )}
+            </form>
+          
+
+
             </div>
             <div className={Profile_styles.save_button}>
               <button type="submit" id="saveChanges">Save Changes</button>

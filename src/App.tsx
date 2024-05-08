@@ -6,9 +6,9 @@ import Notifications from "./pages/SettingsPage/Notifications/Notification";
 import Privacy from "./pages/SettingsPage/Privacy/Privacy";
 import Theme from "./pages/SettingsPage/Theme/Theme";
 import LogOut from "./pages/SettingsPage/LogOut/LogOut";
-import LeftSideBar from "./pages/HomePage/LeftSideBar";
-import AddChannel from "./pages/HomePage/AddChannel";
-import SettingsBar from "./pages/HomePage/SettingsBar";
+import LeftSideBar from "./components/ui/LeftSideBar";
+import AddChannel from "./components/ui/AddChannel";
+import SettingsBar from "./components/ui/SettingsBar";
 
 export default function App() {
   return (

@@ -31,7 +31,7 @@ const handleInvitesClick = (e: React.MouseEvent<HTMLLabelElement, MouseEvent>) =
 
       <div className={notiStyles.notification_section}>
         <div className={notiStyles.header}>
-          <h1>Notification</h1>
+          <h1 className={notiStyles.header1}>Notification</h1>
         </div>
         {/* Replies section with mute toggle */}
         <div>
