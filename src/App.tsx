@@ -1,6 +1,4 @@
 import { Route, Routes } from "react-router-dom";
-
-import MessageHistory from './pages/HomePage/MessageHistory/MessageHistory.jsx'
 import HomePage from "./pages/HomePage/HomePage";
 import Login from "./pages/LoginPage/LoginPage";
 import Profile from "./pages/SettingsPage/Profile/Profile"
@@ -14,7 +12,6 @@ import SettingsBar from "./pages/HomePage/SettingsBar";
 
 export default function App() {
   return (
-    <>
     <Routes>
       <Route path="/" element={<HomePage />} />
 
@@ -31,6 +28,5 @@ export default function App() {
 
 
     </Routes>
-    </>
   );
 }
