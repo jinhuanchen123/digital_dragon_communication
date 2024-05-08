@@ -1,5 +1,5 @@
 import { ChangeEvent, FormEvent, useState } from "react";
-import "./LoginPage.css";
+import "./LoginPage.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faGoogle,
