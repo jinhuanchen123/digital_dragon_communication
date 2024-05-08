@@ -9,7 +9,7 @@ import {
   signInWithEmailAndPassword,
   signInWithPopup,
 } from "firebase/auth";
-import { setDoc, doc, Firestore } from "firebase/firestore/lite";
+import { setDoc, doc, Firestore, serverTimestamp } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 
 interface FormData {
@@ -61,12 +61,11 @@ export default function LoginPage() {
           "https://winaero.com/blog/wp-content/uploads/2015/05/windows-10-user-account-login-icon.png",
       });
 
-
       // Update Firestore document with user's display name
       await setDoc(doc(db, "users", userCredential.user.uid), {
         displayName: formData.signUpName,
         email: formData.signUpEmail,
-        createdAt: new Date().toISOString(),
+        createdAt: serverTimestamp(),
       });
 
       setIsSignUpError(false);
