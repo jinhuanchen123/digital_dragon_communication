@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 import style from "./LoginPage.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGoogle } from "@fortawesome/free-brands-svg-icons";
@@ -9,7 +9,7 @@ import {
   signInWithEmailAndPassword,
   signInWithPopup,
 } from "firebase/auth";
-import { setDoc, doc, Firestore } from 'firebase/firestore/lite';
+import { setDoc, doc, Firestore } from "firebase/firestore/lite";
 import { useNavigate } from "react-router-dom";
 
 interface FormData {
@@ -43,7 +43,7 @@ export default function LoginPage() {
       ...prevFormData,
       [name]: value,
     }));
-  }
+  };
 
   const signUp = async (db: Firestore, e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -51,19 +51,22 @@ export default function LoginPage() {
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         formData.signUpEmail,
-        formData.signUpPassword
+        formData.signUpPassword,
       );
 
-      // Update user's profile with display name
+      // set displayName and temporary profile pic.
       await updateProfile(userCredential.user, {
-        displayName: formData.signUpName
+        displayName: formData.signUpName,
+        photoURL:
+          "https://winaero.com/blog/wp-content/uploads/2015/05/windows-10-user-account-login-icon.png",
       });
 
+
       // Update Firestore document with user's display name
-      await setDoc(doc(db, 'users', userCredential.user.uid), {
+      await setDoc(doc(db, "users", userCredential.user.uid), {
         displayName: formData.signUpName,
         email: formData.signUpEmail,
-        createdAt: new Date().toISOString()
+        createdAt: new Date().toISOString(),
       });
 
       setIsSignUpError(false);
@@ -72,24 +75,23 @@ export default function LoginPage() {
       setIsSignUpError(true);
       console.error(err);
     }
-  }
+  };
 
   const signIn = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const userCredential = await signInWithEmailAndPassword(
+      await signInWithEmailAndPassword(
         auth,
         formData.signInEmail,
-        formData.signInPassword
+        formData.signInPassword,
       );
       setIsSignInError(false);
-      console.log("Signed In!", userCredential);
       navigate("/");
     } catch (err) {
       setIsSignInError(true);
       console.error(err);
     }
-  }
+  };
 
   const signInWithGoogle = async () => {
     try {
@@ -99,7 +101,7 @@ export default function LoginPage() {
       setIsSignInError(true);
       console.error(err);
     }
-  }
+  };
 
   return (
     <div className={style.fullWrapper}>
@@ -158,8 +160,7 @@ export default function LoginPage() {
         </div>
 
         {/* Sign In Section */}
-         {/* Sign In Section */}
-         <div className={`${style.formContainer} ${style.signIn}`}>
+        <div className={`${style.formContainer} ${style.signIn}`}>
           <form onSubmit={signIn}>
             <h1 className={style.formHeading}>Sign In</h1>
 
@@ -170,7 +171,7 @@ export default function LoginPage() {
               </button>
             </div>
 
-            <span>or use your email password</span>
+            <span>or use your email and password</span>
 
             {/* Input Fields */}
             <input
@@ -222,7 +223,9 @@ export default function LoginPage() {
               onClick={showSignup}
             >
               <h1>Hello, Friend!</h1>
-              <p>Register with your personal details to use all site features</p>
+              <p>
+                Register with your personal details to use all site features
+              </p>
               <button className={style.Hidden} id="register">
                 Sign Up
               </button>
