@@ -1,9 +1,17 @@
+import { collection, addDoc, getDoc, onSnapshot } from "firebase/firestore"; 
+
 import React from 'react';
 import messageHistory from "./historyData"
 import Message from "./message"
 import './styles.css'
 
 export default function MessageHistory() {
+    React.useEffect(() => {
+       const docRef = doc(db, 'cities',) //upon first load of the component we would want to load the message history of the first channel on the list that the user has access to
+    }, [count])
+
+    const { collection, getDocs } = require('firebase/firestore');
+
     const [allMessages, setAllMessages] = React.useState();
     const [messages, setMessages] = React.useState(messageHistory.digitalDragonsChannel.map(message => 
     <Message 
@@ -13,11 +21,6 @@ export default function MessageHistory() {
     />))
     const [count, setCount] = React.useState(1)
 
-    React.useEffect(() => {
-        fetch(/*backend history data */)
-        .then(res => res.json())
-        .then(data => setAllMessages(data)) //upon first load of the component we would want to load the message history of the first channel on the list that the user has access to
-    }, [count])
 
     return (
         <>
