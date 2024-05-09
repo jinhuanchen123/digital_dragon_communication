@@ -1,4 +1,5 @@
-import { collection, addDoc, getDoc, onSnapshot } from "firebase/firestore"; 
+import { collection, doc, onSnapshot } from "firebase/firestore"; 
+import {db} from '../../../firebase'
 
 import React from 'react';
 import messageHistory from "./historyData"
@@ -6,20 +7,51 @@ import Message from "./message"
 import './styles.css'
 
 export default function MessageHistory() {
-    React.useEffect(() => {
-       const docRef = doc(db, 'cities',) //upon first load of the component we would want to load the message history of the first channel on the list that the user has access to
-    }, [count])
 
-    const { collection, getDocs } = require('firebase/firestore');
-
-    const [allMessages, setAllMessages] = React.useState();
-    const [messages, setMessages] = React.useState(messageHistory.digitalDragonsChannel.map(message => 
+    const [messages, setMessages] = React.useState(messageHistory.digitalDragonsChannel.map((doc) => 
     <Message 
-    key={message.id} 
-    account={message.account} 
-    messageData={message.messageData} 
-    />))
-    const [count, setCount] = React.useState(1)
+        key={doc.id}
+        sender={doc.sender}
+        sentAt={doc.sentAt}
+        text={doc.text}
+    />
+    ))
+    // const [messages, setMessages] = React.useState([])
+
+
+// Reference to the main document
+const mainDocRef = doc(db, 'text_channels', 'bKlfoUirpppW4te2Mteg');
+
+// Reference to the subcollection
+const subcollectionRef = collection(mainDocRef, 'messages');
+
+// // Listening for changes in the subcollection
+// React.useEffect(() => {
+//     const unsub = onSnapshot(subcollectionRef, (snapshot) => {
+//       snapshot.docChanges().forEach((change) => {
+//         if (change.type === 'added') {
+//             const messageData = [];
+//             messageData.push(change.doc.data)
+//             const newMessages = messageData.map((data) => <Message 
+//                 key={messageData.length + 1} 
+//                 username={data.sender} 
+//                 text={data.text}
+//                 sentAt={data.sentAt}
+//                 />)
+//             setMessages(newMessages)
+//           console.log('New document:', change.doc.id, change.doc.data());
+//         }
+//         if (change.type === 'modified') {
+//         //   console.log('Modified document:', change.doc.data());
+//         }
+//         if (change.type === 'removed') {
+//         //   console.log('Removed document:', change.doc.data());
+//         }
+//       });
+//     });
+// }, [])
+
+
 
 
     return (

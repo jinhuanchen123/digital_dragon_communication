@@ -4,17 +4,17 @@ import LeftSideBar from './LeftSideBar';
 //import './index.css';
 
 
-ReactDOM.render(
-  <React.StrictMode>
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+// ReactDOM.render(
+//   <React.StrictMode>
+//   </React.StrictMode>,
+//   document.getElementById('root')
+// );
 
 export default function AddChannel() {
   
   const [input, setInput] = useState([<LeftSideBar />]);
 
-    return <div className="flex  flex-col">
+    return <div id='add-channel' className="flex  flex-col">
           {input.map((item, index) => (
         <div key={`input-${index}`}>{item}</div>
       ))}

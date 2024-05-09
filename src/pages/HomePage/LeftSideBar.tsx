@@ -3,11 +3,11 @@ import ReactDOM from 'react-dom';
 //import './index.css';
 
 
-ReactDOM.render(
-  <React.StrictMode>
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+// ReactDOM.render(
+//   <React.StrictMode>
+//   </React.StrictMode>,
+//   document.getElementById('root')
+// );
 
 export default function LeftSideBar() {
     return <div className=" max-w-sm  flex  p-6 border-solid border-2 border-gray-200 mb-5 rounded-lg hover:bg-gray-400 hover:border-black hover:cursor-pointer">
