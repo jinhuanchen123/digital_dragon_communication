@@ -1,0 +1,42 @@
+.container1_home{
+    display:flex;
+    width: 100vw;
+    height: 100vh;  
+    background-color: rgb(217, 217, 217);
+}
+.container1_LeftSide{
+    width: 180px;
+    height:100%;
+    display: flex;
+    flex-direction: column;
+}
+.container1_MiddleSide{
+    width: 900px;
+    height:100%;
+
+}
+.container1_RightSide{
+    width: 200px;
+    height:100%;
+    display:flex;
+    gap:20px;
+   
+}
+.profile_image{
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    margin-left:20px;
+
+}
+.avatarImage{
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    margin-left:20px;
+   
+}
+.displayName{
+  display: flex;
+ 
+}

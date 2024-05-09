@@ -9,7 +9,7 @@ import {
   signInWithEmailAndPassword,
   signInWithPopup,
 } from "firebase/auth";
-import { setDoc, doc, Firestore } from 'firebase/firestore/lite';
+import { setDoc, doc, Firestore , getDoc} from 'firebase/firestore';
 import { useNavigate } from "react-router-dom";
 
 interface FormData {
@@ -18,6 +18,7 @@ interface FormData {
   signUpPassword: string;
   signInEmail: string;
   signInPassword: string;
+  profilePictureUrl:string;
 }
 
 export default function LoginPage() {
@@ -35,6 +36,7 @@ export default function LoginPage() {
     signUpPassword: "",
     signInEmail: "",
     signInPassword: "",
+    profilePictureUrl:""
   });
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -63,7 +65,9 @@ export default function LoginPage() {
       await setDoc(doc(db, 'users', userCredential.user.uid), {
         displayName: formData.signUpName,
         email: formData.signUpEmail,
-        createdAt: new Date().toISOString()
+        createdAt: new Date().toISOString(),
+        profilePictureUrl:""
+
       });
 
       setIsSignUpError(false);
@@ -73,6 +77,29 @@ export default function LoginPage() {
       console.error(err);
     }
   }
+  const fetchData = async () => {
+    const [userData, setUserData] = useState<any[]>([]);
+    try {
+      // Fetch user data from Firestore
+      const currentUser = auth.currentUser;
+      if (!currentUser) {
+        console.error("Current user not found.");
+        return;
+      }
+      const userId = currentUser.uid;
+      const userDocRef = doc(db, 'users', userId);
+      const docSnapshot = await getDoc(userDocRef);
+      if (docSnapshot.exists()) {
+        setUserData([docSnapshot.data()]);
+      } else {
+        console.log("User data not found.");
+      }
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    }
+  };
+
+
 
   const signIn = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -83,8 +110,9 @@ export default function LoginPage() {
         formData.signInPassword
       );
       setIsSignInError(false);
+      fetchData();
       console.log("Signed In!", userCredential);
-      navigate("/");
+    
     } catch (err) {
       setIsSignInError(true);
       console.error(err);
@@ -97,6 +125,7 @@ export default function LoginPage() {
       navigate("/");
     } catch (err) {
       setIsSignInError(true);
+      fetchData();
       console.error(err);
     }
   }
