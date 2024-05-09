@@ -12,7 +12,7 @@ ReactDOM.render(
 
 export default function PopupChannel() {
   
-    return   <div className="flex min-w-full size-1/6 mx-auto flex-col border-4 border-sky-500">
+    return   <div className="absolute inset-0 size-1/2 m-auto border-4 border-sky-500">
     <div className="mx-auto text-sm font-medium text-gray-900 dark:text-white">Channel Name</div>
     <input type="text" id="small-input" className="flex mx-auto p-2 text-gray-900 border border-gray-300 rounded-lg
      bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400
