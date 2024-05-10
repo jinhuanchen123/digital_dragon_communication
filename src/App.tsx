@@ -11,6 +11,7 @@ import LogOut from "./pages/SettingsPage/LogOut/LogOut";
 import LeftSideBar from "./pages/HomePage/LeftSideBar";
 import AddChannel from "./pages/HomePage/AddChannel";
 import SettingsBar from "./pages/HomePage/SettingsBar";
+import PopupChannel from "./pages/HomePage/PopupChannel.js";
 
 export default function App() {
   return (
@@ -28,6 +29,8 @@ export default function App() {
       <Route path="/LSB" element={<LeftSideBar />} />
       <Route path="/Add" element={<AddChannel />} />
       <Route path="/Bar" element={<SettingsBar />} />
+      <Route path="/PopupChannel" element={<PopupChannel />} />
+
 
 
     </Routes>

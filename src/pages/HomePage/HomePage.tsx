@@ -3,6 +3,8 @@ import AddChannel from "./AddChannel";
 import MessageHistory from './MessageHistory/MessageHistory'
 import './home-page.css'
 import SettingsBar from "./SettingsBar";
+import AddChannelTest from "./AddChannelTest";
+
 
 
 
