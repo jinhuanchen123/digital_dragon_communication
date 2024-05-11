@@ -1,9 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import RightSidebar from '../SettingLeftSide';
 import notiStyles from './Notification.module.css'; // Import Notification CSS module with a unique alias
+import { ThemeContext } from "../../../contexts/ThemeContext.jsx"
 
 
 function Notifications() {
+
+  const { toggleTheme, currentTheme, themes } = useContext(ThemeContext);
+  const theme = themes[currentTheme];
+
   type NotificationType = keyof typeof muteStatus;
 
 const [muteStatus, setMuteStatus] = useState({
@@ -30,7 +35,7 @@ const handleInvitesClick = (e: React.MouseEvent<HTMLLabelElement, MouseEvent>) =
       <RightSidebar />
 
       <div className={notiStyles.notification_section}>
-        <div className={notiStyles.header}>
+        <div className={notiStyles.header} style={{background: theme.bgd}}>
           <h1 className={notiStyles.header1}>Notification</h1>
         </div>
         {/* Replies section with mute toggle */}

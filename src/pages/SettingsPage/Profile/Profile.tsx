@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useContext} from 'react';
 import RightSidebar from '../SettingLeftSide';
 import Profile_styles from './Profile.module.css';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -9,7 +9,13 @@ import "firebase/storage";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { auth ,db} from '../../../firebase'; // Import your Firebase config
 import { Firestore, getFirestore, collection, getDocs,doc, setDoc, } from "firebase/firestore";
+import { ThemeContext } from "../../../contexts/ThemeContext.jsx" 
+
 function Profile() {
+
+  const { toggleTheme, currentTheme, themes } = useContext(ThemeContext);
+  const theme = themes[currentTheme];
+
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [downloadURL, setDownloadURL] = useState<string | null>(null);
   const [userData, setUserData] = useState<any[]>([]);
@@ -110,7 +116,7 @@ function Profile() {
     <div className={Profile_styles.container1_profile}>
       <RightSidebar />
       <div className={Profile_styles.profile_section}>
-        <div className={Profile_styles.header}>
+        <div className={Profile_styles.header} style={{background: theme.bgd}}>
           <h1 className={Profile_styles.header1}>Profile</h1>
         </div>
         <div className={Profile_styles.icon_container}>
@@ -123,7 +129,7 @@ function Profile() {
 
         <div className={Profile_styles.big_card}>
           <div className={Profile_styles.card}>
-            <div className={Profile_styles.avatar}>
+            <div className={Profile_styles.avatar} style={{background: theme.bgd}}>
               {/* Custom button to trigger file input */}
               <button className={Profile_styles.editButton} onClick={handleEditProfileClick}>
                 Edit Profile

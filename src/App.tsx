@@ -9,9 +9,11 @@ import LogOut from "./pages/SettingsPage/LogOut/LogOut";
 import LeftSideBar from "./components/ui/LeftSideBar";
 import AddChannel from "./components/ui/AddChannel";
 import SettingsBar from "./components/ui/SettingsBar";
+import ThemeContextProvider from './contexts/ThemeContext.jsx'
 
 export default function App() {
   return (
+    <ThemeContextProvider>
     <Routes>
       <Route path="/" element={<HomePage />} />
 
@@ -27,5 +29,6 @@ export default function App() {
 
 
     </Routes>
+    </ThemeContextProvider>
   );
 }
