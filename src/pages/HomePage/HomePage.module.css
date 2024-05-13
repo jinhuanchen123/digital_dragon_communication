@@ -1,3 +1,131 @@
 .home {
+  background-color: rgb(217, 217, 217);
+  width:100vw;
+  height:100vh;
+  display:flex;
+
+}
+/* .headerContainer {
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  height:100px;
+  width:100vw;
+  background-color: rgb(217, 217, 217);
+  color:black;
+  font-size: large;
+  border-bottom: 2px solid black;
+}
+.search{
+  margin:20px;
+  height:30px;
+}
+.plusIconStyle{
+  margin-top:13px;
+
+
+
+} */
+/* .mainContainer {
   display: flex;
+  height:calc(100vh - 100px);
+} */
+
+.leftSide{
+  display:flex;
+  flex-direction: row;
+  height:100%;
+  width:300px;
+  border-right: 2px solid black;
+  justify-content: space-between;
+}
+.icon_function{
+  display:flex;
+  flex-direction: column;
+  width:100px;
+  border-right: 2px solid black;
+  gap:30px;
+
+}
+.userIconStyle,
+.settingIconStyle{
+  width:50px;
+  height:50px;
+  cursor:pointer;
+
+
+}
+
+
+/* .left_top{
+  display:flex;
+
+}
+.plusIconStyle{
+  width:40px;
+  height:40px;
+} */
+.MiddleSide{
+  display:flex;
+  flex-direction: column;
+  width:900px;
+  border-right: 2px solid black;
+  justify-content: space-between;
+
+}
+/* .MiddleSide_bottom{
+  display:flex; 
+  width:100%;
+  padding: 20px 20px;
+  gap:20px;
+
+} */
+/* .MiddleSide_top{
+  display:flex;
+  flex-direction: column;
+
+
+
+} */
+.Profile_Chat{
+  display:flex;
+  justify-content: flex-end;
+  margin:20px;
+
+}
+.text_box_input {
+
+  background-color: white;
+  width: 100%;
+  height:50px;
+  padding: 1rem;
+  border-radius: 1.2rem;
+  border-style: none;
+  
+}
+
+.customIconStyle{
+  width:50px;
+  height:50px;
+
+  
+}
+.profile_image,
+.avatarImage{
+  
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-left:20px;
+
+}
+
+.displayName{
+  
+}
+.container1_RightSide{
+  display:flex;
+  width:200px;
+
+
 }

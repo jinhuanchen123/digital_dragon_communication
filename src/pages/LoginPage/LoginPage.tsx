@@ -1,15 +1,15 @@
-import { ChangeEvent, FormEvent, useState } from "react";
+import React, { ChangeEvent, FormEvent, useState } from "react";
 import style from "./LoginPage.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGoogle } from "@fortawesome/free-brands-svg-icons";
-import { auth, googleProvider, db } from "../../firebase.ts";
+import { auth, googleProvider, db } from "../Firebase/firebase.ts";
 import {
   createUserWithEmailAndPassword,
   updateProfile,
   signInWithEmailAndPassword,
   signInWithPopup,
 } from "firebase/auth";
-import { setDoc, doc, Firestore, serverTimestamp } from "firebase/firestore";
+import { setDoc, doc, Firestore , getDoc,serverTimestamp} from 'firebase/firestore';
 import { useNavigate } from "react-router-dom";
 
 interface FormData {
@@ -18,6 +18,8 @@ interface FormData {
   signUpPassword: string;
   signInEmail: string;
   signInPassword: string;
+  profilePictureUrl:string;
+ 
 }
 
 export default function LoginPage() {
@@ -35,6 +37,8 @@ export default function LoginPage() {
     signUpPassword: "",
     signInEmail: "",
     signInPassword: "",
+    profilePictureUrl:"",
+   
   });
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -43,7 +47,7 @@ export default function LoginPage() {
       ...prevFormData,
       [name]: value,
     }));
-  };
+  }
 
   const signUp = async (db: Firestore, e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -51,21 +55,21 @@ export default function LoginPage() {
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         formData.signUpEmail,
-        formData.signUpPassword,
+        formData.signUpPassword
       );
 
-      // set displayName and temporary profile pic.
-      await updateProfile(userCredential.user, {
-        displayName: formData.signUpName,
-        photoURL:
-          "https://winaero.com/blog/wp-content/uploads/2015/05/windows-10-user-account-login-icon.png",
-      });
+      // // Update user's profile with display name
+      // await updateProfile(userCredential.user, {
+      //   displayName: formData.signUpName
+      // });
 
       // Update Firestore document with user's display name
-      await setDoc(doc(db, "users", userCredential.user.uid), {
+      await setDoc(doc(db, 'users', userCredential.user.uid), {
         displayName: formData.signUpName,
         email: formData.signUpEmail,
         createdAt: serverTimestamp(),
+        profilePictureUrl:""
+
       });
 
       setIsSignUpError(false);
@@ -74,23 +78,48 @@ export default function LoginPage() {
       setIsSignUpError(true);
       console.error(err);
     }
+  }
+  const fetchData = async () => {
+    const [userData, setUserData] = useState<any[]>([]);
+    try {
+      // Fetch user data from Firestore
+      const currentUser = auth.currentUser;
+      if (!currentUser) {
+        console.error("Current user not found.");
+        return;
+      }
+      const userId = currentUser.uid;
+      const userDocRef = doc(db, 'users', userId);
+      const docSnapshot = await getDoc(userDocRef);
+      if (docSnapshot.exists()) {
+        setUserData([docSnapshot.data()]);
+      } else {
+        console.log("User data not found.");
+      }
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    }
   };
+
+
 
   const signIn = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      await signInWithEmailAndPassword(
+      const userCredential = await signInWithEmailAndPassword(
         auth,
         formData.signInEmail,
-        formData.signInPassword,
+        formData.signInPassword
       );
       setIsSignInError(false);
-      navigate("/");
+      fetchData();
+      console.log("Signed In!", userCredential);
+    
     } catch (err) {
       setIsSignInError(true);
       console.error(err);
     }
-  };
+  }
 
   const signInWithGoogle = async () => {
     try {
@@ -98,9 +127,10 @@ export default function LoginPage() {
       navigate("/");
     } catch (err) {
       setIsSignInError(true);
+      fetchData();
       console.error(err);
     }
-  };
+  }
 
   return (
     <div className={style.fullWrapper}>
@@ -159,7 +189,8 @@ export default function LoginPage() {
         </div>
 
         {/* Sign In Section */}
-        <div className={`${style.formContainer} ${style.signIn}`}>
+         {/* Sign In Section */}
+         <div className={`${style.formContainer} ${style.signIn}`}>
           <form onSubmit={signIn}>
             <h1 className={style.formHeading}>Sign In</h1>
 
@@ -170,7 +201,7 @@ export default function LoginPage() {
               </button>
             </div>
 
-            <span>or use your email and password</span>
+            <span>or use your email password</span>
 
             {/* Input Fields */}
             <input
@@ -222,9 +253,7 @@ export default function LoginPage() {
               onClick={showSignup}
             >
               <h1>Hello, Friend!</h1>
-              <p>
-                Register with your personal details to use all site features
-              </p>
+              <p>Register with your personal details to use all site features</p>
               <button className={style.Hidden} id="register">
                 Sign Up
               </button>

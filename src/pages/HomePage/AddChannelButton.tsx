@@ -17,8 +17,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useState } from "react";
-import { db, auth } from "../../firebase.ts";
-import { collection, addDoc, serverTimestamp, arrayUnion, updateDoc, doc } from "firebase/firestore";
+import { db, auth } from "../Firebase/firebase.ts";
+import { collection, addDoc, serverTimestamp, arrayUnion, updateDoc, doc, setDoc } from "firebase/firestore";
 
 export default function AddChannelButton() {
   const [isInviteOpen, setIsInviteOpen] = useState(false);
@@ -29,20 +29,23 @@ export default function AddChannelButton() {
   async function createChannel() {
     const user = auth.currentUser;
     if (!user) {
+      console.error("User not found.");
       return;
     }
-
+  
     try {
-      await addDoc(collection(db, "text_channels"), {
+      const docRef = doc(db, "text_channels", user.uid); // Assuming user.uid is the document ID
+      await setDoc(docRef, {
         channelName: createChannelName,
         createdAt: serverTimestamp(),
         members: [user.uid],
-      })
+      });
+      setIsInviteOpen(false); // Close the dialog after successful channel creation
     } catch (err) {
       console.error(err);
     }
   }
-
+  
   async function joinChannel() {
     const user = auth.currentUser;
     if (!user) {
