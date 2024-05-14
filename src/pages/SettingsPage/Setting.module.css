@@ -1,4 +1,4 @@
-html, body{
+html, body {
     margin: 0;
     padding: 0;
  
@@ -14,7 +14,7 @@ html, body{
     border-right: 2px solid black;
 }
 
-.right_sidebar {
+.right-sidebar {
     width: 250px;
     height: 400px;
     display: flex;
@@ -38,7 +38,7 @@ ul {
 
 a {
     text-decoration: none;
-    color: white;
+    color: black;
     font-size: 25px;
 }
 
@@ -50,11 +50,11 @@ li {
     justify-content: center;
     align-items: center;
     margin: 20px 0; 
-    background-color: #512da8;;
+    background-color: rgb(71, 57, 151);
     border-radius: 20px;
 }
 
-.small_image{
+.small-image{
     width:180px;
     height:180px;
     display:flex;

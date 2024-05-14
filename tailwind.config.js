@@ -2,9 +2,6 @@
 module.exports = {
   darkMode: ["class"],
   content: [
-    './pages/HomePage/MessageHistory/message.jsx',
-    './pages/HomePage/MessageHistory/MessageHistory.jsx',
-    './pages/HomePage/MessageHistory/msg-history-avatar.tsx',
     './pages/**/*.{ts,tsx}',
     './components/**/*.{ts,tsx}',
     './app/**/*.{ts,tsx}',
@@ -17,7 +14,6 @@ module.exports = {
       padding: "2rem",
       screens: {
         "2xl": "1400px",
-        "3xl": "2800px",
       },
     },
     extend: {

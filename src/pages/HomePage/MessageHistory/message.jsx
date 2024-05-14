@@ -4,6 +4,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "./msg-history-avatar"; // A
 
 
 export default function Message(props) {
+    console.log(props)
 
     function formatTimestamp(timestamp) {
         const now = new Date(); // Current date/time
@@ -33,7 +34,7 @@ export default function Message(props) {
       }
       
       // Example usage:
-      const secondsTimestamp = props.sentAt.seconds; // Example seconds timestamp
+      const secondsTimestamp = 1648938123; // Example seconds timestamp
       const formattedDateTime = formatTimestamp(secondsTimestamp);
       
       

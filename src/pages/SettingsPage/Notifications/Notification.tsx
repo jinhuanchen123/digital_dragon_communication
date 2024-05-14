@@ -25,9 +25,6 @@ const handleInvitesClick = (e: React.MouseEvent<HTMLLabelElement, MouseEvent>) =
   console.log("Invites label clicked!");
 
 };
-
-
-
   return (
     <div className={notiStyles.container1_notification}>
       <RightSidebar />

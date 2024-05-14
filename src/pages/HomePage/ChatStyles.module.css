@@ -1,0 +1,66 @@
+/* Chat box container */
+.chat_box {
+    display: flex;
+    flex-direction: column;
+    height: 100vh; 
+    box-sizing: border-box; 
+    padding: 20px;
+    /* box-sizing: border-box; */
+    /* padding: 20px;
+    box-sizing: border-box; */ 
+  }
+  .pro_text{
+    display:flex;
+
+  }
+  
+  /* Messages wrapper */
+  .message_wrapper {
+    width:calc(100% - 200px);
+    flex: 1;
+    overflow-y: auto; /* Enable vertical scrolling */
+    padding:10px 0px;
+  }
+  
+  /* Individual message */
+  .message {
+    margin-bottom: 10px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    background-color: #f0f0f0;
+    max-width: 70%;
+    align-self: flex-start;
+  }
+  
+
+  /* Message timestamp */
+  .message_time {
+    font-size: 12px;
+    color: #888;
+  }
+  .form_input{
+    display:flex;
+    width:100%;
+    padding: 8px; /* Add padding for better spacing */
+  border: 2px solid #ccc; /* Add a border for visual separation */
+  border-radius: 10px; /* Add rounded corners */
+  }
+  .form_input:focus {
+    outline: none; /* Remove the default focus outline */
+    border-color: #007bff; /* Change border color when input is focused */
+  }
+.profile_image,
+.avatarImage{
+  
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-left:20px;
+
+}
+/* Media query for smaller screens */
+@media (max-height: 100vh) {
+  .message_wrapper {
+    max-height: 60vh; /* Set a maximum height with scrolling */
+  }
+}

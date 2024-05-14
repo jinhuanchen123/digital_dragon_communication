@@ -1,17 +1,8 @@
-import ReactDOM from 'react-dom';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import LeftSideBar from './LeftSideBar';
-//import './index.css';
 
-
-// ReactDOM.render(
-//   <React.StrictMode>
-//   </React.StrictMode>,
-//   document.getElementById('root')
-// );
 
 export default function AddChannel() {
-  
   const [input, setInput] = useState([<LeftSideBar />]);
 
     return <div id='add-channel' className="flex  flex-col">
@@ -21,10 +12,11 @@ export default function AddChannel() {
       <button
         className="flex mx-auto p-2 bg-purple-500 m-5 hover:scale-105"
 
-        onClick={() => {
-          setInput([...input, <LeftSideBar />]);
-        }}
-        >Add Channel</button>
-    </div>;
-  }
-  
+
+      onClick={() => {
+        setInput([...input, <LeftSideBar />]);
+      }}
+    >Add Channel</button>
+  </div>;
+}
+
