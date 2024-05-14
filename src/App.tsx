@@ -5,7 +5,7 @@ import HomePage from "./pages/HomePage/HomePage";
 import Login from "./pages/LoginPage/LoginPage";
 import Profile from "./pages/SettingsPage/Profile/Profile"
 import Notifications from "./pages/SettingsPage/Notifications/Notification";
-import Privacy from "./pages/SettingsPage/Privacy/Privacy";
+import Privacy from "./pages/SettingsPage/Privacy";
 import Theme from "./pages/SettingsPage/Theme/Theme";
 import LogOut from "./pages/SettingsPage/LogOut/LogOut";
 import LeftSideBar from "./pages/HomePage/LeftSideBar";

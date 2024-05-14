@@ -3,7 +3,7 @@ import RightSidebar from '../SettingLeftSide'; // Assuming this is the correct i
 import priStyles from './Privacy.module.css'; // Importing CSS module
 
 
-function Privacy() {
+function Privacy_() {
   return (
     <div className={priStyles.container1_Privacy}>
        <RightSidebar/>  
@@ -13,4 +13,4 @@ function Privacy() {
   );
 }
 
-export default Privacy;
+export default Privacy_;
