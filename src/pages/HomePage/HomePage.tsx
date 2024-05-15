@@ -12,6 +12,8 @@ import ButtonTemplate from '../ButtonTemplate';
 import MembersBar from './membersBar';
 
 export default function HomePage() {
+  const [textChannel, setTextChannel] = React.useState('wMhh2pYwgsYxZ1SZs734KzVsAF02')
+
   const navigate = useNavigate();
 
   const handleInviteClick = () => {
@@ -27,30 +29,32 @@ export default function HomePage() {
   return (
     <div className={Home_Styles.home}>
       <div className={Home_Styles.leftSide}>
-        {/* <div className={Home_Styles.icon_function}>
-          <FontAwesomeIcon
-          icon={faUser}
-          className={Home_Styles.userIconStyle}
-          onClick={handleInviteClick}
-        />
+
+        
+        <AddChannelButton />
+        <div className={Home_Styles.icon_function}>
+
          <FontAwesomeIcon
           icon={faGear}
           className={Home_Styles.settingIconStyle}
           onClick={handleRedictMainPage}
         />
+          <FontAwesomeIcon
+          icon={faUser}
+          className={Home_Styles.userIconStyle}
+          onClick={handleInviteClick}
+        />
 
-
-        </div> */}
-
-        
-        <AddChannelButton />
+        </div>
         
       </div>
       <div className={Home_Styles.MiddleSide}>
         <div className={Home_Styles.MiddleSide_top}>
           <TopBar />
         </div>
-        <SendMessage />
+        <SendMessage 
+          textChannel = {textChannel}
+        />
       </div>
       <div className={Home_Styles.RightSide}>
         {/* Include other components or content here */}

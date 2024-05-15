@@ -1,17 +1,19 @@
+import Home_Styles from "./HomePage.module.css";
+
 export default function MembersBar() {
     return (
-        <div id="members-bar">
-            <div className="member">
-                <img className='message-history-avatar member-bar-avatar' src="https://github.com/shadcn.png"></img>
-                <h1>Stefin</h1>
+        <div id={Home_Styles.membersBar}>
+            <div className={Home_Styles.member}>
+                <img className={Home_Styles.avatarImage} src="https://github.com/shadcn.png"></img>
+                <h1 className={Home_Styles.memberName}>Stefin</h1>
             </div>
-            <div className="member">
-                <img className='message-history-avatar member-bar-avatar' src="https://github.com/shadcn.png"></img>
-                <h1>Gabriel</h1>
+            <div className={Home_Styles.member}>
+                <img className={Home_Styles.avatarImage} src="https://github.com/shadcn.png"></img>
+                <h1 className={Home_Styles.memberName}>Gabriel</h1>
             </div>
-            <div className="member">
-                <img className='message-history-avatar member-bar-avatar' src="https://github.com/shadcn.png"></img>
-                <h1>Daniel</h1>
+            <div className={Home_Styles.member}>
+                <img className={Home_Styles.avatarImage} src="https://github.com/shadcn.png"></img>
+                <h1 className={Home_Styles.memberName}>Daniel Juan Galvez</h1>
             </div>
             
         </div>

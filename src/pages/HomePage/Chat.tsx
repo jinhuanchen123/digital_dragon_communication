@@ -17,11 +17,13 @@ interface Message {
   createdAt: Date;
 }
 
-const SendMessage = () => {
+const SendMessage = (props) => {
   const [message, setMessage] = useState("");
   const [userData, setUserData] = useState<any>({});
   const [allMessages, setAllMessages] = useState<Message[]>([]); // State variable to store all messages
   const currentUser = auth.currentUser;
+
+  const mainDocRef = doc(db, 'text_channels', `${props.textChannel}`);
 
 
   useEffect(() => {
@@ -46,9 +48,8 @@ const SendMessage = () => {
 
   useEffect(() => {
     const q = query(
-      collection(db, "chats"),
+      collection(mainDocRef, "messages"),
       orderBy("createdAt", "desc"),
-      limit(50)
     );
     const unsubscribe = onSnapshot(q, (QuerySnapshot) => {
       const fetchedMessages: Message[] = [];
@@ -67,7 +68,6 @@ const SendMessage = () => {
         (a, b) => a.createdAt.getTime() - b.createdAt.getTime()
       );
       setAllMessages(sortedMessages); // Update all messages
-      // Scroll to the bottom when new messages are loaded
      
     });
     return () => unsubscribe();
@@ -95,7 +95,7 @@ const SendMessage = () => {
 
     const chatRef = doc(db, 'chats', userId);
     // await setDoc(chatRef, messageData, { merge: true });
-    await addDoc(collection(db, 'chats'), messageData);
+    await addDoc(collection(mainDocRef, 'messages'), messageData);
 
     setMessage("");
   };
