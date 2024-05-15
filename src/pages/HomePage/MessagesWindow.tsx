@@ -42,7 +42,7 @@ export default function MessagesWindow({ channelId }: MessagesWindowProps) {
   return (
     <div className={HomeStyles.messageWindow}>
       {messages.map((message) => (
-        <div key={message.id} className="m-4 flex bg-zinc-300 p-4 gap-2 rounded">
+        <div key={message.id} className={`m-4 flex bg-zinc-300 p-4 gap-2 rounded ${HomeStyles.message}`}>
           <img
             className="h-[32px] w-[32px] "
             src={message.userPhoto}

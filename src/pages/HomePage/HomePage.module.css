@@ -87,8 +87,14 @@
 
 } */
 .messageWindow {
-  
+  overflow-y: scroll;
+  max-height: 90vh;
 }
+.message {
+  /* width:40rem; */
+}
+
+
 .Profile_Chat{
   display:flex;
   justify-content: flex-end;

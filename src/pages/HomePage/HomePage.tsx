@@ -73,7 +73,7 @@ export default function HomePage() {
       <div className={Home_Styles.RightSide}>
         {/* Include other components or content here */}
       </div>
-    <MembersBar />
+    <MembersBar channelId={selectedChannel}/>
     </div>
   );
 }
