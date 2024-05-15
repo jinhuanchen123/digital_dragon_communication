@@ -3,7 +3,7 @@ import ChannelsList from "./ChannelsList.tsx";
 
 export default function LeftChannelBar() {
   return (
-    <div className="bg-slate-100 p-4 w-60 ">
+    <div className= "rgb(217, 217, 217)">
       <AddChannelButton />
       <ChannelsList />
     </div>

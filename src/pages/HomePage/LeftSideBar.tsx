@@ -1,4 +1,3 @@
-
 export default function LeftSideBar() {
   return <div className=" max-w-sm  flex  p-6 border-solid border-2 border-gray-200 mb-5 rounded-lg hover:bg-gray-400 hover:border-black hover:cursor-pointer">
     <div className="pt-1 flex flex-row space-x-2">

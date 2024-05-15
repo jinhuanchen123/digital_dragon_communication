@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -16,16 +17,8 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useState } from "react";
 import { db, auth } from "../Firebase/firebase.ts";
-import {
-  serverTimestamp,
-  arrayUnion,
-  updateDoc,
-  doc,
-  addDoc,
-  collection,
-} from "firebase/firestore";
+import { collection, addDoc, serverTimestamp, arrayUnion, updateDoc, doc,setDoc } from "firebase/firestore";
 
 export default function AddChannelButton() {
   const [isInviteOpen, setIsInviteOpen] = useState(false);
@@ -41,43 +34,44 @@ export default function AddChannelButton() {
     }
 
     try {
-      const channelRef = await addDoc(collection(db, "text_channels"), {
+      const userChannelsRef = collection(db, 'users', user.uid, 'text_channels');
+      const newChannelDocRef = await addDoc(userChannelsRef, {
         channelName: createChannelName,
         createdAt: serverTimestamp(),
-        members: [user.uid],
+        // members: [user.uid], // You can include members if needed
       });
+      const newChannelId = newChannelDocRef.id;
+      const setchannelID = doc(db, 'users', user.uid)
+      await setDoc(setchannelID, {"Channel ID" : newChannelId},{merge:true})
 
-      const messageRef = collection(
-        db,
-        "text_channels",
-        channelRef.id,
-        "messages",
-      );
-      await addDoc(messageRef, {
-        text: "I have created a new channel!",
-        createdAt: serverTimestamp(),
-        username: user.displayName,
-        userId: user.uid,
-        userPhoto: user.photoURL,
-      });
+      setIsInviteOpen(false); // Close the dialog after successful channel creation
     } catch (err) {
-      console.error(err);
+      console.error("Error creating channel:", err);
     }
   }
+
+
+
+
+
+
+  
 
   async function joinChannel() {
     const user = auth.currentUser;
     if (!user) {
+      console.error("User not found.");
       return;
     }
 
     try {
       const channelRef = doc(db, "text_channels", joinChannelName);
       await updateDoc(channelRef, {
-        members: arrayUnion(user.uid),
+        members: arrayUnion(user.uid)
       });
+      setIsLeaveOpen(false); // Close the dialog after successful join
     } catch (err) {
-      console.error(err);
+      console.error("Error joining channel:", err);
     }
   }
 
@@ -100,65 +94,55 @@ export default function AddChannelButton() {
         </DropdownMenuContent>
       </DropdownMenu>
       {isInviteOpen ? (
-        <>
-          <DialogContent className="sm:max-w-[425px]">
-            <DialogHeader>
-              <DialogTitle>Create Channel</DialogTitle>
-              <DialogDescription>
-                Give a name to your new channel.
-              </DialogDescription>
-            </DialogHeader>
-            <div className="grid gap-4 py-4">
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="name" className="text-right">
-                  Name
-                </Label>
-                <Input
-                  className="col-span-3 font-normal"
-                  onChange={(e) => setCreateChannelName(e.target.value)}
-                  value={createChannelName}
-                />
-              </div>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>Create Channel</DialogTitle>
+            <DialogDescription>Give a name to your new channel.</DialogDescription>
+          </DialogHeader>
+          <div className="grid gap-4 py-4">
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="name" className="text-right">
+                Name
+              </Label>
+              <Input
+                id="name"
+                className="col-span-3 font-normal"
+                onChange={e => setCreateChannelName(e.target.value)}
+                value={createChannelName}
+              />
             </div>
-            <DialogFooter>
-              <DialogClose asChild>
-                <Button type="submit" onClick={createChannel}>
-                  Create Channel
-                </Button>
-              </DialogClose>
-            </DialogFooter>
-          </DialogContent>
-        </>
+          </div>
+          <DialogFooter>
+            <DialogClose asChild>
+              <Button type="submit" onClick={createChannel}>Create Channel</Button>
+            </DialogClose>
+          </DialogFooter>
+        </DialogContent>
       ) : isLeaveOpen ? (
-        <>
-          <DialogContent className="sm:max-w-[425px]">
-            <DialogHeader>
-              <DialogTitle>Join Channel</DialogTitle>
-              <DialogDescription>
-                Enter the channel ID for the channel you want to join.
-              </DialogDescription>
-            </DialogHeader>
-            <div className="grid gap-4 py-4">
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="name" className="text-right">
-                  Channel ID
-                </Label>
-                <Input
-                  className="col-span-3 font-normal"
-                  onChange={(e) => setJoinChannelName(e.target.value)}
-                  value={joinChannelName}
-                />
-              </div>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>Join Channel</DialogTitle>
+            <DialogDescription>Enter the channel ID for the channel you want to join.</DialogDescription>
+          </DialogHeader>
+          <div className="grid gap-4 py-4">
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="name" className="text-right">
+                Channel ID
+              </Label>
+              <Input
+                id="name"
+                className="col-span-3 font-normal"
+                onChange={e => setJoinChannelName(e.target.value)}
+                value={joinChannelName}
+              />
             </div>
-            <DialogFooter>
-              <DialogClose asChild>
-                <Button type="submit" onClick={joinChannel}>
-                  Join Channel
-                </Button>
-              </DialogClose>
-            </DialogFooter>
-          </DialogContent>
-        </>
+          </div>
+          <DialogFooter>
+            <DialogClose asChild>
+              <Button type="submit" onClick={joinChannel}>Join Channel</Button>
+            </DialogClose>
+          </DialogFooter>
+        </DialogContent>
       ) : null}
     </Dialog>
   );

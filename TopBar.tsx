@@ -43,7 +43,7 @@ export default function TopBar() {
   }
 
   return (
-    <div id="top-bar">
+    <div>
       <Dialog
         open={isInviteOpen || isLeaveOpen}
         onOpenChange={isInviteOpen ? setIsInviteOpen : setIsLeaveOpen}

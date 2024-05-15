@@ -1,4 +1,3 @@
-
 export default function SettingsBar() {
   return <div>
     <footer className='flex flex-row flex-nowrap hover:cursor-pointer'>
