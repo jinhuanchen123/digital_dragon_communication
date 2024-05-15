@@ -1,16 +1,16 @@
-import React, { ChangeEvent, FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 import style from "./LoginPage.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGoogle } from "@fortawesome/free-brands-svg-icons";
-import { auth, googleProvider, db } from "../Firebase/firebase.ts";
+import { db, auth, googleProvider } from "../Firebase/firebase.ts";
 import {
   createUserWithEmailAndPassword,
   updateProfile,
   signInWithEmailAndPassword,
   signInWithPopup,
 } from "firebase/auth";
-import { setDoc, doc, Firestore , getDoc,serverTimestamp} from 'firebase/firestore';
 import { useNavigate } from "react-router-dom";
+import { doc, serverTimestamp, setDoc } from "firebase/firestore";
 
 interface FormData {
   signUpName: string;
@@ -18,8 +18,7 @@ interface FormData {
   signUpPassword: string;
   signInEmail: string;
   signInPassword: string;
-  profilePictureUrl:string;
- 
+  profilePictureUrl: string;
 }
 
 export default function LoginPage() {
@@ -37,8 +36,7 @@ export default function LoginPage() {
     signUpPassword: "",
     signInEmail: "",
     signInPassword: "",
-    profilePictureUrl:"",
-   
+    profilePictureUrl: "",
   });
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -47,29 +45,30 @@ export default function LoginPage() {
       ...prevFormData,
       [name]: value,
     }));
-  }
+  };
 
-  const signUp = async (db: Firestore, e: FormEvent<HTMLFormElement>) => {
+  const signUp = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         formData.signUpEmail,
-        formData.signUpPassword
+        formData.signUpPassword,
       );
 
-      // // Update user's profile with display name
-      // await updateProfile(userCredential.user, {
-      //   displayName: formData.signUpName
-      // });
+      // Update user's profile with display name
+      await updateProfile(userCredential.user, {
+        displayName: formData.signUpName,
+        photoURL:
+          "https://winaero.com/blog/wp-content/uploads/2015/05/windows-10-user-account-login-icon.png",
+      });
 
       // Update Firestore document with user's display name
-      await setDoc(doc(db, 'users', userCredential.user.uid), {
+      await setDoc(doc(db, "users", userCredential.user.uid), {
         displayName: formData.signUpName,
         email: formData.signUpEmail,
         createdAt: serverTimestamp(),
-        profilePictureUrl:""
-
+        profilePictureUrl: "https://winaero.com/blog/wp-content/uploads/2015/05/windows-10-user-account-login-icon.png",
       });
 
       setIsSignUpError(false);
@@ -78,30 +77,27 @@ export default function LoginPage() {
       setIsSignUpError(true);
       console.error(err);
     }
-  }
-  const fetchData = async () => {
-    const [userData, setUserData] = useState<any[]>([]);
-    try {
-      // Fetch user data from Firestore
-      const currentUser = auth.currentUser;
-      if (!currentUser) {
-        console.error("Current user not found.");
-        return;
-      }
-      const userId = currentUser.uid;
-      const userDocRef = doc(db, 'users', userId);
-      const docSnapshot = await getDoc(userDocRef);
-      if (docSnapshot.exists()) {
-        setUserData([docSnapshot.data()]);
-      } else {
-        console.log("User data not found.");
-      }
-    } catch (error) {
-      console.error("Error fetching user data:", error);
-    }
+
+    //   const [userData, setUserData] = useState<any[]>([]);
+    //   try {
+    //     // Fetch user data from Firestore
+    //     const currentUser = auth.currentUser;
+    //     if (!currentUser) {
+    //       console.error("Current user not found.");
+    //       return;
+    //     }
+    //     const userId = currentUser.uid;
+    //     const userDocRef = doc(db, 'users', userId);
+    //     const docSnapshot = await getDoc(userDocRef);
+    //     if (docSnapshot.exists()) {
+    //       setUserData([docSnapshot.data()]);
+    //     } else {
+    //       console.log("User data not found.");
+    //     }
+    //   } catch (error) {
+    //     console.error("Error fetching user data:", error);
+    //   }
   };
-
-
 
   const signIn = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -109,17 +105,17 @@ export default function LoginPage() {
       const userCredential = await signInWithEmailAndPassword(
         auth,
         formData.signInEmail,
-        formData.signInPassword
+        formData.signInPassword,
       );
       setIsSignInError(false);
-      fetchData();
+      // fetchData();
       console.log("Signed In!", userCredential);
-    
+      navigate("/");
     } catch (err) {
       setIsSignInError(true);
       console.error(err);
     }
-  }
+  };
 
   const signInWithGoogle = async () => {
     try {
@@ -127,10 +123,10 @@ export default function LoginPage() {
       navigate("/");
     } catch (err) {
       setIsSignInError(true);
-      fetchData();
+      // fetchData();
       console.error(err);
     }
-  }
+  };
 
   return (
     <div className={style.fullWrapper}>
@@ -140,7 +136,7 @@ export default function LoginPage() {
       >
         {/* Sign Up Section */}
         <div className={`${style.formContainer} ${style.signUp}`}>
-          <form onSubmit={(e) => signUp(db, e)}>
+          <form onSubmit={signUp}>
             <h1 className={style.formHeading}>Create Account</h1>
 
             {/* Social Icons */}
@@ -189,8 +185,8 @@ export default function LoginPage() {
         </div>
 
         {/* Sign In Section */}
-         {/* Sign In Section */}
-         <div className={`${style.formContainer} ${style.signIn}`}>
+        {/* Sign In Section */}
+        <div className={`${style.formContainer} ${style.signIn}`}>
           <form onSubmit={signIn}>
             <h1 className={style.formHeading}>Sign In</h1>
 
@@ -253,7 +249,9 @@ export default function LoginPage() {
               onClick={showSignup}
             >
               <h1>Hello, Friend!</h1>
-              <p>Register with your personal details to use all site features</p>
+              <p>
+                Register with your personal details to use all site features
+              </p>
               <button className={style.Hidden} id="register">
                 Sign Up
               </button>

@@ -5,11 +5,15 @@ import { onAuthStateChanged } from "firebase/auth";
 import { Button } from "@/components/ui/button.tsx";
 
 type Channel = {
-  channelId: string;
+  id: string;
   channelName: string;
 };
 
-export default function ChannelsList() {
+type ChannelsListProps = {
+  onSelectChannel: (channelId: string) => void;
+}
+
+export default function ChannelsList({ onSelectChannel }: ChannelsListProps) {
   const [channels, setChannels] = useState<Channel[]>([]);
 
   useEffect(() => {
@@ -23,11 +27,12 @@ export default function ChannelsList() {
           q,
           (querySnapshot) => {
             const channelList = querySnapshot.docs.map((doc) => {
-              const data = doc.data() as Channel;
+              const data = doc.data();
               return {
                 id: doc.id,
+                channelName: data.channelName,
                 ...data,
-              };
+              } as Channel;
             });
             setChannels(channelList);
           },
@@ -49,7 +54,7 @@ export default function ChannelsList() {
     <div>
       <ul>
         {channels.map((channel) => (
-          <li key={channel.channelId}>
+          <li key={channel.id} onClick={() => onSelectChannel(channel.id)}>
             <Button variant="secondary">{channel.channelName}</Button>
           </li>
         ))}
