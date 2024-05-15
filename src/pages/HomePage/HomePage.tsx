@@ -33,9 +33,12 @@ export default function HomePage() {
   return (
     <div className={Home_Styles.home}>
       <div className={Home_Styles.leftSide}>
+        <div className={Home_Styles.channelComponents} >
 
+          <AddChannelButton />x
+          <ChannelsList onSelectChannel={setSelectedChannel} />
+        </div>
         
-        <AddChannelButton />
         <div className={Home_Styles.icon_function}>
 
          <FontAwesomeIcon
@@ -53,16 +56,12 @@ export default function HomePage() {
         
 
 
-        <AddChannelButton />
-        <ChannelsList onSelectChannel={setSelectedChannel} />
       </div>
       <div className={Home_Styles.MiddleSide}>
         <div className={Home_Styles.MiddleSide_top}>
           <TopBar />
         </div>
-        <SendMessage 
-          textChannel = {textChannel}
-        />
+
         {/*<SendMessage />*/}
         {selectedChannel && (
           <>

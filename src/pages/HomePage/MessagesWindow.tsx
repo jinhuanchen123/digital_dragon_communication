@@ -1,6 +1,7 @@
 import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import { db } from "../Firebase/firebase";
 import { useEffect, useState } from "react";
+import HomeStyles from './HomePage.module.css'
 
 type Message = {
   id: string;
@@ -39,7 +40,7 @@ export default function MessagesWindow({ channelId }: MessagesWindowProps) {
   }, [channelId]);
 
   return (
-    <div>
+    <div className={HomeStyles.messageWindow}>
       {messages.map((message) => (
         <div key={message.id} className="m-4 flex bg-zinc-300 p-4 gap-2 rounded">
           <img
