@@ -1,126 +1,162 @@
-.container1_profile {
-    background-color: rgb(217, 217, 217);
-    display: flex;
-    width: 100vw;
-    height: 100vh;
+.container1_profile{
+  background-color: rgb(217, 217, 217);
+  display: flex;
+  width: 100vw;
+  height: 100vh;
 }
+
+
 .profile_section{
-    width: calc(100vw - 180px); 
-    height: 100%;
+  width: calc(100vw - 180px); 
+  height: 100%;
 
 }
 
 .header{
-    background-color: #512da8;
-    width:100%;
-    height:180px;
-    display:flex;
-    align-items: center;
-   
+  background-color: #512da8;
+  width:100%;
+  height:180px;
+  display:flex;
+  align-items: center;
+ 
 }
 
-.setting_profile_h1 {
-    font-size: 50px;
-    color:white;
+.header1 {
+  font-size: 50px;
+  color:white;
 }
 .big_card{
-    width:100%;
-    display:flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+  width:100%;
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 
-   
+ 
 }
 .card{
-    margin:60px;
-    width:50%;
-    height:400px;
-    box-shadow: 0 4px 8px rgba(20, 19, 19, 0.3); 
-  
-}
-.avatar{
-    display:flex;
-    flex-direction: row-reverse; 
-    height:100px;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #512da8;
+  margin:60px;
+  width:50%;
+  box-shadow: 0 4px 8px rgba(20, 19, 19, 0.3); 
 
-    
-  
 }
-/* Profile.module.css */
+.avatar {
+  display: flex;
+  height: 100px;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #512da8;
+  flex-direction: row-reverse;
+}
+
+.hiddenInput {
+  display: none;
+}
 
 .profile_image {
-    display: flex;
-    width:80px;
-    height:80px;
-    border-radius: 50%;
-    margin: 20px 30px;
-  
-   
-  }
-  
-
-.editButton {
-    background-color: rgb(137, 194, 72);
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    height:40px;
-    margin: 20px 30px;
-
-  }
-  
-  /* Hide the default file input */
-  .hiddenInput {
-    display: none;
-  }
-
-  .ProfileForm{
-    display:flex;
-    
-
-
-  }
-  
-.info {
-    display: flex;
-    flex-direction: column;
-   
-   
+  display: flex;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin-left:20px;
+ 
 }
 
-/* Use commas to separate selectors */
+.avatarImage {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin-left:20px;
+}
+.editButton {
+  background-color: rgb(137, 194, 72);
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  height:40px;
+  margin: 20px 30px;
+
+}
+.editButton {
+  background-color: rgb(137, 194, 72);
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  height:40px;
+  margin: 20px 30px;
+
+}
+.customIconStyle {
+  width: 100px;
+  height: 100px;
+  cursor: pointer;
+}
+.username_container,
+.email_container {
+display: flex;
+align-items: center; /* Align items vertically in the center */
+justify-content: space-between;
+}
+.username,
+.email{
+margin-left:20px;
+}
+.username_edit,
+.email_edit {
+margin-right:20px;
+}
+.deleteAccount{
+padding:20px;
+background-color: rgb(249, 51, 37);
+border-radius: 20px;
+font-size: large;
+}
+
+/* 
+
+
+
+Hide the default file input
+
+
+.ProfileForm{
+  display:flex;
+
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+ 
+ 
+}
+
+
 #username, #email, #password, #newPassword {
-    width: 200px;
-    height: 50px;
+  width: 200px;
+  height: 50px;
 
 }
 
 
 #saveChanges {
-    border-radius: 20px;
-    padding: 20px;
-    background-color:#512da8;;
-    font-size: larger;
-    border: 2px solid white;
-    
-  }
+  border-radius: 20px;
+  padding: 20px;
+  background-color:#512da8;;
+  font-size: larger;
+  border: 2px solid white;
   
+}
+
 .save_button{
- 
-    display: flex;
-    margin: 20px auto;
-    
+
+  display: flex;
+  margin: 20px auto;
+  
 
 
-}
-.customIconStyle {
-    width: 100px;
-    height: 100px;
-    cursor: pointer;
-}
+} */
