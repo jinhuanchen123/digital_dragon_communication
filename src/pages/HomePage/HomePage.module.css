@@ -79,9 +79,18 @@
 .messageComponents {
   width: 50rem;
 }
-.messageWindow {
-  overflow-y: scroll;
-  max-height: 59rem;
+
+@media (max-height:1000px){
+  .messageWindow {
+    overflow-y: scroll;
+     max-height: 700px;
+  } 
+}
+@media (min-height:1000px){
+  .messageWindow {
+    overflow-y: scroll;
+     max-height: 900px;
+  } 
 }
 /* .MiddleSide_bottom{
   display:flex; 
