@@ -188,32 +188,34 @@ useEffect(() => {
 
 
 
-  const handleDeleteAccount = async (id: string) => {
-    console.log(id)
-    if (!id) {
-      console.error('User ID not found.');
+const handleDeleteAccount = async (id: string) => {
+  const currentUser = auth.currentUser;
+    if (!currentUser) {
+      console.error("Current user not found.");
       return;
     }
-  
-    try {
-      // Delete the document with the specified ID from the 'users' collection
-      await deleteDoc(doc(db, 'users', id));
-  
-      // Delete the user account from Firebase Authentication
-      const currentUser = auth.currentUser;
-      if (currentUser) {
-        await currentUser.delete();
-        console.log('User account deleted successfully.');
-      } else {
-        console.error('Current user not found.');
-      }
-  
-      console.log('Document deleted successfully.');
-    } catch (error) {
-      console.error('Error deleting document:', error);
+    const userId = currentUser.uid;
+
+
+  try {
+    // Delete the document with the specified ID from the 'users' collection
+    await deleteDoc(doc(db, 'users',  userId));
+
+    // Delete the user account from Firebase Authentication
+    const currentUser = auth.currentUser;
+    if (currentUser) {
+      await currentUser.delete();
+      console.log('User account deleted successfully.');
+    } else {
+      console.error('Current user not found.');
     }
-     navigate('/login'); // Navigate first
-  };
+
+    console.log('Document deleted successfully.');
+  } catch (error) {
+    console.error('Error deleting document:', error);
+  }
+   navigate('/login'); // Navigate first
+};
   
   
   
