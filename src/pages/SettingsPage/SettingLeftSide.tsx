@@ -2,7 +2,7 @@
 import React, {useContext} from 'react';
 import { Link } from 'react-router-dom'; 
 import styles from './SettingLeftSide.module.css'
-import dragonImage from './dragon.png'; // Relative path from RightSidebar.tsx
+import dragonImage from './dragon_no_bg.png'; // Relative path from RightSidebar.tsx
 import { ThemeContext } from "../../contexts/ThemeContext.jsx"
 
 function LeftSidebar() {

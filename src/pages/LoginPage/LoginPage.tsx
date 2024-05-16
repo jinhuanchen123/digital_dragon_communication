@@ -69,7 +69,8 @@ export default function LoginPage() {
       await setDoc(doc(db, 'users', userCredential.user.uid), {
         displayName: formData.signUpName,
         email: formData.signUpEmail,
-        createdAt: new Date().toISOString()
+        createdAt: new Date().toISOString(),
+        userTheme: "mystic_violet"
       });
 
       setIsSignUpError(false);
