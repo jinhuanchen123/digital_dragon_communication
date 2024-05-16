@@ -54,6 +54,7 @@ export default function HomePage() {
         <div className={Home_Styles.MiddleSide_top}>
           <TopBar 
             selectedChannel={selectedChannel}
+            onSelectChannel={setSelectedChannel}
           />
         </div>
         {/*        <SendMessage  />*/}

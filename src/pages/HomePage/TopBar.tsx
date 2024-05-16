@@ -26,10 +26,12 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { DropdownMenuGroup } from "@radix-ui/react-dropdown-menu";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, updateDoc, deleteField } from "firebase/firestore";
 import { db, auth } from "../Firebase/firebase.ts";
+import { getAuth } from "firebase/auth";
+import MembersBar from "./membersBar.tsx";
 
 
 export default function TopBar(props) {
@@ -37,10 +39,15 @@ export default function TopBar(props) {
   const [isLeaveOpen, setIsLeaveOpen] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
   const [channelName, setChannelName] = useState([]);
+  const [selectedChannel, setSelectedChannel] = useState(props.selectedChannel)
+
+  useEffect(() => {
+    setSelectedChannel(props.selectedChannel);
+    }, [props.selectedChannel])
 
   function onCopy() {
     setIsCopied(true);
-    navigator.clipboard.writeText(props.selectedChannel);
+    navigator.clipboard.writeText(selectedChannel);
     setTimeout(() => {
       setIsCopied(false);
     }, 2000);
@@ -49,22 +56,52 @@ export default function TopBar(props) {
   //find doc.channelName of selected channel
   async function getChannelName() {
 
-    if(props.selectedChannel){
-      const docRef = doc(db, 'text_channels', props.selectedChannel);
+    if(selectedChannel){
+      const docRef = doc(db, 'text_channels', selectedChannel);
       const docSnap = await getDoc(docRef);
       if(docSnap.exists()) {
         const data = docSnap.data()
-        console.log(data)
         setChannelName(() => data.channelName); 
       }
     }
   }
   getChannelName();
  
+  async function onLeaveChannel() {
+    //get array of members into variable
+    const docRef = doc(db, 'text_channels', selectedChannel);
+    const docSnap = await getDoc(docRef);
+    let membersArray
+    if(docSnap.exists()) {
+      const data = docSnap.data()
+      console.log(data)
+      membersArray = data.members; 
+    }
+    //get userID
+    const auth = getAuth();
+    const userID = auth.currentUser.uid;
+
+    //remove user from array
+      for (let i = 0; i < membersArray.length; i++) {
+        if (membersArray[i] == userID) {
+          membersArray.splice(i, 1)
+        }
+
+      }
+    //update array of members in database
+      const textChannelRef = doc(db,  'text_channels', selectedChannel);
+      await updateDoc(textChannelRef, {
+        members: membersArray
+      });
+
+    //reset selectedChannel
+    setSelectedChannel(() => [])
+    props.onSelectChannel()
+  }
 
   return (
-    <div>{props.selectedChannel &&
-    
+    <div>
+    {selectedChannel &&
       <Dialog
         open={isInviteOpen || isLeaveOpen}
         onOpenChange={isInviteOpen ? setIsInviteOpen : setIsLeaveOpen}
@@ -117,7 +154,7 @@ export default function TopBar(props) {
                   </Label>
                   <Input
                     id="link"
-                    defaultValue={props.selectedChannel}
+                    defaultValue={selectedChannel}
                     readOnly
                   />
                 </div>
@@ -155,7 +192,7 @@ export default function TopBar(props) {
                   </Button>
                 </DialogClose>
                 <DialogClose asChild>
-                  <Button type="submit" variant="destructive">
+                  <Button onClick={onLeaveChannel} type="submit" variant="destructive">
                     Leave Channel
                   </Button>
                 </DialogClose>
