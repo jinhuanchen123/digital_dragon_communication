@@ -3,7 +3,7 @@
   width:100vw;
   height:100vh;
   display:flex;
-
+  align-items: stretch;
 }
 /* .headerContainer {
   display:flex;
@@ -33,17 +33,16 @@
 
 .leftSide{
   display:flex;
-  flex-direction: row;
+  flex-direction: column-reverse;
   height:100%;
-  width:300px;
+  width:18.75rem;
   border-right: 2px solid black;
   justify-content: space-between;
+  align-items: center;
 }
 .icon_function{
   display:flex;
   flex-direction: column;
-  width:100px;
-  border-right: 2px solid black;
   gap:30px;
 
 }
@@ -52,7 +51,10 @@
   width:50px;
   height:50px;
   cursor:pointer;
-
+}
+.channelComponents {
+  display: flex;
+  flex-direction: column;
 
 }
 
@@ -68,10 +70,18 @@
 .MiddleSide{
   display:flex;
   flex-direction: column;
-  width:900px;
+  width:90rem;
   border-right: 2px solid black;
   justify-content: space-between;
+  align-items: center;
 
+}
+.messageComponents {
+  width: 50rem;
+}
+.messageWindow {
+  overflow-y: scroll;
+  max-height: 59rem;
 }
 /* .MiddleSide_bottom{
   display:flex; 
@@ -123,9 +133,12 @@
 .displayName{
   
 }
+.RightSide{
+  width: 20rem;
+
+}
 .container1_RightSide{
   display:flex;
-  width:200px;
 
 
 }

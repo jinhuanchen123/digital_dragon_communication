@@ -46,8 +46,11 @@ export default function HomePage() {
         </div>
 
         {/*<ChannelInfo/> */}
+        <div className={Home_Styles.channelComponents}>
         <AddChannelButton />
         <ChannelsList onSelectChannel={setSelectedChannel} />
+
+        </div>
         {/*        <LeftChannelBar /> */}
       </div>
       <div className={Home_Styles.MiddleSide}>
@@ -59,10 +62,10 @@ export default function HomePage() {
         </div>
         {/*        <SendMessage  />*/}
         {selectedChannel && (
-          <>
+          <div className={Home_Styles.messageComponents}>
             <MessagesWindow channelId={selectedChannel} />
             <MessageInput channelId={selectedChannel} />
-          </>
+          </div>
         )}
       </div>
       <div className={Home_Styles.RightSide}>

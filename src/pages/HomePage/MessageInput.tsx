@@ -3,6 +3,8 @@ import { Input } from "@/components/ui/input";
 import { db, auth } from "../Firebase/firebase";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { useState } from "react";
+import Home_Styles from "./HomePage.module.css";
+
 
 type MessageInputProps = {
   channelId: string;
@@ -36,7 +38,7 @@ export default function MessageInput({ channelId }: MessageInputProps) {
   }
 
   return (
-    <div>
+    <div className={Home_Styles.messageInput}>
       <Input
         type="text"
         value={message}

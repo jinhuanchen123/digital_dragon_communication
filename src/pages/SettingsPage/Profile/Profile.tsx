@@ -189,6 +189,7 @@ useEffect(() => {
 
 
   const handleDeleteAccount = async (id: string) => {
+    console.log(id)
     if (!id) {
       console.error('User ID not found.');
       return;
@@ -303,7 +304,7 @@ useEffect(() => {
          
           </div>
           <div className={Profile_styles.deleteAccount_container}>
-            <button className={Profile_styles.deleteAccount} onClick={()=>handleDeleteAccount(userData[0].id)}><span>Delete Account</span></button>
+            <button className={Profile_styles.deleteAccount} onClick={()=>handleDeleteAccount(userData.id)}><span>Delete Account</span></button>
           
           </div>
           
