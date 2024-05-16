@@ -1,0 +1,22 @@
+.friend{
+    display:flex;
+    
+
+}
+
+
+.profile_image {
+    display: flex;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    margin-left:20px;
+   
+  }
+  
+  .avatarImage {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    margin-left:20px;
+  }

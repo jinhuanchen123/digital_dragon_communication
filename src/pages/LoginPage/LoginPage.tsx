@@ -2,15 +2,15 @@ import { ChangeEvent, FormEvent, useState } from "react";
 import style from "./LoginPage.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGoogle } from "@fortawesome/free-brands-svg-icons";
-import { auth, googleProvider, db } from "../../firebase.ts";
+import { db, auth, googleProvider } from "../Firebase/firebase.ts";
 import {
   createUserWithEmailAndPassword,
   updateProfile,
   signInWithEmailAndPassword,
   signInWithPopup,
 } from "firebase/auth";
-import { setDoc, doc, Firestore, serverTimestamp } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
+import { doc, serverTimestamp, setDoc } from "firebase/firestore";
 
 interface FormData {
   signUpName: string;
@@ -18,6 +18,7 @@ interface FormData {
   signUpPassword: string;
   signInEmail: string;
   signInPassword: string;
+  profilePictureUrl: string;
 }
 
 export default function LoginPage() {
@@ -35,6 +36,7 @@ export default function LoginPage() {
     signUpPassword: "",
     signInEmail: "",
     signInPassword: "",
+    profilePictureUrl: "",
   });
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -45,7 +47,7 @@ export default function LoginPage() {
     }));
   };
 
-  const signUp = async (db: Firestore, e: FormEvent<HTMLFormElement>) => {
+  const signUp = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
       const userCredential = await createUserWithEmailAndPassword(
@@ -54,7 +56,7 @@ export default function LoginPage() {
         formData.signUpPassword,
       );
 
-      // set displayName and temporary profile pic.
+      // Update user's profile with display name
       await updateProfile(userCredential.user, {
         displayName: formData.signUpName,
         photoURL:
@@ -66,6 +68,7 @@ export default function LoginPage() {
         displayName: formData.signUpName,
         email: formData.signUpEmail,
         createdAt: serverTimestamp(),
+        profilePictureUrl: "https://winaero.com/blog/wp-content/uploads/2015/05/windows-10-user-account-login-icon.png",
       });
 
       setIsSignUpError(false);
@@ -74,17 +77,39 @@ export default function LoginPage() {
       setIsSignUpError(true);
       console.error(err);
     }
+
+    //   const [userData, setUserData] = useState<any[]>([]);
+    //   try {
+    //     // Fetch user data from Firestore
+    //     const currentUser = auth.currentUser;
+    //     if (!currentUser) {
+    //       console.error("Current user not found.");
+    //       return;
+    //     }
+    //     const userId = currentUser.uid;
+    //     const userDocRef = doc(db, 'users', userId);
+    //     const docSnapshot = await getDoc(userDocRef);
+    //     if (docSnapshot.exists()) {
+    //       setUserData([docSnapshot.data()]);
+    //     } else {
+    //       console.log("User data not found.");
+    //     }
+    //   } catch (error) {
+    //     console.error("Error fetching user data:", error);
+    //   }
   };
 
   const signIn = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      await signInWithEmailAndPassword(
+      const userCredential = await signInWithEmailAndPassword(
         auth,
         formData.signInEmail,
         formData.signInPassword,
       );
       setIsSignInError(false);
+      // fetchData();
+      console.log("Signed In!", userCredential);
       navigate("/");
     } catch (err) {
       setIsSignInError(true);
@@ -98,6 +123,7 @@ export default function LoginPage() {
       navigate("/");
     } catch (err) {
       setIsSignInError(true);
+      // fetchData();
       console.error(err);
     }
   };
@@ -110,7 +136,7 @@ export default function LoginPage() {
       >
         {/* Sign Up Section */}
         <div className={`${style.formContainer} ${style.signUp}`}>
-          <form onSubmit={(e) => signUp(db, e)}>
+          <form onSubmit={signUp}>
             <h1 className={style.formHeading}>Create Account</h1>
 
             {/* Social Icons */}
@@ -159,6 +185,7 @@ export default function LoginPage() {
         </div>
 
         {/* Sign In Section */}
+        {/* Sign In Section */}
         <div className={`${style.formContainer} ${style.signIn}`}>
           <form onSubmit={signIn}>
             <h1 className={style.formHeading}>Sign In</h1>
@@ -170,7 +197,7 @@ export default function LoginPage() {
               </button>
             </div>
 
-            <span>or use your email and password</span>
+            <span>or use your email password</span>
 
             {/* Input Fields */}
             <input
