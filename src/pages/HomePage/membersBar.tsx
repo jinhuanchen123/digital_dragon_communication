@@ -14,9 +14,8 @@ import {
 
 export default function MembersBar(props) {
 
-    // const [members, setMembers] = React.useState()
-
-    // const documentRef = ref(db, 'text_channels/' +  props.channelId)
+// const docRef = doc(db, 'cities', 'SF');
+// const docSnap = await getDoc(docRef)
 
     return (
         <div id={Home_Styles.membersBar}>

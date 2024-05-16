@@ -52,7 +52,9 @@ export default function HomePage() {
       </div>
       <div className={Home_Styles.MiddleSide}>
         <div className={Home_Styles.MiddleSide_top}>
-          <TopBar />
+          <TopBar 
+            selectedChannel={selectedChannel}
+          />
         </div>
         {/*        <SendMessage  />*/}
         {selectedChannel && (

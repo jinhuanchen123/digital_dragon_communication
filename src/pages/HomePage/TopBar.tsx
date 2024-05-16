@@ -28,23 +28,43 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useState } from "react";
 import { DropdownMenuGroup } from "@radix-ui/react-dropdown-menu";
+import { doc, getDoc } from "firebase/firestore";
+import { db, auth } from "../Firebase/firebase.ts";
 
-export default function TopBar() {
+
+export default function TopBar(props) {
   const [isInviteOpen, setIsInviteOpen] = useState(false);
   const [isLeaveOpen, setIsLeaveOpen] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
+  const [channelName, setChannelName] = useState([]);
 
   function onCopy() {
     setIsCopied(true);
-    navigator.clipboard.writeText("TODO: link-to-channel");
+    navigator.clipboard.writeText(props.selectedChannel);
     setTimeout(() => {
       setIsCopied(false);
     }, 2000);
   }
+
+  //find doc.channelName of selected channel
+  async function getChannelName() {
+
+    if(props.selectedChannel){
+      const docRef = doc(db, 'text_channels', props.selectedChannel);
+      const docSnap = await getDoc(docRef);
+      if(docSnap.exists()) {
+        const data = docSnap.data()
+        console.log(data)
+        setChannelName(() => data.channelName); 
+      }
+    }
+  }
+  getChannelName();
  
 
   return (
-    <div>
+    <div>{props.selectedChannel &&
+    
       <Dialog
         open={isInviteOpen || isLeaveOpen}
         onOpenChange={isInviteOpen ? setIsInviteOpen : setIsLeaveOpen}
@@ -52,7 +72,7 @@ export default function TopBar() {
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost">
-              <span className="mr-2 text-2xl">Digital Dragons</span>
+              <span className="mr-2 text-2xl">{channelName}</span>
               <ChevronDown className="mt-1" />
             </Button>
           </DropdownMenuTrigger>
@@ -87,7 +107,7 @@ export default function TopBar() {
               <DialogHeader>
                 <DialogTitle>Share link</DialogTitle>
                 <DialogDescription>
-                  Send a channel invite link to a colleague.
+                  Send this channel ID to a colleague.
                 </DialogDescription>
               </DialogHeader>
               <div className="flex items-center space-x-2">
@@ -97,7 +117,7 @@ export default function TopBar() {
                   </Label>
                   <Input
                     id="link"
-                    defaultValue="TODO: link-to-channel"
+                    defaultValue={props.selectedChannel}
                     readOnly
                   />
                 </div>
@@ -144,6 +164,7 @@ export default function TopBar() {
           </>
         ) : null}
       </Dialog>
+    }
     </div>
   );
 }
