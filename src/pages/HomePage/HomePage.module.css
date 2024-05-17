@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 .home {
   background-color: rgb(217, 217, 217);
   width:100vw;
@@ -150,4 +151,26 @@
   display:flex;
 
 
+=======
+.container1_home{
+    display:flex;
+    width: 100vw;
+    height: 100vh;  
+    background-color: rgb(217, 217, 217);
+}
+.container1_LeftSide{
+    width: 180px;
+    height:100%;
+    display: flex;
+    flex-direction: column;
+}
+.container1_MiddleSide{
+    width: 500px;
+    height:100%;
+
+}
+.container1_RightSide{
+    width: 200px;
+    height:100%;
+>>>>>>> origin/Setting
 }

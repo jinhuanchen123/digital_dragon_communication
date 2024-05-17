@@ -18,7 +18,7 @@
   font-family: "Montserrat", sans-serif;
 }
 
-.fullWrapper>* {
+.fullWrapper > * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -59,11 +59,11 @@
 }
 
 .container button {
-  background-color: #512da8;
+  /* background-color: #512da8; */
   color: #fff;
   font-size: 12px;
   padding: 10px 45px;
-  border: 1px solid transparent;
+  border: 1px solid;
   border-radius: 8px;
   font-weight: 600;
   letter-spacing: 0.5px;
@@ -147,7 +147,6 @@
 \*-----------------------------------*/
 
 @keyframes move {
-
   0%,
   49.99% {
     opacity: 0;
@@ -282,7 +281,11 @@
   color: red;
 }
 
+<<<<<<< HEAD
 .container>* .forgotPassword {
+=======
+.container > * .forgotPassword {
+>>>>>>> origin/Setting
   background-color: transparent;
   color: black;
   text-decoration: underline;

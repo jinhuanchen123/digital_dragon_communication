@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faGear } from "@fortawesome/free-solid-svg-icons";
@@ -44,12 +45,21 @@ export default function HomePage() {
             onClick={handleRedictMainPage}
           />
         </div>
+=======
+import React from 'react';
+import TopBar from "@/components/ui/TopBar";
+import AddChannel from "../../components/ui/AddChannel";
+import Styles_Home from "./HomePage.module.css";
+import { Link } from 'react-router-dom'; 
+import SettingsBar from '@/components/ui/SettingsBar';
+>>>>>>> origin/Setting
 
         {/*<ChannelInfo/> */}
         <div className={Home_Styles.channelComponents}>
         <AddChannelButton />
         <ChannelsList onSelectChannel={setSelectedChannel} />
 
+<<<<<<< HEAD
         </div>
         {/*        <LeftChannelBar /> */}
       </div>
@@ -70,7 +80,27 @@ export default function HomePage() {
       </div>
       <div className={Home_Styles.RightSide}>
         <Chatbox />
+=======
+export default function HomePage() {
+  
+  return (
+    <div className={Styles_Home.container1_home}>
+      <div className={Styles_Home.container1_LeftSide}>
+      <TopBar />
+      <AddChannel />
+      <SettingsBar/>
       </div>
+      <div className={Styles_Home.container1_MiddleSide}>
+        <p> HI, message </p>
+
+      </div>
+      <div className={Styles_Home.container1_RightSide}>
+        
+
+
+>>>>>>> origin/Setting
+      </div>
+      
     </div>
   );
 }

@@ -1,8 +1,15 @@
 .container1_profile{
+<<<<<<< HEAD
   background-color: rgb(217, 217, 217);
   display: flex;
   width: 100vw;
   height: 100vh;
+=======
+    background-color: rgb(217, 217, 217);
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+>>>>>>> origin/Setting
 }
 
 
@@ -22,8 +29,13 @@
 }
 
 .header1 {
+<<<<<<< HEAD
   font-size: 50px;
   color:white;
+=======
+    font-size: 50px;
+    color:white;
+>>>>>>> origin/Setting
 }
 .big_card{
   width:100%;
@@ -35,6 +47,7 @@
  
 }
 .card{
+<<<<<<< HEAD
   margin:60px;
   width:50%;
   box-shadow: 0 4px 8px rgba(20, 19, 19, 0.3); 
@@ -127,6 +140,75 @@ Hide the default file input
   display:flex;
 
 }
+=======
+    margin:60px;
+    width:50%;
+    box-shadow: 0 4px 8px rgba(20, 19, 19, 0.3); 
+  
+}
+.avatar {
+    display: flex;
+    height: 100px;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #512da8;
+    flex-direction: row-reverse;
+  }
+  
+  .hiddenInput {
+    display: none;
+  }
+  
+  .profile_image {
+    display: flex;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+   
+  }
+  
+  .avatarImage {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+  }
+  .editButton {
+    background-color: rgb(137, 194, 72);
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    height:40px;
+    margin: 20px 30px;
+
+  }
+  .editButton {
+    background-color: rgb(137, 194, 72);
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    height:40px;
+    margin: 20px 30px;
+
+  }
+  .customIconStyle {
+    width: 100px;
+    height: 100px;
+    cursor: pointer;
+}
+/* 
+
+
+
+  Hide the default file input
+  
+
+  .ProfileForm{
+    display:flex;
+>>>>>>> origin/Setting
 
 .info {
   display: flex;
@@ -158,5 +240,9 @@ Hide the default file input
   margin: 20px auto;
   
 
+<<<<<<< HEAD
 
 } */
+=======
+} */
+>>>>>>> origin/Setting

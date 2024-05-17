@@ -1,5 +1,9 @@
 export default function LeftSideBar() {
+<<<<<<< HEAD
   return <div className=" max-w-sm  flex  p-6 border-solid border-2 border-gray-200 mb-5 rounded-lg hover:bg-gray-400 hover:border-black hover:cursor-pointer">
+=======
+    return <div className=" max-w-sm  flex  p-6 border-solid border-2 border-gray-200 mb-5 rounded-lg hover:bg-gray-400 hover:border-black hover:cursor-pointer">
+>>>>>>> origin/Setting
     <div className="pt-1 flex flex-row space-x-2">
       <div className="pt-1 flex ">
         <img className='flex size-16' src="https://th.bing.com/th/id/OIP.GvaQNtsmMJcf70j5N0W1OAAAAA?w=191&h=191&c=7&r=0&o=5&pid=1.7" loading="lazy" />
@@ -18,6 +22,19 @@ export default function LeftSideBar() {
           Building apps together
         </p>
 
+<<<<<<< HEAD
+=======
+        </div>
+        
+        <div>
+      <h1 className="text-lg text-purple-600 leading-tight hover:text-white cursor-pointer">
+        Tailwind and Create React App
+      </h1>
+      <p className="text-sm text-rgb(100 100 100) leading-normal">
+        Building apps together
+      </p>
+      
+>>>>>>> origin/Setting
       </div>
     </div>
   </div>;

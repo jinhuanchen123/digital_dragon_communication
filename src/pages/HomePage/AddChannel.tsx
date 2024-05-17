@@ -1,7 +1,10 @@
 
+<<<<<<< HEAD
 import { useState } from 'react';
 import LeftSideBar from './LeftSideBar';
 
+=======
+>>>>>>> origin/Setting
 export default function AddChannel() {
   const [input, setInput] = useState([<LeftSideBar />]);
 
