@@ -68,7 +68,8 @@ export default function LoginPage() {
         displayName: formData.signUpName,
         email: formData.signUpEmail,
         createdAt: serverTimestamp(),
-        profilePictureUrl: "https://winaero.com/blog/wp-content/uploads/2015/05/windows-10-user-account-login-icon.png",
+        profilePictureUrl:
+          "https://winaero.com/blog/wp-content/uploads/2015/05/windows-10-user-account-login-icon.png",
       });
 
       setIsSignUpError(false);
@@ -77,39 +78,17 @@ export default function LoginPage() {
       setIsSignUpError(true);
       console.error(err);
     }
-
-    //   const [userData, setUserData] = useState<any[]>([]);
-    //   try {
-    //     // Fetch user data from Firestore
-    //     const currentUser = auth.currentUser;
-    //     if (!currentUser) {
-    //       console.error("Current user not found.");
-    //       return;
-    //     }
-    //     const userId = currentUser.uid;
-    //     const userDocRef = doc(db, 'users', userId);
-    //     const docSnapshot = await getDoc(userDocRef);
-    //     if (docSnapshot.exists()) {
-    //       setUserData([docSnapshot.data()]);
-    //     } else {
-    //       console.log("User data not found.");
-    //     }
-    //   } catch (error) {
-    //     console.error("Error fetching user data:", error);
-    //   }
   };
 
   const signIn = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const userCredential = await signInWithEmailAndPassword(
+      await signInWithEmailAndPassword(
         auth,
         formData.signInEmail,
         formData.signInPassword,
       );
       setIsSignInError(false);
-      // fetchData();
-      console.log("Signed In!", userCredential);
       navigate("/");
     } catch (err) {
       setIsSignInError(true);
@@ -123,7 +102,6 @@ export default function LoginPage() {
       navigate("/");
     } catch (err) {
       setIsSignInError(true);
-      // fetchData();
       console.error(err);
     }
   };
