@@ -59,7 +59,7 @@ export default function MessagesWindow({ channelId }: MessagesWindowProps) {
   function btnOver(messageID) {
     const buttonEle = document.getElementById(`${messageID}button`);
     if(buttonEle) {
-      buttonEle.style.color = 'white';
+      buttonEle.style.color = '#e5e7eb';
       buttonEle.style.backgroundColor = '#512da8';
     }
   }

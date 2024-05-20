@@ -103,7 +103,10 @@
 .deleteBtn {
   font-size: small;
   font-weight: 600;
+
   color: #512da8;
+
+  padding:0.5rem;
   margin-left: 1rem;
   border-radius: 20%;
 }
