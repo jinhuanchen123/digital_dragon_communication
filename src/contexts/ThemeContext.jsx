@@ -253,7 +253,7 @@
 
 import React, { Component } from "react";
 import { createContext } from "react";
-import { auth } from "../firebase"; // Make sure this path matches your Firebase setup
+import { auth } from "../pages/Firebase/firebase.ts"; // Make sure this path matches your Firebase setup
 import { doc, onSnapshot, getFirestore } from "firebase/firestore";
 import dragonImage from "../pages/SettingsPage/dragon_no_bg.png"; // Relative path from RightSidebar.tsx
 
