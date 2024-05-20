@@ -1,12 +1,13 @@
 .home {
   background-color: rgb(217, 217, 217);
-  width:100vw;
-  height:100vh;
-  display:flex;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
   align-items: stretch;
 
-  padding:1rem;
+  padding: 1rem;
 }
+
 /* .headerContainer {
   display:flex;
   justify-content: center;
@@ -33,33 +34,33 @@
   height:calc(100vh - 100px);
 } */
 
-.leftSide{
-  display:flex;
+.leftSide {
+  display: flex;
   flex-direction: column-reverse;
-  height:100%;
-  width:18.75rem;
+  height: 100%;
+  width: 18.75rem;
   border-right: 2px solid black;
   justify-content: space-between;
   align-items: center;
 }
-.icon_function{
-  display:flex;
-  flex-direction: column;
-  gap:30px;
 
+.icon_function {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
 }
+
 .userIconStyle,
-.settingIconStyle{
-  width:50px;
-  height:50px;
-  cursor:pointer;
+.settingIconStyle {
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
 }
+
 .channelComponents {
   display: flex;
   flex-direction: column;
-
 }
-
 
 /* .left_top{
   display:flex;
@@ -69,46 +70,49 @@
   width:40px;
   height:40px;
 } */
-.MiddleSide{
-  display:flex;
+.MiddleSide {
+  display: flex;
   flex-direction: column;
-  width:90rem;
+  width: 90rem;
   border-right: 2px solid black;
   justify-content: space-between;
   align-items: center;
-
 }
+
 .messageComponents {
   width: 50rem;
 }
 
-@media (max-height:1000px){
+@media (max-height: 1000px) {
   .messageWindow {
     overflow-y: scroll;
-     max-height: 700px;
-  } 
+    max-height: 700px;
+  }
 }
 
-@media (min-height:1000px){
+@media (min-height: 1000px) {
   .messageWindow {
     overflow-y: scroll;
-     max-height: 900px;
-  } 
+    max-height: 900px;
+  }
 }
+
 .messageContent {
-  width: 42.4375rem
+  width: 42.4375rem;
 }
+
 .messageTitle {
   display: flex;
   justify-content: space-between;
 }
+
 .deleteBtn {
   font-size: small;
   font-weight: 600;
 
   color: #512da8;
 
-  padding:0.5rem;
+  padding: 0.5rem;
   margin-left: 1rem;
   border-radius: 20%;
 }
@@ -127,45 +131,37 @@
 
 
 } */
-.Profile_Chat{
-  display:flex;
+.Profile_Chat {
+  display: flex;
   justify-content: flex-end;
-  margin:20px;
-
+  margin: 20px;
 }
+
 .messageInput {
-display: flex;
-flex-direction: column;
-justify-content: space-between;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 
-height: 5.5rem;
+  height: 5.5rem;
 }
 
-.customIconStyle{
-  width:50px;
-  height:50px;
-
-  
+.customIconStyle {
+  width: 50px;
+  height: 50px;
 }
+
 .profile_image,
-.avatarImage{
-  
+.avatarImage {
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  margin-left:20px;
-
+  margin-left: 20px;
 }
 
-.displayName{
-  
-}
-.RightSide{
+.RightSide {
   width: 20rem;
-
 }
-.container1_RightSide{
-  display:flex;
 
-
+.container1_RightSide {
+  display: flex;
 }

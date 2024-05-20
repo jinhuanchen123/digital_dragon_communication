@@ -1,16 +1,11 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser, faGear } from "@fortawesome/free-solid-svg-icons";
+import { faGear } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
-import SendMessage from "./Chat";
-import Invite from "./Invite";
 import AddChannelButton from "./AddChannelButton";
 import TopBar from "./TopBar";
 import Home_Styles from "./HomePage.module.css";
-import LeftChannelBar from "./LeftChannelBar";
 import RightSide_Invite from "./RightSideInvite";
-import AddUser from "./addUser";
-import ChannelInfo from "./ChannelInfo";
 import Chatbox from "./UserBox";
 import ChannelsList from "./ChannelsList";
 import MessagesWindow from "./MessagesWindow";
@@ -19,7 +14,6 @@ import MessageInput from "./MessageInput";
 export default function HomePage() {
   const navigate = useNavigate();
   const [selectedChannel, setSelectedChannel] = useState<string | null>(null);
-
 
   const handleInviteClick = () => {
     // Perform invite functionality here
@@ -44,15 +38,14 @@ export default function HomePage() {
 
         {/*<ChannelInfo/> */}
         <div className={Home_Styles.channelComponents}>
-        <AddChannelButton />
-        <ChannelsList onSelectChannel={setSelectedChannel} />
-
+          <AddChannelButton />
+          <ChannelsList onSelectChannel={setSelectedChannel} />
         </div>
         {/*        <LeftChannelBar /> */}
       </div>
       <div className={Home_Styles.MiddleSide}>
         <div className={Home_Styles.MiddleSide_top}>
-          <TopBar 
+          <TopBar
             selectedChannel={selectedChannel}
             onSelectChannel={setSelectedChannel}
           />
@@ -60,18 +53,14 @@ export default function HomePage() {
         {/*        <SendMessage  />*/}
         {selectedChannel && (
           <div className={Home_Styles.messageComponents}>
-            <MessagesWindow 
-            channelId={selectedChannel} 
-            />
+            <MessagesWindow channelId={selectedChannel} />
             <MessageInput channelId={selectedChannel} />
           </div>
         )}
       </div>
       <div className={Home_Styles.RightSide}>
         <Chatbox />
-        <RightSide_Invite
-          channelId={selectedChannel}
-        />
+        <RightSide_Invite channelId={selectedChannel} />
       </div>
     </div>
   );
