@@ -77,6 +77,14 @@ export default function LoginPage() {
         userTheme: "mystic_violet",
       });
 
+      // Update Firestore document with user's display name
+      await setDoc(doc(db, "users", userCredential.user.uid), {
+        displayName: formData.signUpName,
+        email: formData.signUpEmail,
+        createdAt: new Date().toISOString(),
+        userTheme: "mystic_violet",
+      });
+
       setIsSignUpError(false);
       navigate("/");
     } catch (err) {
@@ -101,14 +109,12 @@ export default function LoginPage() {
       console.error(err);
     }
   };
-
   const signInWithGoogle = async () => {
     try {
       await signInWithPopup(auth, googleProvider);
       navigate("/");
     } catch (err) {
       setIsSignInError(true);
-      // fetchData();
       console.error(err);
     }
   };

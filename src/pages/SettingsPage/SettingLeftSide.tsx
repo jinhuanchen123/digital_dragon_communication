@@ -1,9 +1,9 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 import { Link } from "react-router-dom";
 import styles from "./SettingLeftSide.module.css";
+import dragonImage from "./dragon_no_bg.png"; // Relative path from RightSidebar.tsx
 import { getAuth, signOut } from "firebase/auth";
 import { ThemeContext } from "../../contexts/ThemeContext.jsx";
-import dragonImage from "./dragon_no_bg.png"; // Relative path from RightSidebar.tsx
 
 function LeftSidebar() {
   const auth = getAuth();

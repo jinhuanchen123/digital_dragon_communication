@@ -1,33 +1,41 @@
-import { createContext, useEffect, useState, ReactNode } from 'react';
-import { getAuth, onAuthStateChanged, User } from 'firebase/auth';
+import React, { ReactNode, createContext, useEffect, useState } from "react";
+import { auth } from "./pages/Firebase/firebase";
+import { onAuthStateChanged, User } from "firebase/auth";
 
-// Define the type for the AuthContext value
-type AuthContextType = User | null;
-
-// Create the AuthContext with a default value of null
-export const AuthContext = createContext<AuthContextType>(null);
-
-// Define the props type for AuthContextProvider
-type AuthContextProviderProps = {
-  children: ReactNode; // Explicitly type children as ReactNode
+type AuthContextValue = {
+  currentUser: User | null;
 };
 
-// AuthContextProvider component
-export const AuthContextProvider: React.FC<AuthContextProviderProps> = ({ children }) => {
-  const [currentUser, setCurrentUser] = useState<AuthContextType>(null);
+type AuthContextProviderProps = {
+  children: ReactNode;
+};
+
+export const AuthContext = createContext<AuthContextValue | undefined>(
+  undefined,
+);
+
+export const AuthContextProvider: React.FC<AuthContextProviderProps> = ({
+  children,
+}) => {
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const auth = getAuth(); // Get the auth instance
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setCurrentUser(user);
+      setLoading(false);
     });
 
-    // Clean up the subscription
     return () => unsubscribe();
   }, []);
 
+  // prevent redirection to login on refresh
+  if (loading) {
+    return <></>
+  }
+
   return (
-    <AuthContext.Provider value={currentUser}>
+    <AuthContext.Provider value={{ currentUser }}>
       {children}
     </AuthContext.Provider>
   );
