@@ -4,18 +4,20 @@ import notiStyles from './Notification.module.css'; // Import Notification CSS m
 
 
 function Notifications() {
-  type NotificationType = keyof typeof muteStatus;
+  type NotificationType = keyof typeof notificationStatus;
 
-const [muteStatus, setMuteStatus] = useState({
-  replies: false,
-  directMessages: false,
-  mentions: false,
-  invites: false
-});
+const [notificationStatus, setNotificationStatus] = useState(
+  {
+  replies: true,
+  directMessages: true,
+  mentions: true,
+  invites: true
+}
+);
 
 // Function to handle mute toggle
 const handleMuteToggle = (type: NotificationType) => {
-  setMuteStatus(prevState => ({
+  setNotificationStatus(prevState => ({
     ...prevState,
     [type]: !prevState[type]
   }));
@@ -38,7 +40,7 @@ const handleInvitesClick = (e: React.MouseEvent<HTMLLabelElement, MouseEvent>) =
           <input
             type="checkbox"
             id="muteReplies"
-            checked={muteStatus.replies}
+            checked={notificationStatus.replies}
             onChange={() => handleMuteToggle('replies')}
           />
           <label htmlFor="muteReplies">Replies</label>
@@ -49,7 +51,7 @@ const handleInvitesClick = (e: React.MouseEvent<HTMLLabelElement, MouseEvent>) =
           <input
             type="checkbox"
             id="muteDirectMessages"
-            checked={muteStatus.directMessages}
+            checked={notificationStatus.directMessages}
             onChange={() => handleMuteToggle('directMessages')}
           />
           <label htmlFor="muteDirectMessages">Direct Messages</label>
@@ -59,7 +61,7 @@ const handleInvitesClick = (e: React.MouseEvent<HTMLLabelElement, MouseEvent>) =
           <input
             type="checkbox"
             id="muteMentions"
-            checked={muteStatus.mentions}
+            checked={notificationStatus.mentions}
             onChange={() => handleMuteToggle('mentions')}
           />
           <label htmlFor="muteMentions">Mentions</label>
@@ -69,7 +71,7 @@ const handleInvitesClick = (e: React.MouseEvent<HTMLLabelElement, MouseEvent>) =
   <input
     type="checkbox"
     id="muteInvites"
-    checked={muteStatus.invites}
+    checked={notificationStatus.invites}
     onChange={() => handleMuteToggle('invites')}
   />
   <label htmlFor="muteInvites" onClick={handleInvitesClick}>

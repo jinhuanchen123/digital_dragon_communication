@@ -36,11 +36,6 @@ export default function HomePage() {
       <div className={Home_Styles.leftSide}>
         <div className={Home_Styles.icon_function}>
           <FontAwesomeIcon
-            icon={faUser}
-            className={Home_Styles.userIconStyle}
-            onClick={handleInviteClick}
-          />
-          <FontAwesomeIcon
             icon={faGear}
             className={Home_Styles.settingIconStyle}
             onClick={handleRedictMainPage}
@@ -74,6 +69,9 @@ export default function HomePage() {
       </div>
       <div className={Home_Styles.RightSide}>
         <Chatbox />
+        <RightSide_Invite
+          channelId={selectedChannel}
+        />
       </div>
     </div>
   );

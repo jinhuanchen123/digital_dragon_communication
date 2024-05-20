@@ -4,16 +4,24 @@ import { doc, getDoc } from 'firebase/firestore';
 import RightSideInvite_Style from './RightSideInvite.module.css';
 import avatarImage from '/./avatar.png';
 
+
 interface UserData {
+  userId: string;
   displayName: string;
-  profilePictureUrl:string;
-  
+  profilePictureUrl: string;
 }
 
-export default function RightSide_Invite() {
+
+
+
+type MessageInputProps = {
+  channelId: string;
+};
+
+
+export default function RightSide_Invite({ channelId }: MessageInputProps) {
   const [userData, setUserData] = useState<UserData | null>(null);
   const [textChannelData, setTextChannelData] = useState<any>({});
- 
 
 
   useEffect(() => {
@@ -24,12 +32,27 @@ export default function RightSide_Invite() {
         return;
       }
 
+
       try {
-        const docRef = doc(db, "text_channels", user.uid);
+        const docRef = doc(db, "text_channels", channelId);
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
-          console.log("Document data:", docSnap.data());
-          setTextChannelData(docSnap.data()); // Update the state with fetched data
+          const channelData = docSnap.data();
+          setTextChannelData(channelData);
+
+
+          // Fetch user data for each member ID
+          const memberIds = channelData.members;
+          const membersData = [];
+          for (const memberId of memberIds) {
+            const userDocRef = doc(db, 'users', memberId);
+            const docSnapshot = await getDoc(userDocRef);
+            if (docSnapshot.exists()) {
+              const userData = docSnapshot.data() as UserData;
+              membersData.push(userData);
+            }
+          }
+          setTextChannelData({ ...channelData, membersData });
         } else {
           console.log("Document does not exist.");
         }
@@ -38,9 +61,10 @@ export default function RightSide_Invite() {
       }
     };
 
+
     fetchDataChannel();
-  }, []); // Empty dependency array to run the effect only once when the component mounts
-  
+  }, [channelId]);
+
 
   useEffect(() => {
     const fetchDataUser = async () => {
@@ -66,29 +90,31 @@ export default function RightSide_Invite() {
     fetchDataUser();
   }, []);
 
+
   return (
     <div className={RightSideInvite_Style.container}>
-      {userData && (
-        <div className={RightSideInvite_Style.friend}>
-          
-          {userData.profilePictureUrl ? (
-            <img
-              src={userData.profilePictureUrl}
-              alt="Profile Picture"
-              className={RightSideInvite_Style.profile_image}
-            />
-          ) : (
-            <img
-              src={avatarImage}
-              alt="Default Avatar"
-              className={RightSideInvite_Style.avatarImage}
-            />
-          )}
-          <p>{userData.displayName}</p>
+      {textChannelData.membersData && (
+        <div className={RightSideInvite_Style.members}>
+          {textChannelData.membersData.map((member: UserData) => (
+            <div key={member.userId} className={RightSideInvite_Style.member}>
+              {member.profilePictureUrl ? (
+                <img
+                  src={member.profilePictureUrl}
+                  alt="Member Profile Picture"
+                  className={RightSideInvite_Style.profile_image}
+                />
+              ) : (
+                <img
+                  src={avatarImage}
+                  alt="Default Avatar"
+                  className={RightSideInvite_Style.avatarImage}
+                />
+              )}
+              <p>{member.displayName}</p>
+            </div>
+          ))}
         </div>
       )}
     </div>
   );
 }
-
-
