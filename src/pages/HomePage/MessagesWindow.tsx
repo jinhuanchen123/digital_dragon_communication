@@ -59,6 +59,7 @@ export default function MessagesWindow({ channelId }: MessagesWindowProps) {
   function btnOver(messageID) {
     const buttonEle = document.getElementById(`${messageID}button`);
     if(buttonEle) {
+      buttonEle.style.fontWeight = '900';
       buttonEle.style.color = '#e5e7eb';
       buttonEle.style.backgroundColor = '#512da8';
     }
@@ -66,6 +67,7 @@ export default function MessagesWindow({ channelId }: MessagesWindowProps) {
   function btnOut(messageID) {
     const buttonEle = document.getElementById(`${messageID}button`);
     if(buttonEle) {
+      buttonEle.style.fontWeight = '500';
       buttonEle.style.backgroundColor = 'rgba(0,0,0,0)';
       buttonEle.style.color = '#512da8';
     }

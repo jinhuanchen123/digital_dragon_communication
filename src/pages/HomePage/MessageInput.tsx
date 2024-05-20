@@ -39,13 +39,18 @@ export default function MessageInput({ channelId }: MessageInputProps) {
 
   return (
     <div className={Home_Styles.messageInput}>
+
       <Input
         type="text"
         value={message}
         onChange={(e) => setMessage(e.target.value)}
         placeholder="Type your message here..."
       />
+      
+      <div> {/* this div is simply an easy way to take the button out of the parent div and by so doing not apply the default flex:stretch */}
       <Button onClick={handleSendMessage}>Send</Button>
+      </div>
+        
     </div>
   );
 }
