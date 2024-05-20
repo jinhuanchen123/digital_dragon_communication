@@ -15,9 +15,11 @@ import Chatbox from "./UserBox";
 import ChannelsList from "./ChannelsList";
 import MessagesWindow from "./MessagesWindow";
 import MessageInput from "./MessageInput";
+
 export default function HomePage() {
   const navigate = useNavigate();
   const [selectedChannel, setSelectedChannel] = useState<string | null>(null);
+
 
   const handleInviteClick = () => {
     // Perform invite functionality here
@@ -63,7 +65,9 @@ export default function HomePage() {
         {/*        <SendMessage  />*/}
         {selectedChannel && (
           <div className={Home_Styles.messageComponents}>
-            <MessagesWindow channelId={selectedChannel} />
+            <MessagesWindow 
+            channelId={selectedChannel} 
+            />
             <MessageInput channelId={selectedChannel} />
           </div>
         )}

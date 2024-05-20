@@ -86,12 +86,28 @@
      max-height: 700px;
   } 
 }
+
 @media (min-height:1000px){
   .messageWindow {
     overflow-y: scroll;
      max-height: 900px;
   } 
 }
+.messageContent {
+  width: 42.4375rem
+}
+.messageTitle {
+  display: flex;
+  justify-content: space-between;
+}
+.deleteBtn {
+  font-size: small;
+  font-weight: 600;
+  color: #512da8;
+  margin-left: 1rem;
+  border-radius: 20%;
+}
+
 /* .MiddleSide_bottom{
   display:flex; 
   width:100%;
