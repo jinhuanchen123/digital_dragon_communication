@@ -7,13 +7,15 @@ import Privacy from "./pages/SettingsPage/Privacy";
 import Theme from "./pages/SettingsPage/Theme/Theme";
 import LogOut from "./pages/SettingsPage/LogOut/LogOut";
 import Invite from "./pages/HomePage/Invite";
+import UserList from "./pages/SettingsPage/UserList";
+import AuthStatus from "./pages/SettingsPage/status";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import {useContext} from "react";
 import { AuthContext } from "./AuthContext";
 
 export default function App() {
   
-
+ 
  
  
 
@@ -22,6 +24,9 @@ export default function App() {
     <Routes>
       <Route path="/login" element={<Login />} />
       <Route path="/" element={<HomePage />} />
+      <Route path="/user" element={<UserList />} />
+      <Route path="/status" element={<AuthStatus />} />
+
       <Route path="/invite" element={<Invite />} />
       <Route path="/setting/profile" element={<Profile />} />
       <Route path="/setting/notifications" element={<Notifications/>}/>
