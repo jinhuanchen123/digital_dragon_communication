@@ -58,10 +58,12 @@ export default function HomePage() {
           </div>
         )}
       </div>
+      {selectedChannel && (
       <div className={Home_Styles.RightSide}>
-        <Chatbox />
+        <Chatbox channelId={selectedChannel}/>
         <RightSide_Invite channelId={selectedChannel} />
       </div>
+      )}
     </div>
   );
 }

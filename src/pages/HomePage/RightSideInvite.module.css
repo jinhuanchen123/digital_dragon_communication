@@ -1,9 +1,9 @@
-.friend{
-    display:flex;
-    
+.member{
+  display:flex;
+  gap:20px;
+
 
 }
-
 
 .profile_image {
     display: flex;
@@ -14,9 +14,7 @@
    
   }
   
-  .avatarImage {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    margin-left:20px;
+  .members {
+    max-height: 400px; 
+    overflow-y: auto; 
   }

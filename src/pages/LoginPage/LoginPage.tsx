@@ -19,7 +19,7 @@ interface FormData {
   signUpPassword: string;
   signInEmail: string;
   signInPassword: string;
-  profilePictureUrl: string;
+  signUpProfileLink:string;
 }
 
 export default function LoginPage() {
@@ -38,9 +38,9 @@ export default function LoginPage() {
     signUpName: "",
     signUpEmail: "",
     signUpPassword: "",
+    signUpProfileLink: "https://winaero.com/blog/wp-content/uploads/2015/05/windows-10-user-account-login-icon.png",
     signInEmail: "",
     signInPassword: "",
-    profilePictureUrl: "",
   });
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -58,30 +58,21 @@ export default function LoginPage() {
         auth,
         formData.signUpEmail,
         formData.signUpPassword,
+      
       );
 
-      // Update user's profile with display name
+      // Update user's profile with display name and photo URL
       await updateProfile(userCredential.user, {
         displayName: formData.signUpName,
-        photoURL:
-          "https://winaero.com/blog/wp-content/uploads/2015/05/windows-10-user-account-login-icon.png",
+        photoURL: "https://winaero.com/blog/wp-content/uploads/2015/05/windows-10-user-account-login-icon.png",
       });
 
-      // Update Firestore document with user's display name
+      // Create Firestore document for the user
       await setDoc(doc(db, "users", userCredential.user.uid), {
         displayName: formData.signUpName,
         email: formData.signUpEmail,
         createdAt: serverTimestamp(),
-        profilePictureUrl:
-          "https://winaero.com/blog/wp-content/uploads/2015/05/windows-10-user-account-login-icon.png",
-        userTheme: "mystic_violet",
-      });
-
-      // Update Firestore document with user's display name
-      await setDoc(doc(db, "users", userCredential.user.uid), {
-        displayName: formData.signUpName,
-        email: formData.signUpEmail,
-        createdAt: new Date().toISOString(),
+        profilePictureUrl: formData. signUpProfileLink,
         userTheme: "mystic_violet",
       });
 
@@ -109,6 +100,7 @@ export default function LoginPage() {
       console.error(err);
     }
   };
+
   const signInWithGoogle = async () => {
     try {
       await signInWithPopup(auth, googleProvider);
@@ -229,7 +221,6 @@ export default function LoginPage() {
         {/* Toggle Section */}
         <div className={style.toggleContainer}>
           <div className={style.toggle} style={{ background: theme.bgd }}>
-            {/* <div className="toggle-panel toggle-left"> */}
             <div
               className={`${style.togglePanel} ${style.toggleLeft}`}
               onClick={showLogin}
@@ -241,7 +232,6 @@ export default function LoginPage() {
               </button>
             </div>
 
-            {/* <div className="toggle-panel toggle-right"> */}
             <div
               className={`${style.togglePanel} ${style.toggleRight}`}
               onClick={showSignup}
@@ -251,7 +241,7 @@ export default function LoginPage() {
                 Register with your personal details to use all site features
               </p>
               <button
-                className={style.Hidden}
+                className={style.hidden}
                 id="register"
                 style={{ background: theme.bgd }}
               >

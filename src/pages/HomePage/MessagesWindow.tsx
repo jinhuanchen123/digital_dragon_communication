@@ -5,11 +5,11 @@ import {
   orderBy,
   query,
   deleteDoc,
+  getDoc,
 } from "firebase/firestore";
-import { db } from "../Firebase/firebase";
+import { db, auth } from "../Firebase/firebase";
 import { useEffect, useRef, useState } from "react";
 import HomeStyles from "./HomePage.module.css";
-import { auth } from "../Firebase/firebase";
 
 type Message = {
   id: string;
@@ -17,25 +17,49 @@ type Message = {
   createdAt: {
     seconds: number;
   };
-  username: string;
+  
   userId: string;
-  userPhoto: string;
+ 
 };
 
 type MessagesWindowProps = {
   channelId: string;
 };
 
+type UserData = {
+  profilePictureUrl: string;
+  displayName:string;
+};
+
 export default function MessagesWindow({ channelId }: MessagesWindowProps) {
   const [messages, setMessages] = useState<Message[]>([]);
+  const [userData, setUserData] = useState<UserData | null>(null);
   const dummy = useRef<HTMLDivElement | null>(null);
 
-  let userID;
-  if (auth.currentUser) {
-    userID = auth.currentUser.uid;
-  } else {
-    userID = null;
-  }
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const user = auth.currentUser;
+      if (!user) {
+        console.error("User not found.");
+        return;
+      }
+
+      try {
+        const docRef = doc(db, 'users', user.uid);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          const data = docSnap.data() as UserData;
+          setUserData(data);
+        } else {
+          console.log("Document does not exist.");
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    fetchUserData();
+  }, []);
 
   useEffect(() => {
     if (!channelId) return;
@@ -43,7 +67,7 @@ export default function MessagesWindow({ channelId }: MessagesWindowProps) {
     const messagesRef = collection(db, "text_channels", channelId, "messages");
     const q = query(messagesRef, orderBy("createdAt"));
 
-    const unsubscribe = onSnapshot(q, async (snapshot) => {
+    const unsubscribe = onSnapshot(q, (snapshot) => {
       const messagesData = snapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
@@ -56,28 +80,32 @@ export default function MessagesWindow({ channelId }: MessagesWindowProps) {
   }, [channelId]);
 
   useEffect(() => {
-    dummy.current && dummy.current.scrollIntoView({behavior: "smooth"});
+    if (dummy.current) {
+      dummy.current.scrollIntoView({ behavior: "smooth" });
+    }
   }, [messages]);
 
-  function btnOver(messageID) {
+  const btnOver = (messageID: string) => {
     const buttonEle = document.getElementById(`${messageID}button`);
     if (buttonEle) {
       buttonEle.style.fontWeight = "900";
       buttonEle.style.color = "#e5e7eb";
       buttonEle.style.backgroundColor = "#512da8";
     }
-  }
-  function btnOut(messageID) {
+  };
+
+  const btnOut = (messageID: string) => {
     const buttonEle = document.getElementById(`${messageID}button`);
     if (buttonEle) {
       buttonEle.style.fontWeight = "500";
       buttonEle.style.backgroundColor = "rgba(0,0,0,0)";
       buttonEle.style.color = "#512da8";
     }
-  }
-  async function btnClicked(messageID) {
+  };
+
+  const btnClicked = async (messageID: string) => {
     await deleteDoc(doc(db, "text_channels", channelId, "messages", messageID));
-  }
+  };
 
   return (
     <div className={HomeStyles.messageWindow}>
@@ -87,23 +115,29 @@ export default function MessagesWindow({ channelId }: MessagesWindowProps) {
           id={message.id}
           className={`m-4 flex gap-2 rounded bg-zinc-300 p-4 ${HomeStyles.message}`}
         >
-          {/*onMouseOver={onDisplay(message.id)}*/}
-          <img
-            className="h-[32px] w-[32px] "
-            src={message.userPhoto}
-            width="32"
-            height="32"
-          />
+          {userData && (
+            <img
+              className="h-[32px] w-[32px]"
+              src={userData.profilePictureUrl}
+              width="32"
+              height="32"
+              alt="User Profile"
+            />
+          )}
+
+        
           <div className={HomeStyles.messageContent}>
             <div className={HomeStyles.messageTitle}>
               <div>
-                <strong className="mr-4">{message.username}</strong>
+              {userData && (
+                <strong className="mr-4">{userData.displayName}</strong>
+              )}
                 <small>
                   {message.createdAt &&
                     new Date(message.createdAt.seconds * 1000).toLocaleString()}
                 </small>
               </div>
-              {userID == message.userId && (
+              {auth.currentUser?.uid === message.userId && (
                 <button
                   id={`${message.id}button`}
                   onMouseOut={() => btnOut(message.id)}
@@ -119,8 +153,6 @@ export default function MessagesWindow({ channelId }: MessagesWindowProps) {
           </div>
         </div>
       ))}
-
-      {/* Scroll into view */}
       <div ref={dummy}></div>
     </div>
   );
