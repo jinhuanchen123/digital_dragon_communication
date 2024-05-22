@@ -1,10 +1,15 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { db, auth } from "../Firebase/firebase";
-import { addDoc, collection, serverTimestamp } from "firebase/firestore";
-import { useState } from "react";
+import {
+  addDoc,
+  collection,
+  doc,
+  getDoc,
+  serverTimestamp,
+} from "firebase/firestore";
+import { FormEvent, useEffect, useState } from "react";
 import Home_Styles from "./HomePage.module.css";
-
 
 type MessageInputProps = {
   channelId: string;
@@ -12,8 +17,25 @@ type MessageInputProps = {
 
 export default function MessageInput({ channelId }: MessageInputProps) {
   const [message, setMessage] = useState("");
+  const [channelName, setChannelName] = useState("");
 
-  async function handleSendMessage() {
+  useEffect(() => {
+    async function getChannelName() {
+      if (channelId) {
+        const docRef = doc(db, "text_channels", channelId);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+          setChannelName(data.channelName);
+        }
+      }
+    }
+
+    getChannelName();
+  }, [channelId]);
+
+  async function handleSendMessage(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
     if (!message.trim()) return; // Avoid sending empty messages
 
     const user = auth.currentUser;
@@ -39,18 +61,16 @@ export default function MessageInput({ channelId }: MessageInputProps) {
 
   return (
     <div className={Home_Styles.messageInput}>
+      <form onSubmit={handleSendMessage}>
+        <Input
+          type="text"
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          placeholder={`Message ${channelName}`}
+        />
 
-      <Input
-        type="text"
-        value={message}
-        onChange={(e) => setMessage(e.target.value)}
-        placeholder="Type your message here..."
-      />
-      
-      <div> {/* this div is simply an easy way to take the button out of the parent div and by so doing not apply the default flex:stretch */}
-      <Button onClick={handleSendMessage}>Send</Button>
-      </div>
-        
+        <Button style={{ display: "none" }}></Button>
+      </form>
     </div>
   );
 }
