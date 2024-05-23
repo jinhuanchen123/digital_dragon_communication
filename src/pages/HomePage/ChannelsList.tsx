@@ -11,7 +11,7 @@ type Channel = {
 
 type ChannelsListProps = {
   onSelectChannel: (channelId: string) => void;
-}
+};
 
 export default function ChannelsList({ onSelectChannel }: ChannelsListProps) {
   const [channels, setChannels] = useState<Channel[]>([]);
@@ -50,12 +50,18 @@ export default function ChannelsList({ onSelectChannel }: ChannelsListProps) {
     return () => unsubscribeAuth();
   }, []);
 
+  function truncateChannelName(str: string) {
+    return str.length > 15 ? str.substring(0, 15) + "..." : str;
+  }
+
   return (
-    <div>
-      <ul>
+    <div className="mt-4 grow overflow-y-auto">
+      <ul className=" grid gap-4 ">
         {channels.map((channel) => (
           <li key={channel.id} onClick={() => onSelectChannel(channel.id)}>
-            <Button variant="secondary">{channel.channelName}</Button>
+            <Button className="min-w-44" variant="ghost">
+              {truncateChannelName(channel.channelName)}
+            </Button>
           </li>
         ))}
       </ul>

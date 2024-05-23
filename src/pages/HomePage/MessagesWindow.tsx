@@ -49,14 +49,14 @@ export default function MessagesWindow({ channelId }: MessagesWindowProps) {
         ...doc.data(),
       })) as Message[];
 
-      setMessages(messagesData);
+      setMessages(messagesData.reverse());
     });
 
     return () => unsubscribe();
   }, [channelId]);
 
   useEffect(() => {
-    dummy.current && dummy.current.scrollIntoView({behavior: "smooth"});
+    dummy.current && dummy.current.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
   function btnOver(messageID) {
@@ -81,11 +81,14 @@ export default function MessagesWindow({ channelId }: MessagesWindowProps) {
 
   return (
     <div className={HomeStyles.messageWindow}>
+      {/* Scroll into view */}
+      <div ref={dummy}></div>
+
       {messages.map((message) => (
         <div
           key={message.id}
           id={message.id}
-          className={`m-4 flex gap-2 rounded bg-zinc-300 p-4 ${HomeStyles.message}`}
+          className="m-4 flex min-w-[352px] gap-2 rounded bg-zinc-300 p-4"
         >
           {/*onMouseOver={onDisplay(message.id)}*/}
           <img
@@ -94,15 +97,24 @@ export default function MessagesWindow({ channelId }: MessagesWindowProps) {
             width="32"
             height="32"
           />
-          <div className={HomeStyles.messageContent}>
-            <div className={HomeStyles.messageTitle}>
-              <div>
-                <strong className="mr-4">{message.username}</strong>
-                <small>
-                  {message.createdAt &&
-                    new Date(message.createdAt.seconds * 1000).toLocaleString()}
-                </small>
-              </div>
+          <div className="w-full ">
+            <div className="flex items-baseline gap-4">
+              <strong>{message.username}</strong>
+              <small>
+                {message.createdAt &&
+                  new Date(message.createdAt.seconds * 1000).toLocaleString(
+                    "en-US",
+                    {
+                      year: "numeric",
+                      month: "numeric",
+                      day: "numeric",
+                      hour: "numeric",
+                      minute: "numeric",
+                      hour12: true,
+                    },
+                  )}
+              </small>
+
               {userID == message.userId && (
                 <button
                   id={`${message.id}button`}
@@ -115,13 +127,11 @@ export default function MessagesWindow({ channelId }: MessagesWindowProps) {
                 </button>
               )}
             </div>
+
             <p>{message.text}</p>
           </div>
         </div>
       ))}
-
-      {/* Scroll into view */}
-      <div ref={dummy}></div>
     </div>
   );
 }

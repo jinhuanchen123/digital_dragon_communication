@@ -7,7 +7,7 @@ import { ThemeContext } from "../../contexts/ThemeContext.jsx";
 
 function LeftSidebar() {
   const auth = getAuth();
-  const { toggleTheme, currentTheme, themes } = useContext(ThemeContext);
+  const { currentTheme, themes } = useContext(ThemeContext);
   const theme = themes[currentTheme];
 
   return (
@@ -20,24 +20,20 @@ function LeftSidebar() {
         />
 
         <ul>
-          <li style={{ background: theme.bgd }}>
+          <li className="slsLi" style={{ background: theme.bgd }}>
             <Link to="/setting/profile">Profile</Link>
           </li>
-          <li style={{ background: theme.bgd }}>
+          <li className="slsLi" style={{ background: theme.bgd }}>
             <Link to="/setting/notifications">Notifications</Link>
           </li>
-          <li style={{ background: theme.bgd }}>
+          <li className="slsLi" style={{ background: theme.bgd }}>
             <Link to="/setting/privacy">Privacy</Link>
           </li>
-          <li style={{ background: theme.bgd }}>
+          <li className="slsLi" style={{ background: theme.bgd }}>
             <Link to="/setting/theme">Theme</Link>
           </li>
-          <li>
-            <Link
-              style={{ background: theme.bgd }}
-              to="/login"
-              onClick={() => signOut(auth)}
-            >
+          <li className="slsLi" style={{ background: theme.bgd }}>
+            <Link to="/login" onClick={() => signOut(auth)}>
               Logout
             </Link>
           </li>

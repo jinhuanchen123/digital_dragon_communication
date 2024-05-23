@@ -42,7 +42,7 @@ a {
     font-size: 25px;
 }
 
-li {
+.lsbLi {
     border: solid white 1px;
     width: 175px;
     height: 40px;

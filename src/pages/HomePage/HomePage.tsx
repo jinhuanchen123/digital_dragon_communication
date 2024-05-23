@@ -28,6 +28,12 @@ export default function HomePage() {
   return (
     <div className={Home_Styles.home}>
       <div className={Home_Styles.leftSide}>
+        {/*<ChannelInfo/> */}
+
+        <AddChannelButton />
+        <ChannelsList onSelectChannel={setSelectedChannel} />
+
+        {/*        <LeftChannelBar /> */}
         <div className={Home_Styles.icon_function}>
           <FontAwesomeIcon
             icon={faGear}
@@ -35,13 +41,6 @@ export default function HomePage() {
             onClick={handleRedictMainPage}
           />
         </div>
-
-        {/*<ChannelInfo/> */}
-        <div className={Home_Styles.channelComponents}>
-          <AddChannelButton />
-          <ChannelsList onSelectChannel={setSelectedChannel} />
-        </div>
-        {/*        <LeftChannelBar /> */}
       </div>
       <div className={Home_Styles.MiddleSide}>
         <div className={Home_Styles.MiddleSide_top}>
@@ -51,12 +50,8 @@ export default function HomePage() {
           />
         </div>
         {/*        <SendMessage  />*/}
-        {selectedChannel && (
-          <div className={Home_Styles.messageComponents}>
-            <MessagesWindow channelId={selectedChannel} />
-            <MessageInput channelId={selectedChannel} />
-          </div>
-        )}
+        {selectedChannel && <MessagesWindow channelId={selectedChannel} />}
+        {selectedChannel && <MessageInput channelId={selectedChannel} />}
       </div>
       <div className={Home_Styles.RightSide}>
         <Chatbox />

@@ -60,7 +60,7 @@ export default function MessageInput({ channelId }: MessageInputProps) {
   }
 
   return (
-    <div className={Home_Styles.messageInput}>
+    <div className="w-full">
       <form onSubmit={handleSendMessage}>
         <Input
           type="text"

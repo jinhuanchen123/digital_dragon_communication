@@ -3,43 +3,17 @@
   width: 100vw;
   height: 100vh;
   display: flex;
-  align-items: stretch;
-
+  justify-content: space-between;
   padding: 1rem;
 }
 
-/* .headerContainer {
-  display:flex;
-  justify-content: center;
-  align-items: center;
-  height:100px;
-  width:100vw;
-  background-color: rgb(217, 217, 217);
-  color:black;
-  font-size: large;
-  border-bottom: 2px solid black;
-}
-.search{
-  margin:20px;
-  height:30px;
-}
-.plusIconStyle{
-  margin-top:13px;
-
-
-
-} */
-/* .mainContainer {
-  display: flex;
-  height:calc(100vh - 100px);
-} */
-
 .leftSide {
   display: flex;
-  flex-direction: column-reverse;
+  flex-direction: column;
   height: 100%;
-  width: 18.75rem;
-  border-right: 2px solid black;
+  max-width: 14rem;
+  padding: 1rem;
+  /* border-right: 2px solid black; */
   justify-content: space-between;
   align-items: center;
 }
@@ -62,43 +36,24 @@
   flex-direction: column;
 }
 
-/* .left_top{
-  display:flex;
-
-}
-.plusIconStyle{
-  width:40px;
-  height:40px;
-} */
 .MiddleSide {
   display: flex;
   flex-direction: column;
-  width: 90rem;
-  border-right: 2px solid black;
+  width: 100%;
+  max-width: 768px;
+  /* border-right: 2px solid black; */
   justify-content: space-between;
   align-items: center;
+  max-height: 100%;
 }
 
-.messageComponents {
-  width: 50rem;
-}
-
-@media (max-height: 1000px) {
-  .messageWindow {
-    overflow-y: scroll;
-    max-height: 700px;
-  }
-}
-
-@media (min-height: 1000px) {
-  .messageWindow {
-    overflow-y: scroll;
-    max-height: 900px;
-  }
-}
-
-.messageContent {
-  width: 42.4375rem;
+.messageWindow {
+  width: 100%;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column-reverse;
+  overflow-y: auto;
+  overscroll-behavior: contain;
 }
 
 .messageTitle {
@@ -113,36 +68,14 @@
   color: #512da8;
 
   padding: 0.5rem;
-  margin-left: 1rem;
   border-radius: 20%;
+  margin-left: auto;
 }
 
-/* .MiddleSide_bottom{
-  display:flex; 
-  width:100%;
-  padding: 20px 20px;
-  gap:20px;
-
-} */
-/* .MiddleSide_top{
-  display:flex;
-  flex-direction: column;
-
-
-
-} */
 .Profile_Chat {
   display: flex;
   justify-content: flex-end;
   margin: 20px;
-}
-
-.messageInput {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-
-  height: 5.5rem;
 }
 
 .customIconStyle {
@@ -159,7 +92,7 @@
 }
 
 .RightSide {
-  width: 20rem;
+  max-width: 14rem;
 }
 
 .container1_RightSide {
