@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { auth, db } from '../Firebase/firebase';
 import { doc, getDoc } from 'firebase/firestore';
 import RightSideInvite_Style from './RightSideInvite.module.css';
-import avatarImage from '/./avatar.png';
+
 
 
 interface UserData {
@@ -10,9 +10,6 @@ interface UserData {
   displayName: string;
   profilePictureUrl: string;
 }
-
-
-
 
 type MessageInputProps = {
   channelId: string;
@@ -96,20 +93,12 @@ export default function RightSide_Invite({ channelId }: MessageInputProps) {
       {textChannelData.membersData && (
         <div className={RightSideInvite_Style.members}>
           {textChannelData.membersData.map((member: UserData) => (
-            <div key={member.userId} className={RightSideInvite_Style.member}>
-              {member.profilePictureUrl ? (
+            <div key={member.userId} className={RightSideInvite_Style.member}>  
                 <img
-                  src={member.profilePictureUrl}
+                  src={member.profilePictureUrl||userData?.profilePictureUrl}
                   alt="Member Profile Picture"
                   className={RightSideInvite_Style.profile_image}
-                />
-              ) : (
-                <img
-                  src={avatarImage}
-                  alt="Default Avatar"
-                  className={RightSideInvite_Style.avatarImage}
-                />
-              )}
+                />   
               <p>{member.displayName}</p>
             </div>
           ))}

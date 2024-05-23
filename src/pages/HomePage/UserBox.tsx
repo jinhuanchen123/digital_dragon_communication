@@ -1,7 +1,6 @@
-import React, { useState, useEffect, FormEvent } from "react";
-import { collection, query, where, getDocs, doc, getDoc, setDoc } from 'firebase/firestore';
+import React, { useState, FormEvent } from "react";
+import { collection, query, where, getDocs, doc, setDoc, updateDoc, arrayUnion, getDoc, addDoc } from 'firebase/firestore';
 import { auth, db } from '../Firebase/firebase';
-import avatarImage from '/./avatar.png';
 import UserBox_style from './UserBox.module.css';
 
 interface UserData {
@@ -11,24 +10,31 @@ interface UserData {
   [key: string]: any;
 }
 
-const Chatbox: React.FC<{}> = () => {
+type MessageInputProps = {
+  channelId: string;
+};
+
+const Chatbox: React.FC<MessageInputProps> = ({ channelId }) => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [searchResults, setSearchResults] = useState<UserData[]>([]);
   const [selectedUsers, setSelectedUsers] = useState<UserData[]>([]);
+  const [error, setError] = useState<string | null>(null);
 
   const handleSearch = async (event: FormEvent) => {
     event.preventDefault();
+    setError(null);
     try {
       const usersRef = collection(db, 'users');
       const q = query(usersRef, where('displayName', '>=', searchTerm), where('displayName', '<=', searchTerm + '\uf8ff'));
       const querySnapshot = await getDocs(q);
       const results: UserData[] = [];
       querySnapshot.forEach((doc) => {
-        results.push(doc.data() as UserData);
+        results.push({ uid: doc.id, ...doc.data() } as UserData);
       });
       setSearchResults(results);
     } catch (error) {
       console.error("Error searching for users:", error);
+      setError("Error searching for users.");
     }
   };
 
@@ -36,54 +42,37 @@ const Chatbox: React.FC<{}> = () => {
     const currentUser = auth.currentUser;
     if (!currentUser) {
       console.error("Current user not found.");
+      setError("Current user not found.");
       return;
     }
 
-    try {
-      const usersCollectionRef = collection(db, 'users');
-      const usersSnapshot = await getDocs(usersCollectionRef);
-      let selectedUserId: string | null = null;
+    const userId = currentUser.uid; 
 
-      usersSnapshot.forEach((userDoc) => {
-        if (userDoc.data().displayName === user.displayName) {
-          selectedUserId = userDoc.id;
-        }
-      });
-
-      if (!selectedUserId) {
-        console.error("Selected user not found in the database.");
-        return;
-      }
-
-      const docchannelID = doc(db, 'users', currentUser.uid);
-      const docSnapshot = await getDoc(docchannelID);
-
-      if (docSnapshot.exists()) {
-        const userData = docSnapshot.data();
-        const channelID = userData['Channel ID']
-
-        const userChannelsRef = collection(db, 'users', currentUser.uid, 'text_channels');
-        const newChannelDocRef = doc(userChannelsRef, channelID);
-
-        await setDoc(newChannelDocRef, {
-          members: [currentUser.uid, selectedUserId],
-        });
-
-        console.log("Channel created successfully");
-      } else {
-        console.log("Channel ID document not found");
-      }
-    } catch (error) {
-      console.error("Error creating channel:", error);
+    if (!currentUser) {
+      console.error("User not found.");
+      return;
     }
-    // Assuming you have functions to update state for selectedUsers, setSearchResults, and setSearchTerm
-    setSelectedUsers(prevUsers => [...prevUsers, user]);
-    setSearchResults([]);
-    setSearchTerm('');
+    try {
+      const userChannelsRef = doc(db, 'text_channels', channelId);
+      console.log('Updating document:', userChannelsRef.path);
+  
+      await updateDoc(userChannelsRef, {
+        members: arrayUnion(userId,user.uid) // Use a test string for debugging
+      });
+  
+      console.log('Update successful');
+      setSelectedUsers(prevUsers => [...prevUsers, user]);
+      setSearchResults([]);
+      setSearchTerm('');
+    } catch (error) {
+      console.error("Error adding user to channel:", error);
+      setError("Error adding user to channel.");
+    }
   };
-
+  
   return (
     <div className={UserBox_style.chatbox}>
+      {error && <p className={UserBox_style.error}>{error}</p>}
       <form onSubmit={handleSearch}>
         <input
           type="text"
@@ -97,20 +86,13 @@ const Chatbox: React.FC<{}> = () => {
       <div className={UserBox_style.searchResults}>
         {searchResults.map((user, index) => (
           <div key={index} className={UserBox_style.searchResultItem}>
-            <img src={user.profilePictureUrl || avatarImage} alt={user.displayName} className={UserBox_style.avatar} />
+            <img src={user.profilePictureUrl} alt={user.displayName} className={UserBox_style.avatar} />
             <span>{user.displayName}</span>
             <button onClick={() => handleAdd(user)} className={UserBox_style.addButton}>Add</button>
           </div>
         ))}
       </div>
-      <div className={UserBox_style.selectedUsers}>
-        {selectedUsers.map((user, index) => (
-          <div key={index} className={UserBox_style.selectedUser}>
-            <img src={user.profilePictureUrl || avatarImage} alt={user.displayName} className={UserBox_style.avatar} />
-            <span>{user.displayName}</span>
-          </div>
-        ))}
-      </div>
+     
     </div>
   );
 };

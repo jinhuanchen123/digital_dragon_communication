@@ -53,10 +53,12 @@ export default function HomePage() {
         {selectedChannel && <MessagesWindow channelId={selectedChannel} />}
         {selectedChannel && <MessageInput channelId={selectedChannel} />}
       </div>
+      {selectedChannel && (
       <div className={Home_Styles.RightSide}>
-        <Chatbox />
+        <Chatbox channelId={selectedChannel}/>
         <RightSide_Invite channelId={selectedChannel} />
       </div>
+      )}
     </div>
   );
 }
