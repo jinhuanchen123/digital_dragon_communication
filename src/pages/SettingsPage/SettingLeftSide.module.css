@@ -46,6 +46,25 @@ li {
   border-radius: 20px;
 }
 
+/* .small_image{ */
+/*     width:180px; */
+/*     height:180px; */
+/*     display:flex; */
+/*     justify-content: flex-start; */
+/*     margin:none; */
+/*     padding:none; */
+/*     align-items: center; */
+/*   border: solid white 1px; */
+/*   width: 175px; */
+/*   height: 40px; */
+/*   display: flex; */
+/*   justify-content: center; */
+/*   align-items: center; */
+/*   margin: 20px 0; */
+/*   background-color: #512da8; */
+/*   border-radius: 20px; */
+/* } */
+
 .small_image {
   width: 151.88px;
   height: auto;

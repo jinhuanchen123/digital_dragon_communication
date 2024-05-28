@@ -3,7 +3,7 @@ import RightSidebar from '../SettingLeftSide';
 import Theme_styles from './Theme.module.css';
 import { ThemeContext } from "../../../contexts/ThemeContext.jsx"
 
-import { auth, db } from "../../../firebase.ts"
+import { auth, db } from "../../../pages/Firebase/firebase.ts"
 import { User } from 'firebase/auth'
 import { doc, updateDoc, query, collection, where, getDocs } from 'firebase/firestore';
 
