@@ -6,7 +6,7 @@ import Notifications from "./pages/SettingsPage/Notifications/Notification";
 import Privacy from "./pages/SettingsPage/Privacy/Privacy";
 import Theme from "./pages/SettingsPage/Theme/Theme";
 import LogOut from "./pages/SettingsPage/LogOut/LogOut";
-import UserList from "./pages/SettingsPage/UserList";
+import UserList from "./pages/SettingsPage/Privacy/UserList.js";
 import AuthStatus from "./pages/SettingsPage/status";
 import ThemeContextProvider from "./contexts/ThemeContext.jsx";
 import { ReactNode, useContext } from "react";
@@ -59,6 +59,14 @@ export default function App() {
           }
         />
         <Route
+          path="/setting/privacy/userList"
+          element={
+            <ProtectedRoute>
+              <UserList />
+            </ProtectedRoute>
+          }
+        />
+                <Route
           path="/setting/privacy"
           element={
             <ProtectedRoute>
