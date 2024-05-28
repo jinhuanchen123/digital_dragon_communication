@@ -8,6 +8,7 @@ import {
   updateProfile,
   signInWithEmailAndPassword,
   signInWithPopup,
+  sendEmailVerification,
 } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { doc, serverTimestamp, setDoc } from "firebase/firestore";
@@ -19,7 +20,7 @@ interface FormData {
   signUpPassword: string;
   signInEmail: string;
   signInPassword: string;
-  signUpProfileLink:string;
+  signUpProfileLink: string;
 }
 
 export default function LoginPage() {
@@ -38,7 +39,8 @@ export default function LoginPage() {
     signUpName: "",
     signUpEmail: "",
     signUpPassword: "",
-    signUpProfileLink: "https://winaero.com/blog/wp-content/uploads/2015/05/windows-10-user-account-login-icon.png",
+    signUpProfileLink:
+      "https://winaero.com/blog/wp-content/uploads/2015/05/windows-10-user-account-login-icon.png",
     signInEmail: "",
     signInPassword: "",
   });
@@ -58,13 +60,13 @@ export default function LoginPage() {
         auth,
         formData.signUpEmail,
         formData.signUpPassword,
-      
       );
 
       // Update user's profile with display name and photo URL
       await updateProfile(userCredential.user, {
         displayName: formData.signUpName,
-        photoURL: "https://winaero.com/blog/wp-content/uploads/2015/05/windows-10-user-account-login-icon.png",
+        photoURL:
+          "https://winaero.com/blog/wp-content/uploads/2015/05/windows-10-user-account-login-icon.png",
       });
 
       // Create Firestore document for the user
@@ -72,12 +74,14 @@ export default function LoginPage() {
         displayName: formData.signUpName,
         email: formData.signUpEmail,
         createdAt: serverTimestamp(),
-        profilePictureUrl: formData. signUpProfileLink,
+        profilePictureUrl: formData.signUpProfileLink,
         userTheme: "mystic_violet",
       });
 
+      await sendEmailVerification(userCredential.user);
+      alert("Check your email to verify your new account.");
+
       setIsSignUpError(false);
-      navigate("/");
     } catch (err) {
       setIsSignUpError(true);
       console.error(err);
@@ -92,6 +96,12 @@ export default function LoginPage() {
         formData.signInEmail,
         formData.signInPassword,
       );
+
+      if (!userCredential.user.emailVerified) {
+        alert("Check your email to verify this account.");
+        return;
+      }
+
       setIsSignInError(false);
       console.log("Signed In!", userCredential);
       navigate("/");

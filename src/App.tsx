@@ -21,7 +21,7 @@ export default function App() {
   const { currentUser } = authContext;
 
   const ProtectedRoute = ({ children }: { children: ReactNode }) => {
-    if (!currentUser) {
+    if (!currentUser || !currentUser.emailVerified) {
       return <Navigate to="/login" />;
     }
 
