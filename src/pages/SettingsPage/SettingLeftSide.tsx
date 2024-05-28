@@ -20,19 +20,19 @@ function LeftSidebar() {
         />
 
         <ul>
-          <li className="slsLi" style={{ background: theme.bgd }}>
+          <li className={styles.slsLi} style={{ background: theme.bgd }}>
             <Link to="/setting/profile">Profile</Link>
           </li>
-          <li className="slsLi" style={{ background: theme.bgd }}>
+          <li className={styles.slsLi} style={{ background: theme.bgd }}>
             <Link to="/setting/notifications">Notifications</Link>
           </li>
-          <li className="slsLi" style={{ background: theme.bgd }}>
+          <li className={styles.slsLi} style={{ background: theme.bgd }}>
             <Link to="/setting/privacy">Privacy</Link>
           </li>
-          <li className="slsLi" style={{ background: theme.bgd }}>
+          <li className={styles.slsLi} style={{ background: theme.bgd }}>
             <Link to="/setting/theme">Theme</Link>
           </li>
-          <li className="slsLi" style={{ background: theme.bgd }}>
+          <li className={styles.slsLi} style={{ background: theme.bgd }}>
             <Link to="/login" onClick={() => signOut(auth)}>
               Logout
             </Link>
