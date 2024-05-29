@@ -6,9 +6,14 @@ import Notifications from "./pages/SettingsPage/Notifications/Notification";
 import Privacy from "./pages/SettingsPage/Privacy/Privacy";
 import Theme from "./pages/SettingsPage/Theme/Theme";
 import LogOut from "./pages/SettingsPage/LogOut/LogOut";
+import UserList from "./pages/SettingsPage/Privacy/userList.js";
+import AuthStatus from "./pages/SettingsPage/status";
 import ThemeContextProvider from "./contexts/ThemeContext.jsx";
 import { ReactNode, useContext } from "react";
 import { AuthContext } from "./AuthContext";
+import LeftSideBar from "./components/ui/LeftSideBar";
+import AddChannel from "./components/ui/AddChannel";
+import SettingsBar from "./components/ui/SettingsBar";
 
 export default function App() {
   const authContext = useContext(AuthContext);
@@ -53,6 +58,14 @@ export default function App() {
           element={
             <ProtectedRoute>
               <Notifications />
+            </ProtectedRoute>
+          }
+        />
+                <Route
+          path="/setting/privacy/userList"
+          element={
+            <ProtectedRoute>
+              <UserList />
             </ProtectedRoute>
           }
         />

@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import RightSidebar from '../SettingLeftSide';
 import Theme_styles from './Theme.module.css';
 import { ThemeContext } from "../../../contexts/ThemeContext.jsx"
+import { Link } from 'react-router-dom'; 
 
 import { auth, db } from "../../../pages/Firebase/firebase.ts"
 import { User } from 'firebase/auth'

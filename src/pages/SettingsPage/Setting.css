@@ -42,18 +42,6 @@ a {
     font-size: 25px;
 }
 
-li {
-    border: solid white 1px;
-    width: 175px;
-    height: 40px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 20px 0; 
-    background-color: rgb(71, 57, 151);
-    border-radius: 20px;
-}
-
 .small-image{
     width:180px;
     height:180px;
