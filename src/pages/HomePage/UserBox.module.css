@@ -62,4 +62,7 @@
     display: flex;
     align-items: center;
   }
-  
+  .searchResults{
+    max-height: 200px; 
+    overflow-y: auto; 
+  }

@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useState, useContext } from "react";
 import style from "./LoginPage.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGoogle } from "@fortawesome/free-brands-svg-icons";
@@ -11,6 +11,7 @@ import {
 } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { doc, serverTimestamp, setDoc } from "firebase/firestore";
+import { ThemeContext } from "../../contexts/ThemeContext.jsx";
 
 interface FormData {
   signUpName: string;
@@ -18,10 +19,13 @@ interface FormData {
   signUpPassword: string;
   signInEmail: string;
   signInPassword: string;
-  profilePictureUrl: string;
+  signUpProfileLink:string;
 }
 
 export default function LoginPage() {
+  const { toggleTheme, currentTheme, themes } = useContext(ThemeContext);
+  const theme = themes[currentTheme];
+
   const navigate = useNavigate();
   const [isActive, setIsActive] = useState(false);
   const [isSignInError, setIsSignInError] = useState(false);
@@ -34,9 +38,9 @@ export default function LoginPage() {
     signUpName: "",
     signUpEmail: "",
     signUpPassword: "",
+    signUpProfileLink: "https://winaero.com/blog/wp-content/uploads/2015/05/windows-10-user-account-login-icon.png",
     signInEmail: "",
     signInPassword: "",
-    profilePictureUrl: "",
   });
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -54,21 +58,22 @@ export default function LoginPage() {
         auth,
         formData.signUpEmail,
         formData.signUpPassword,
+      
       );
 
-      // Update user's profile with display name
+      // Update user's profile with display name and photo URL
       await updateProfile(userCredential.user, {
         displayName: formData.signUpName,
-        photoURL:
-          "https://winaero.com/blog/wp-content/uploads/2015/05/windows-10-user-account-login-icon.png",
+        photoURL: "https://winaero.com/blog/wp-content/uploads/2015/05/windows-10-user-account-login-icon.png",
       });
 
-      // Update Firestore document with user's display name
+      // Create Firestore document for the user
       await setDoc(doc(db, "users", userCredential.user.uid), {
         displayName: formData.signUpName,
         email: formData.signUpEmail,
         createdAt: serverTimestamp(),
-        profilePictureUrl: "https://winaero.com/blog/wp-content/uploads/2015/05/windows-10-user-account-login-icon.png",
+        profilePictureUrl: formData. signUpProfileLink,
+        userTheme: "mystic_violet",
       });
 
       setIsSignUpError(false);
@@ -77,26 +82,6 @@ export default function LoginPage() {
       setIsSignUpError(true);
       console.error(err);
     }
-
-    //   const [userData, setUserData] = useState<any[]>([]);
-    //   try {
-    //     // Fetch user data from Firestore
-    //     const currentUser = auth.currentUser;
-    //     if (!currentUser) {
-    //       console.error("Current user not found.");
-    //       return;
-    //     }
-    //     const userId = currentUser.uid;
-    //     const userDocRef = doc(db, 'users', userId);
-    //     const docSnapshot = await getDoc(userDocRef);
-    //     if (docSnapshot.exists()) {
-    //       setUserData([docSnapshot.data()]);
-    //     } else {
-    //       console.log("User data not found.");
-    //     }
-    //   } catch (error) {
-    //     console.error("Error fetching user data:", error);
-    //   }
   };
 
   const signIn = async (e: FormEvent<HTMLFormElement>) => {
@@ -108,7 +93,6 @@ export default function LoginPage() {
         formData.signInPassword,
       );
       setIsSignInError(false);
-      // fetchData();
       console.log("Signed In!", userCredential);
       navigate("/");
     } catch (err) {
@@ -123,7 +107,6 @@ export default function LoginPage() {
       navigate("/");
     } catch (err) {
       setIsSignInError(true);
-      // fetchData();
       console.error(err);
     }
   };
@@ -141,7 +124,11 @@ export default function LoginPage() {
 
             {/* Social Icons */}
             <div className={style.socialIcons}>
-              <button onClick={signInWithGoogle} className={style.icon}>
+              <button
+                onClick={signInWithGoogle}
+                className={style.icon}
+                style={{ background: theme.bgd }}
+              >
                 {<FontAwesomeIcon icon={faGoogle} />}
               </button>
             </div>
@@ -177,7 +164,7 @@ export default function LoginPage() {
             />
 
             {/* Sign Up Button */}
-            <button>Sign Up</button>
+            <button style={{ background: theme.bgd }}>Sign Up</button>
             {isSignUpError && (
               <span className={style.error}>Invalid Credentials</span>
             )}
@@ -185,14 +172,17 @@ export default function LoginPage() {
         </div>
 
         {/* Sign In Section */}
-        {/* Sign In Section */}
         <div className={`${style.formContainer} ${style.signIn}`}>
           <form onSubmit={signIn}>
             <h1 className={style.formHeading}>Sign In</h1>
 
             {/* Social Icons */}
             <div className={style.socialIcons}>
-              <button onClick={signInWithGoogle} className={style.icon}>
+              <button
+                onClick={signInWithGoogle}
+                className={style.icon}
+                style={{ background: theme.bgd }}
+              >
                 {<FontAwesomeIcon icon={faGoogle} />}
               </button>
             </div>
@@ -221,7 +211,7 @@ export default function LoginPage() {
             <a href="#">Forgot Your Password?</a>
 
             {/* Sign In Button */}
-            <button>Sign In</button>
+            <button style={{ background: theme.bgd }}>Sign In</button>
             {isSignInError && (
               <span className={style.error}>Invalid Credentials</span>
             )}
@@ -230,8 +220,7 @@ export default function LoginPage() {
 
         {/* Toggle Section */}
         <div className={style.toggleContainer}>
-          <div className={style.toggle}>
-            {/* <div className="toggle-panel toggle-left"> */}
+          <div className={style.toggle} style={{ background: theme.bgd }}>
             <div
               className={`${style.togglePanel} ${style.toggleLeft}`}
               onClick={showLogin}
@@ -243,7 +232,6 @@ export default function LoginPage() {
               </button>
             </div>
 
-            {/* <div className="toggle-panel toggle-right"> */}
             <div
               className={`${style.togglePanel} ${style.toggleRight}`}
               onClick={showSignup}
@@ -252,7 +240,11 @@ export default function LoginPage() {
               <p>
                 Register with your personal details to use all site features
               </p>
-              <button className={style.Hidden} id="register">
+              <button
+                className={style.hidden}
+                id="register"
+                style={{ background: theme.bgd }}
+              >
                 Sign Up
               </button>
             </div>

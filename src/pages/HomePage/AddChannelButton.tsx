@@ -88,7 +88,7 @@ export default function AddChannelButton() {
     >
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button>Add Channel</Button>
+          <Button className="min-w-44">Add Channel</Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-56">
           <DropdownMenuItem onClick={() => setIsInviteOpen(true)}>
@@ -117,6 +117,7 @@ export default function AddChannelButton() {
                   className="col-span-3 font-normal"
                   onChange={(e) => setCreateChannelName(e.target.value)}
                   value={createChannelName}
+                  maxLength={25}
                 />
               </div>
             </div>
