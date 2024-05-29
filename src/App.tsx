@@ -6,7 +6,6 @@ import Notifications from "./pages/SettingsPage/Notifications/Notification";
 import Privacy from "./pages/SettingsPage/Privacy";
 import Theme from "./pages/SettingsPage/Theme/Theme";
 import LogOut from "./pages/SettingsPage/LogOut/LogOut";
-<<<<<<< HEAD
 import Invite from "./pages/HomePage/Invite";
 import UserList from "./pages/SettingsPage/UserList";
 import AuthStatus from "./pages/SettingsPage/status";
@@ -14,15 +13,15 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import {useContext} from "react";
 import { AuthContext } from "./AuthContext";
 
-export default function App() {
-  
+
+
  
  
  
-=======
 import ThemeContextProvider from "./contexts/ThemeContext.jsx";
-import { ReactNode, useContext } from "react";
-import { AuthContext } from "./AuthContext";
+import OnlineStatus from "./pages/SettingsPage/status";
+
+
 
 export default function App() {
   const authContext = useContext(AuthContext);
@@ -41,25 +40,8 @@ export default function App() {
 
     return <>{children}</>;
   };
->>>>>>> origin/Communication-Page
 
   return (
-<<<<<<< HEAD
-    <Routes>
-      <Route path="/login" element={<Login />} />
-      <Route path="/" element={<HomePage />} />
-      <Route path="/user" element={<UserList />} />
-      <Route path="/status" element={<AuthStatus />} />
-
-      <Route path="/invite" element={<Invite />} />
-      <Route path="/setting/profile" element={<Profile />} />
-      <Route path="/setting/notifications" element={<Notifications/>}/>
-      <Route path="/setting/privacy" element={<Privacy />} />
-      <Route path="/setting/theme" element={<Theme />} />
-      <Route path="/setting/LogOut" element={<LogOut/>} />
-
-    </Routes>
-=======
     <ThemeContextProvider>
       <Routes>
         <Route path="/login" element={<Login />} />
@@ -96,6 +78,30 @@ export default function App() {
           }
         />
         <Route
+          path="/setting/blocked"
+          element={
+            <ProtectedRoute>
+              <UserList />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/setting/status"
+          element={
+            <ProtectedRoute>
+              <OnlineStatus />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/setting/privacy"
+          element={
+            <ProtectedRoute>
+              <Privacy />
+            </ProtectedRoute>
+          }
+        />
+        <Route
           path="/setting/theme"
           element={
             <ProtectedRoute>
@@ -113,6 +119,5 @@ export default function App() {
         />
       </Routes>
     </ThemeContextProvider>
->>>>>>> origin/Communication-Page
   );
 }
