@@ -1,13 +1,21 @@
 import React, { useState, FormEvent } from "react";
-import { collection, query, where, getDocs, doc, setDoc, updateDoc, arrayUnion, getDoc, addDoc } from 'firebase/firestore';
-import { auth, db } from '../Firebase/firebase';
-import UserBox_style from './UserBox.module.css';
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  doc,
+  updateDoc,
+  arrayUnion,
+} from "firebase/firestore";
+import { auth, db } from "../Firebase/firebase";
+import UserBox_style from "./UserBox.module.css";
 
 interface UserData {
   uid: string;
   displayName: string;
-  profilePictureUrl?: string;
-  [key: string]: any;
+  profilePictureUrl: string;
+  [key: string]: string;
 }
 
 type MessageInputProps = {
@@ -24,8 +32,12 @@ const Chatbox: React.FC<MessageInputProps> = ({ channelId }) => {
     event.preventDefault();
     setError(null);
     try {
-      const usersRef = collection(db, 'users');
-      const q = query(usersRef, where('displayName', '>=', searchTerm), where('displayName', '<=', searchTerm + '\uf8ff'));
+      const usersRef = collection(db, "users");
+      const q = query(
+        usersRef,
+        where("displayName", ">=", searchTerm),
+        where("displayName", "<=", searchTerm + "\uf8ff"),
+      );
       const querySnapshot = await getDocs(q);
       const results: UserData[] = [];
       querySnapshot.forEach((doc) => {
@@ -46,30 +58,31 @@ const Chatbox: React.FC<MessageInputProps> = ({ channelId }) => {
       return;
     }
 
-    const userId = currentUser.uid; 
+    const userId = currentUser.uid;
 
     if (!currentUser) {
       console.error("User not found.");
       return;
     }
     try {
-      const userChannelsRef = doc(db, 'text_channels', channelId);
-      console.log('Updating document:', userChannelsRef.path);
-  
+      const userChannelsRef = doc(db, "text_channels", channelId);
+      console.log("Updating document:", userChannelsRef.path);
+
       await updateDoc(userChannelsRef, {
-        members: arrayUnion(userId,user.uid) // Use a test string for debugging
+        members: arrayUnion(userId, user.uid), // Use a test string for debugging
       });
-  
-      console.log('Update successful');
-      setSelectedUsers(prevUsers => [...prevUsers, user]);
+
+      console.log("Update successful");
+      setSelectedUsers((prevUsers) => [...prevUsers, user]);
       setSearchResults([]);
-      setSearchTerm('');
+      setSearchTerm("");
+      window.location.reload();
     } catch (error) {
       console.error("Error adding user to channel:", error);
       setError("Error adding user to channel.");
     }
   };
-  
+
   return (
     <div className={UserBox_style.chatbox}>
       {error && <p className={UserBox_style.error}>{error}</p>}
@@ -81,18 +94,28 @@ const Chatbox: React.FC<MessageInputProps> = ({ channelId }) => {
           placeholder="Search username"
           className={UserBox_style.searchInput}
         />
-        <button type="submit" className={UserBox_style.searchButton}>Search</button>
+        <button type="submit" className={UserBox_style.searchButton}>
+          Search
+        </button>
       </form>
       <div className={UserBox_style.searchResults}>
         {searchResults.map((user, index) => (
           <div key={index} className={UserBox_style.searchResultItem}>
-            <img src={user.profilePictureUrl} alt={user.displayName} className={UserBox_style.avatar} />
+            <img
+              src={user.profilePictureUrl}
+              alt={user.displayName}
+              className={UserBox_style.avatar}
+            />
             <span>{user.displayName}</span>
-            <button onClick={() => handleAdd(user)} className={UserBox_style.addButton}>Add</button>
+            <button
+              onClick={() => handleAdd(user)}
+              className={UserBox_style.addButton}
+            >
+              Add
+            </button>
           </div>
         ))}
       </div>
-     
     </div>
   );
 };

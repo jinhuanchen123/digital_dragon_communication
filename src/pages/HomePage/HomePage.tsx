@@ -15,12 +15,6 @@ export default function HomePage() {
   const navigate = useNavigate();
   const [selectedChannel, setSelectedChannel] = useState<string | null>(null);
 
-  const handleInviteClick = () => {
-    // Perform invite functionality here
-    console.log("Inviting user...");
-    // Example navigation to invite page
-    navigate("/invite");
-  };
   const handleRedictMainPage = () => {
     navigate("/setting/profile");
   };
@@ -54,10 +48,10 @@ export default function HomePage() {
         {selectedChannel && <MessageInput channelId={selectedChannel} />}
       </div>
       {selectedChannel && (
-      <div className={Home_Styles.RightSide}>
-        <Chatbox channelId={selectedChannel}/>
-        <RightSide_Invite channelId={selectedChannel} />
-      </div>
+        <div className={Home_Styles.RightSide}>
+          <Chatbox channelId={selectedChannel} />
+          <RightSide_Invite channelId={selectedChannel} />
+        </div>
       )}
     </div>
   );
