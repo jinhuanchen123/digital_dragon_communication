@@ -36,6 +36,7 @@ function LeftSidebar() {
             <Link to="/login" onClick={() => signOut(auth)}>
               Logout
             </Link>
+
           </li>
         </ul>
       </div>

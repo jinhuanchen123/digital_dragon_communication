@@ -62,6 +62,7 @@ const Profile: React.FC = () => {
     }
   };
 
+
   const handleEditProfileClick = () => {
     if (fileInputRef.current) {
       fileInputRef.current.click();
@@ -187,7 +188,9 @@ const Profile: React.FC = () => {
       console.error('Error deleting account:', error);
     }
   };
-
+  
+  
+  
   return (
     <div className={Profile_styles.container1_profile}>
       <RightSidebar />

@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import RightSidebar from '../SettingLeftSide';
 import Theme_styles from './Theme.module.css';
 import { ThemeContext } from "../../../contexts/ThemeContext.jsx"
+import { Link } from 'react-router-dom'; 
 
 import { auth, db } from "../../../pages/Firebase/firebase.ts"
 import { User } from 'firebase/auth'
@@ -42,6 +43,8 @@ const updateTheme = async (newTheme: string) =>{
 };
 
 
+
+
 function Theme() {
   const { toggleTheme, currentTheme, themes } = useContext(ThemeContext);
   const theme = themes[currentTheme];
@@ -64,6 +67,7 @@ function Theme() {
     console.log("Theme \"mystic violet\" selected");
   };
 
+
   return (
     <div className={Theme_styles.container1_theme}>
       <RightSidebar/>
@@ -84,6 +88,7 @@ function Theme() {
           >
             <span className={Theme_styles.theme_text}>Azure Dream</span>
           </div>
+
           <div
             className={`${Theme_styles.themeRectangle} ${Theme_styles.theme3}`}
             onClick={handleTheme3Click}
@@ -93,6 +98,7 @@ function Theme() {
         </div>
       </div>
     </div>
+
   );
 }
 

@@ -1,8 +1,9 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
-import "firebase/firestore";
 
+import firebase from 'firebase/app'
+import 'firebase/firestore'
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
   authDomain: "digital-dragon-communication.firebaseapp.com",
@@ -21,5 +22,6 @@ export const googleProvider = new GoogleAuthProvider();
 export const db = getFirestore(app);
 
 // Initialize Firebase
+
 
 // const analytics = getAnalytics(app);

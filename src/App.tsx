@@ -11,6 +11,9 @@ import AuthStatus from "./pages/SettingsPage/status";
 import ThemeContextProvider from "./contexts/ThemeContext.jsx";
 import { ReactNode, useContext } from "react";
 import { AuthContext } from "./AuthContext";
+import LeftSideBar from "./components/ui/LeftSideBar";
+import AddChannel from "./components/ui/AddChannel";
+import SettingsBar from "./components/ui/SettingsBar";
 
 export default function App() {
   const authContext = useContext(AuthContext);
