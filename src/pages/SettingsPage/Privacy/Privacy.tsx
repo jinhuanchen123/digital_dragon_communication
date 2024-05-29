@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import '../Setting.css'; // Correct import statement
-import RightSidebar from '../RightSidebar';
+import LeftSidebar from '../LeftSidebar';
 import { Link } from 'react-router-dom'; 
 import "../Setting.css";
 import "./Privacy.module.css";
@@ -12,7 +12,7 @@ import "../Profile.css"
 function Privacy() {
   return (
     <div className="flex overflow-hidden">
-      <RightSidebar/>
+      <LeftSidebar/>
     <div className='flex flex-col privacy_container'>
       
       
