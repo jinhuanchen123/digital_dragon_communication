@@ -17,7 +17,6 @@ type Message = {
   createdAt: {
     seconds: number;
   };
-
   userId: string;
   username: string;
   userPhoto: string;
@@ -30,6 +29,7 @@ type MessagesWindowProps = {
 type UserData = {
   profilePictureUrl: string;
   displayName: string;
+  online: boolean;
 };
 
 export default function MessagesWindow({ channelId }: MessagesWindowProps) {
@@ -75,7 +75,6 @@ export default function MessagesWindow({ channelId }: MessagesWindowProps) {
       })) as Message[];
 
       setMessages(messagesData.reverse());
-      console.log(messagesData);
     });
 
     return () => unsubscribe();
@@ -84,6 +83,23 @@ export default function MessagesWindow({ channelId }: MessagesWindowProps) {
   useEffect(() => {
     dummy.current && dummy.current.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
+
+  useEffect(() => {
+    document.body.style.background = userData?.online ? 'red' : 'green';
+  }, [userData?.online]);
+
+  const isBlocked = async (userId: string) => {
+    if (!auth.currentUser) return false; // Not signed in
+
+    try {
+      const docRef = doc(db, "users", auth.currentUser.uid, "blocked", userId);
+      const docSnap = await getDoc(docRef);
+      return docSnap.exists();
+    } catch (err) {
+      console.error(err);
+      return false;
+    }
+  };
 
   const btnOver = (messageID: string) => {
     const buttonEle = document.getElementById(`${messageID}button`);
@@ -109,7 +125,6 @@ export default function MessagesWindow({ channelId }: MessagesWindowProps) {
 
   return (
     <div className={HomeStyles.messageWindow}>
-      {/* Scroll into view */}
       <div ref={dummy}></div>
 
       {messages.map((message) => (
@@ -120,16 +135,20 @@ export default function MessagesWindow({ channelId }: MessagesWindowProps) {
         >
           {userData && (
             <img
-              className="h-[32px] w-[32px] rounded-full"
+              className={`h-[32px] w-[32px] rounded-full ${
+                userData.online ? "border-green-500 border-2" : ""
+              }`}
               src={message.userPhoto}
               width="32"
               height="32"
               alt="User Profile"
             />
           )}
+
           <div className="w-full ">
             <div className="flex items-baseline gap-4">
-              {userData && <strong>{message.username}</strong>}
+              
+              {userData && <strong>{message.username}</strong> }  
               <small>
                 {message.createdAt &&
                   new Date(message.createdAt.seconds * 1000).toLocaleString(
@@ -158,7 +177,14 @@ export default function MessagesWindow({ channelId }: MessagesWindowProps) {
               )}
             </div>
 
-            <p>{message.text}</p>
+            <p>
+              {auth.currentUser?.uid === message.userId ? (
+                // Check if the sender has blocked the recipient
+                isBlocked(message.userId) ? "Blocked" : message.text
+              ) : (
+                message.text
+              )}
+            </p>
           </div>
         </div>
       ))}

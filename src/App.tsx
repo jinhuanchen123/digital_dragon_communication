@@ -78,7 +78,7 @@ export default function App() {
           }
         />
         <Route
-          path="/setting/blocked"
+          path="/blocked-contacts"
           element={
             <ProtectedRoute>
               <UserList />

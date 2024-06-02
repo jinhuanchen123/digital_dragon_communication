@@ -8,7 +8,7 @@ const OnlineStatus: React.FC = () => {
 
   useEffect(() => {
     const toggleUserOnlineStatus = async () => {
-      const userId = '2CgeWoBWH4yQiKilBPhl'; 
+      const userId = 'LtI0uBkKYFRRyVkhCBbfh4pgS9B2'; 
       const userDocRef = doc(db, 'users', userId);
 
       try {
@@ -37,6 +37,7 @@ const OnlineStatus: React.FC = () => {
     <div>
       {isOnline ? <p>User is online</p> : <p>Timestamp: {timestamp}</p>}
     </div>
+
   ); 
 };
 
