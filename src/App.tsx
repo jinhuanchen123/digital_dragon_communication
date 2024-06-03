@@ -20,6 +20,7 @@ import { AuthContext } from "./AuthContext";
  
 import ThemeContextProvider from "./contexts/ThemeContext.jsx";
 import OnlineStatus from "./pages/SettingsPage/status";
+import TestReadReceipt from "./ReadReceiptTest.js";
 
 
 
@@ -51,6 +52,14 @@ export default function App() {
           element={
             <ProtectedRoute>
               <HomePage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/setting/read"
+          element={
+            <ProtectedRoute>
+              <TestReadReceipt />
             </ProtectedRoute>
           }
         />

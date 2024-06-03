@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { collection, doc, onSnapshot, orderBy, query, deleteDoc, getDoc, setDoc } from "firebase/firestore";
 import { db, auth } from "../Firebase/firebase";
 import HomeStyles from "./HomePage.module.css";
+import ReadReceipt from "@/ReadRecieipt";
 
 type Message = {
   id: string;
@@ -222,6 +223,7 @@ export default function MessagesWindow({ channelId }: MessagesWindowProps) {
 
             </p>/*/}
             <span>{message.text}</span>
+            <ReadReceipt messageId={message.id} userId={userData.uid} />
           </div>
         </div>
       ))}
