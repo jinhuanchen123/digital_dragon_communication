@@ -1,14 +1,6 @@
-import {
-  collection,
-  doc,
-  onSnapshot,
-  orderBy,
-  query,
-  deleteDoc,
-  getDoc,
-} from "firebase/firestore";
+import React, { useEffect, useRef, useState } from "react";
+import { collection, doc, onSnapshot, orderBy, query, deleteDoc, getDoc, setDoc } from "firebase/firestore";
 import { db, auth } from "../Firebase/firebase";
-import { useEffect, useRef, useState } from "react";
 import HomeStyles from "./HomePage.module.css";
 
 type Message = {
@@ -20,6 +12,7 @@ type Message = {
   userId: string;
   username: string;
   userPhoto: string;
+  online: boolean;
 };
 
 type MessagesWindowProps = {
@@ -35,6 +28,7 @@ type UserData = {
 export default function MessagesWindow({ channelId }: MessagesWindowProps) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [userData, setUserData] = useState<UserData | null>(null);
+  const [userOnlineStatus, setUserOnlineStatus] = useState<{ [userId: string]: boolean }>({});
   const dummy = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -51,6 +45,8 @@ export default function MessagesWindow({ channelId }: MessagesWindowProps) {
         if (docSnap.exists()) {
           const data = docSnap.data() as UserData;
           setUserData(data);
+          // Update online status to true in Firestore
+          await setDoc(docRef, { ...data, online: true }); // Update the document with the online field set to true
         } else {
           console.log("Document does not exist.");
         }
@@ -81,20 +77,60 @@ export default function MessagesWindow({ channelId }: MessagesWindowProps) {
   }, [channelId]);
 
   useEffect(() => {
-    dummy.current && dummy.current.scrollIntoView({ behavior: "smooth" });
+    if (messages.length === 0) return;
+
+    const userIds = messages.map((message) => message.userId);
+
+    const fetchUserOnlineStatus = async () => {
+      const userOnlineStatusPromises = userIds.map(async (userId) => {
+        try {
+          const docRef = doc(db, "users", userId);
+          const docSnap = await getDoc(docRef);
+          if (docSnap.exists()) {
+            const userData = docSnap.data() as UserData;
+            return { userId, online: userData.online };
+          } else {
+            return { userId, online: false };
+          }
+        } catch (err) {
+          console.error(err);
+          return { userId, online: false };
+        }
+      });
+
+      const userOnlineStatusResults = await Promise.all(userOnlineStatusPromises);
+      const updatedUserOnlineStatus: { [userId: string]: boolean } = {};
+      userOnlineStatusResults.forEach((result) => {
+        updatedUserOnlineStatus[result.userId] = result.online;
+      });
+      setUserOnlineStatus(updatedUserOnlineStatus);
+    };
+
+    fetchUserOnlineStatus();
   }, [messages]);
 
   useEffect(() => {
-    document.body.style.background = userData?.online ? 'red' : 'green';
-  }, [userData?.online]);
+    dummy.current && dummy.current.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
   const isBlocked = async (userId: string) => {
     if (!auth.currentUser) return false; // Not signed in
-
+  
     try {
-      const docRef = doc(db, "users", auth.currentUser.uid, "blocked", userId);
-      const docSnap = await getDoc(docRef);
-      return docSnap.exists();
+      const currentUserDocRef = doc(db, "users", auth.currentUser.uid);
+      const currentUserDocSnap = await getDoc(currentUserDocRef);
+      if (!currentUserDocSnap.exists()) {
+        console.error("Current user document not found.");
+        return false;
+      }
+  
+      const blockedList = currentUserDocSnap.data()?.blockedList;
+      if (!blockedList) {
+        console.error("Blocked list not found in current user document.");
+        return false;
+      }
+  
+      return blockedList.includes(userId);
     } catch (err) {
       console.error(err);
       return false;
@@ -126,7 +162,7 @@ export default function MessagesWindow({ channelId }: MessagesWindowProps) {
   return (
     <div className={HomeStyles.messageWindow}>
       <div ref={dummy}></div>
-
+  
       {messages.map((message) => (
         <div
           key={message.id}
@@ -136,7 +172,7 @@ export default function MessagesWindow({ channelId }: MessagesWindowProps) {
           {userData && (
             <img
               className={`h-[32px] w-[32px] rounded-full ${
-                userData.online ? "border-green-500 border-2" : ""
+                userOnlineStatus[message.userId] ? "border-green-500 border-2" : "border-red-500 border-2"
               }`}
               src={message.userPhoto}
               width="32"
@@ -144,26 +180,22 @@ export default function MessagesWindow({ channelId }: MessagesWindowProps) {
               alt="User Profile"
             />
           )}
-
+  
           <div className="w-full ">
             <div className="flex items-baseline gap-4">
-              
-              {userData && <strong>{message.username}</strong> }  
+              {userData && <strong>{message.username}</strong>}
               <small>
                 {message.createdAt &&
-                  new Date(message.createdAt.seconds * 1000).toLocaleString(
-                    "en-US",
-                    {
-                      year: "numeric",
-                      month: "numeric",
-                      day: "numeric",
-                      hour: "numeric",
-                      minute: "numeric",
-                      hour12: true,
-                    },
-                  )}
+                  new Date(message.createdAt.seconds * 1000).toLocaleString("en-US", {
+                    year: "numeric",
+                    month: "numeric",
+                    day: "numeric",
+                    hour: "numeric",
+                    minute: "numeric",
+                    hour12: true,
+                  })}
               </small>
-
+  
               {auth.currentUser?.uid === message.userId && (
                 <button
                   id={`${message.id}button`}
@@ -176,18 +208,22 @@ export default function MessagesWindow({ channelId }: MessagesWindowProps) {
                 </button>
               )}
             </div>
-
-            <p>
-              {auth.currentUser?.uid === message.userId ? (
-                // Check if the sender has blocked the recipient
-                isBlocked(message.userId) ? "Blocked" : message.text
+  
+            {/*/<p>
+              {auth.currentUser?.uid !== message.userId ? (
+                isBlocked(message.userId) ? (
+                  <span>Blocked</span>
+                ) : (
+                  <span>{message.text}</span>
+                )
               ) : (
-                message.text
+                <span>{message.text}</span>
               )}
-            </p>
+
+            </p>/*/}
+            <span>{message.text}</span>
           </div>
         </div>
       ))}
     </div>
-  );
-}
+  )}

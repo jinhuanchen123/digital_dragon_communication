@@ -42,6 +42,7 @@ export default function App() {
   };
 
   return (
+
     <ThemeContextProvider>
       <Routes>
         <Route path="/login" element={<Login />} />
@@ -118,6 +119,8 @@ export default function App() {
           }
         />
       </Routes>
+      
+
     </ThemeContextProvider>
   );
 }

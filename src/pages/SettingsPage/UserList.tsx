@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { db } from '../Firebase/firebase';
+import { db, auth } from '../Firebase/firebase';
 import { collection, getDocs, doc, setDoc, getDoc } from 'firebase/firestore';
 
 const UserList: React.FC = () => {
@@ -19,6 +19,21 @@ const UserList: React.FC = () => {
     };
 
     fetchUsers();
+  }, []);
+
+  useEffect(() => {
+    const fetchCurrentUser = async () => {
+      try {
+        const currentUser = auth.currentUser;
+        if (currentUser) {
+          setTargetUserId(currentUser.uid);
+        }
+      } catch (error) {
+        console.error('Error fetching current user:', error);
+      }
+    };
+
+    fetchCurrentUser();
   }, []);
 
   const addUserToSubcollection = async (userId: string, targetUserId: string, userData: any) => {
@@ -54,8 +69,8 @@ const UserList: React.FC = () => {
     <div>
       <h1>User List</h1>
       <p>Populating subcollection of user with ID: {targetUserId}</p>
-      <p>Select a target user:</p>
-      <select value={targetUserId} onChange={(e) => setTargetUserId(e.target.value)}>
+      <p>Target user:</p>
+      <select value={targetUserId}>
         <option value="">Select user</option>
         {users.map(user => (
           <option key={user.id} value={user.id}>{user.displayName}</option>

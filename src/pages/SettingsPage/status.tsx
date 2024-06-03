@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { db } from '../Firebase/firebase';
+import { db, auth } from '../Firebase/firebase';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 
 const OnlineStatus: React.FC = () => {
@@ -8,7 +8,12 @@ const OnlineStatus: React.FC = () => {
 
   useEffect(() => {
     const toggleUserOnlineStatus = async () => {
-      const userId = 'LtI0uBkKYFRRyVkhCBbfh4pgS9B2'; 
+      const currentUser = auth.currentUser;
+      if (!currentUser) {
+        console.error("User not logged in");
+        return;
+      }
+      const userId = currentUser.uid;
       const userDocRef = doc(db, 'users', userId);
 
       try {
@@ -34,11 +39,12 @@ const OnlineStatus: React.FC = () => {
   }, []);
 
   return (
-    <div>
+    null
+    /*/<div>
       {isOnline ? <p>User is online</p> : <p>Timestamp: {timestamp}</p>}
     </div>
-
-  ); 
+    /*/
+  );
 };
 
 export default OnlineStatus;
