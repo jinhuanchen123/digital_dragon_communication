@@ -61,7 +61,6 @@ export default function MessagesWindow({ channelId }: MessagesWindowProps) {
   useEffect(() => {
     const fetchUserData = async (userId: string) => {
       if (usersData[userId]) {
-        
         return;
       }
 
@@ -108,7 +107,7 @@ export default function MessagesWindow({ channelId }: MessagesWindowProps) {
 
   return (
     <div className={HomeStyles.messageWindow}>
-      {messages.map((message) => {
+      {messages.slice().reverse().map((message) => {
         const messageUserData = usersData[message.userId];
         return (
           <div
@@ -123,7 +122,6 @@ export default function MessagesWindow({ channelId }: MessagesWindowProps) {
                 width="32"
                 height="32"
                 alt="User Profile"
-               
               />
             )}
             <div className={HomeStyles.messageContent}>
@@ -154,7 +152,7 @@ export default function MessagesWindow({ channelId }: MessagesWindowProps) {
           </div>
         );
       })}
-      <div ref={dummy}></div>
+     
     </div>
   );
 }
