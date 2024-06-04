@@ -59,24 +59,7 @@ export default function RightSide_Invite({ channelId }: MessageInputProps) {
     fetchDataChannel();
   }, [channelId]);
 
-  const deleteUser = async (userId: string) => {
-    try {
-      const docRef = doc(db, "text_channels", channelId);
-      await updateDoc(docRef, {
-        members: arrayRemove(userId),
-      });
-      console.log(`User ${userId} removed from channel ${channelId}`);
-
-      // Update the state to reflect the change immediately
-      // setTextChannelData((prevData: any) => ({
-      //   ...prevData,
-      //   membersData: prevData.membersData.filter((member: UserData) => member.userId !== userId)
-      // }));
-    } catch (error) {
-      console.error("Error removing user: ", error);
-      setError("Error removing user.");
-    }
-  };
+  
 
   return (
     <div className={RightSideInvite_Style.container}>
@@ -91,11 +74,7 @@ export default function RightSide_Invite({ channelId }: MessageInputProps) {
               />
               <p>{member.displayName}</p>
 
-              <FontAwesomeIcon
-                icon={faXmark}
-                onClick={() => deleteUser(member.userId)}
-                className={RightSideInvite_Style.deleteIcon}
-              />
+              
             </div>
           ))}
         </div>

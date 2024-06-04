@@ -8,19 +8,6 @@ html body {
     width: 100vw;
     height: 100px;
 }
-.privacyheader {
-    background-color: rgb(217, 217, 217);
-    display: flex;
-    background-color: rgb(71, 57, 151);
-    width: 89.5%;
-    height:180px;    
-}
-
-.savefooter{
-    position: fixed;
-    bottom: 0%;
-
-}
 
 .content {
     width: 100vw;

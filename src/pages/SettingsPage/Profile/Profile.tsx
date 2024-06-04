@@ -180,8 +180,6 @@ const Profile: React.FC = () => {
       const userId = currentUser.uid;
       await deleteDoc(doc(db, 'users', userId));
       await currentUser.delete();
-      console.log('User account deleted successfully.');
-      localStorage.removeItem('userData');
       navigate('/login');
     } catch (error) {
       console.error('Error deleting account:', error);
@@ -274,25 +272,13 @@ const Profile: React.FC = () => {
                             value={newEmail}
                             onChange={(e) => setNewEmail(e.target.value)}
                           />
-                          <button
-                            className={Profile_styles.saveButton}
-                            type="button"
-                            onClick={handleSaveEmail}
-                          >
-                            Save
-                          </button>
+
                         </>
                       ) : (
                         userData.email
                       )}
                     </p>
-                    <button
-                      className={Profile_styles.email_edit}
-                      type="button"
-                      onClick={() => setIsEditingEmail(true)}
-                    >
-                      Edit
-                    </button>
+                    
                   </div>
                 </div>
               ) : (

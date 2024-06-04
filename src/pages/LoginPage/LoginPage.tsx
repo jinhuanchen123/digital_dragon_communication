@@ -12,7 +12,6 @@ import {
 import { useNavigate } from "react-router-dom";
 import { doc, serverTimestamp, setDoc } from "firebase/firestore";
 import { ThemeContext } from "../../contexts/ThemeContext.jsx";
-import OnlineStatus from "../SettingsPage/status.tsx";
 
 interface FormData {
   signUpName: string;
@@ -75,6 +74,8 @@ export default function LoginPage() {
         createdAt: serverTimestamp(),
         profilePictureUrl: formData. signUpProfileLink,
         userTheme: "mystic_violet",
+        soundURL:"https://firebasestorage.googleapis.com/v0/b/digital-dragon-communication.appspot.com/o/sounds%2Frhea.mp3?alt=media&token=b750b51d-ada8-4649-a4b4-1898661957e4",
+        soundName:"default",
       });
 
       setIsSignUpError(false);
@@ -94,14 +95,11 @@ export default function LoginPage() {
         formData.signInPassword,
       );
       setIsSignInError(false);
-      
       console.log("Signed In!", userCredential);
       navigate("/");
-      
     } catch (err) {
       setIsSignInError(true);
       console.error(err);
-      
     }
   };
 
@@ -178,7 +176,6 @@ export default function LoginPage() {
         {/* Sign In Section */}
         <div className={`${style.formContainer} ${style.signIn}`}>
           <form onSubmit={signIn}>
-          
             <h1 className={style.formHeading}>Sign In</h1>
 
             {/* Social Icons */}

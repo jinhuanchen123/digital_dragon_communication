@@ -25,15 +25,19 @@ import {
   doc,
   addDoc,
   collection,
+  setDoc,
 } from "firebase/firestore";
+
 
 export default function AddChannelButton() {
   const [isInviteOpen, setIsInviteOpen] = useState(false);
   const [isLeaveOpen, setIsLeaveOpen] = useState(false);
   const [createChannelName, setCreateChannelName] = useState("");
   const [joinChannelName, setJoinChannelName] = useState("");
+  
 
   async function createChannel() {
+    
     const user = auth.currentUser;
     if (!user) {
       console.error("User not found.");
@@ -53,34 +57,82 @@ export default function AddChannelButton() {
         channelRef.id,
         "messages",
       );
+      const muteStatus=collection(
+        db,
+        "text_channels",
+        channelRef.id,
+        "muteStatuses",
+      );
+
+      const currentUser = auth.currentUser;
+      if (!currentUser) {
+        console.error("Current user not found.");
+        return;
+      }
+      const userId = currentUser.uid;
+      const channelref=doc( db,"users",userId)
+      await updateDoc(channelref, {
+        channelIds: arrayUnion(channelRef.id)
+      });
+     
       await addDoc(messageRef, {
         text: "I have created a new channel!",
         createdAt: serverTimestamp(),
         username: user.displayName,
         userId: user.uid,
         userPhoto: user.photoURL,
+
       });
+      await addDoc(muteStatus, {
+        uid: user.uid,
+        muteStatus:"unmute",
+        username: user.displayName,
+
+      })
+
+
+
     } catch (err) {
       console.error(err);
     }
+
   }
 
   async function joinChannel() {
     const user = auth.currentUser;
     if (!user) {
+      console.error("User not found.");
       return;
     }
-
+  
     try {
+      const userId = user.uid;
       const channelRef = doc(db, "text_channels", joinChannelName);
-      await updateDoc(channelRef, {
-        members: arrayUnion(user.uid),
+  
+      
+      const userRef = doc(db, "users", userId);
+      await updateDoc(userRef, {
+        channelIds: arrayUnion(joinChannelName),
       });
+  
+   
+      await updateDoc(channelRef, {
+        members: arrayUnion(userId),
+      });
+  
+    
+      const muteStatusRef = collection(db, "text_channels", joinChannelName, "muteStatuses");
+      await addDoc(muteStatusRef, {
+        uid: userId,
+        muteStatus: "unmute",
+        username: user.displayName,
+      });
+  
     } catch (err) {
       console.error(err);
     }
   }
-
+  
   return (
     <Dialog
       open={isInviteOpen || isLeaveOpen}

@@ -6,14 +6,12 @@ import { getMessaging } from "firebase/messaging";
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-  authDomain: "digital-dragon-communication.firebaseapp.com",
-  databaseURL:
-    "https://digital-dragon-communication-default-rtdb.firebaseio.com",
-  projectId: "digital-dragon-communication",
-  storageBucket: "digital-dragon-communication.appspot.com",
-  messagingSenderId: "492992756134",
-  appId: "1:492992756134:web:dc60188d83b9364feb7767",
-  measurementId: "G-VTM6JZ76J1",
+  authDomain: "newcommunication-9a2cc.firebaseapp.com",
+  projectId: "newcommunication-9a2cc",
+  storageBucket: "newcommunication-9a2cc.appspot.com",
+  messagingSenderId: "932971393034",
+  appId: "1:932971393034:web:f4c0ea93ff185d1ba36ff3",
+  measurementId: "G-M105705D07"
 };
 
 export const app = initializeApp(firebaseConfig);

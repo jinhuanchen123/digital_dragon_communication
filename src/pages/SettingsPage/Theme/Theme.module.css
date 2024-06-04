@@ -6,8 +6,7 @@
 }
 
 .theme_section {
-  display: flex;
-  flex-direction: column;
+
   width: calc(100vw - 180px);
   height: 100%;
 }
@@ -18,8 +17,12 @@
   height: 180px;
   display: flex;
   align-items: center;
-}
 
+}
+.header1{
+  font-size: 50px;
+  color:white;
+}
 /* //////////////////////////// */
 
 .theme_rectangles {

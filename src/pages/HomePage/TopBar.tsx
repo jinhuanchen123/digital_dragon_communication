@@ -33,9 +33,13 @@ import {
   doc,
   getDoc,
   updateDoc,
+  collection,
+  getDocs,
+  query,where
 } from "firebase/firestore";
 import { db, auth } from "../Firebase/firebase.ts";
 import { getAuth } from "firebase/auth";
+
 
 export default function TopBar(props: any) {
   const [isInviteOpen, setIsInviteOpen] = useState(false);
@@ -45,12 +49,13 @@ export default function TopBar(props: any) {
   const [channelName, setChannelName] = useState([]);
   const [selectedChannel, setSelectedChannel] = useState(props.selectedChannel);
   const [isMuted, setIsMuted] = useState(false);
+  const [muteStatusID, setMuteStatusID] = useState("");
 
   useEffect(() => {
     setSelectedChannel(props.selectedChannel);
     if (props.selectedChannel) {
       getChannelName();
-      checkMuteStatus();
+    
     }
   }, [props.selectedChannel]);
 
@@ -71,6 +76,8 @@ export default function TopBar(props: any) {
         const data = docSnap.data();
         setChannelName(() => data.channelName);
       }
+
+
     }
   }
   getChannelName();
@@ -109,44 +116,52 @@ export default function TopBar(props: any) {
     setSelectedChannel(() => []);
     props.onSelectChannel();
   }
-  async function checkMuteStatus() {
-    if (!selectedChannel) return;
-    const auth = getAuth();
-    if (!auth.currentUser) {
-      console.error("User not found");
-      return;
-    }
-    const userID = auth.currentUser.uid;
-
-    const docRef = doc(db, "text_channels", selectedChannel);
-    const docSnap = await getDoc(docRef);
-    if (docSnap.exists()) {
-      const data = docSnap.data();
-      const muteStatuses = data.muteStatuses || {};
-      setIsMuted(muteStatuses[userID] === "muted");
-    }
-  }
-  const toggleMute = async () => {
-    const auth = getAuth();
-    if (!auth.currentUser) {
-      console.error("User not found");
-      return;
-    }
-    const userID = auth.currentUser.uid;
-
-    const docRef = doc(db, "text_channels", selectedChannel);
-
+  async function toggleMute(channelId: string) {
     try {
-      const newMuteStatus = isMuted ? "unmuted" : "muted";
-      await updateDoc(docRef, {
-        [`muteStatuses.${userID}`]: newMuteStatus,
-      });
-      setIsMuted(!isMuted);
+      const currentUser = auth.currentUser;
+      if (!currentUser) {
+        console.error("Current user not found");
+        return;
+      }
+      const userID = currentUser.uid;
+  
+      const muteStatusesRef = collection(
+        db,
+        "text_channels",
+        channelId, // Use the channelId to target the specific channel
+        "muteStatuses"
+      );
+  
+      // Find the document related to the current user
+      const userMuteStatusQuery = query(
+        muteStatusesRef,
+        where("uid", "==", userID)
+      );
+      const querySnapshot = await getDocs(userMuteStatusQuery);
+  
+      if (querySnapshot.empty) {
+        console.error("No mute status found for the user in this channel.");
+        return;
+      }
+  
+      // Assuming there's only one document per user
+      const doc = querySnapshot.docs[0];
+      const currentMuteStatus = doc.data().muteStatus;
+      const newMuteStatus = currentMuteStatus === "mute" ? "unmute" : "mute";
+  
+      const docRef = doc.ref;
+      await updateDoc(docRef, { muteStatus: newMuteStatus });
+  
       console.log("Document updated successfully!");
+  
+      // Update isMuted state
+      setIsMuted((prevIsMuted) => !prevIsMuted);
     } catch (error) {
       console.error("Error updating document:", error);
     }
-  };
+  }
+  
+  
 
   return (
     <div>
@@ -175,15 +190,16 @@ export default function TopBar(props: any) {
               </DropdownMenuGroup>
               <DropdownMenuSeparator />
               <DropdownMenuGroup>
-                <DropdownMenuItem onClick={() => setIsMuteOpen(true)}>
-                  <Button variant="ghost" onClick={() => toggleMute()}>
-                    <BellPlus className="mr-2 h-4 w-4" />
-                    <span>
-                      {isMuted ? "Unmute Notification" : "Mute Notification"}
-                    </span>
-                  </Button>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
+              {/* <DropdownMenuItem onClick={() => toggleMute(selectedChannel)}>
+  <Button variant="ghost">
+    <BellPlus className="mr-2 h-4 w-4" />
+    <span>
+      {isMuted ? "Unmute Notification" : "Mute Notification"}
+    </span>
+  </Button>
+</DropdownMenuItem> */}
+
+                {/* <DropdownMenuSeparator /> */}
                 <DropdownMenuItem onClick={() => setIsLeaveOpen(true)}>
                   <Button
                     variant="ghost"

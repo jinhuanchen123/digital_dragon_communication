@@ -11,10 +11,8 @@ import {
   query,
   where,
   getDocs,
-  onSnapshot,
 } from "firebase/firestore";
 import { FormEvent, useEffect, useState } from "react";
-import Home_Styles from "./HomePage.module.css";
 import rhea from "../Sound/rhea.mp3";
 import '../Sound/Sound';
 import { getAuth } from "firebase/auth";
@@ -23,25 +21,54 @@ type MessageInputProps = {
   channelId: string;
 };
 
-type MuteStatuses = Record<string, string>;
+
+// function showNotification() {
+//   const notification = new Notification("New Message", {
+//     body: "Hey, ydhjdhja"
+//   });
+// }
+
+// // Check if the browser supports notifications
+// if ("Notification" in window) {
+//   // Trigger notification
+//   if (Notification.permission === "granted") {
+//     showNotification();
+//   } else if (Notification.permission !== "denied") {
+//     Notification.requestPermission().then(permission => {
+//       if (permission === "granted") {
+//         showNotification();
+//       } else {
+//         console.log("Notification permission denied");
+//       }
+//     }).catch(error => {
+//       console.error("Notification permission request error:", error);
+//     });
+//   } else {
+//     console.log("Notification permission denied previously");
+//   }
+// } else {
+//   console.log("This browser does not support desktop notification");
+// }
+
 
 export default function MessageInput({ channelId }: MessageInputProps) {
   const [message, setMessage] = useState("");
   const [channelName, setChannelName] = useState("");
-  const [profilePictureUrl, setProfilePictureUrl] = useState<string | null>(
-    null
-  );
+  const [profilePictureUrl, setProfilePictureUrl] = useState<string | null>(null);
   const [userDisplayName, setUserDisplayName] = useState<string | null>(null);
-  const [muteStatus, setMuteStatus] = useState<MuteStatuses>({});
+  const [muteStatus, setMuteStatus] = useState("");
+  const [soundURL, setSoundURL] = useState(rhea); // Default sound URL
+  const [muteStatusID, setMuteStatusID] = useState("");
 
   useEffect(() => {
+    console.log("Props received:", { channelId }); // Log received props
+
     async function getChannelName() {
       const auth = getAuth();
       if (!auth.currentUser) {
         console.error("User not found");
         return;
       }
-      const userID = auth.currentUser.uid;
 
       if (channelId) {
         const docRef = doc(db, "text_channels", channelId);
@@ -75,54 +102,25 @@ export default function MessageInput({ channelId }: MessageInputProps) {
     fetchUserData();
   }, []);
 
-
   useEffect(() => {
-    async function checkMuteStatus(){
-      const docRef = doc(db, 'text_channels', channelId);
+    async function getMuteStatusesId() {
       try {
-        const docSnap = await getDoc(docRef);
-        if(docSnap.exists()){
-          const data = docSnap.data();
-          setMuteStatus(data.muteStatuses || {});
-        } else {
-          console.log('Document does not exist');
-        }
+        const muteStatusesRef = collection(db, "text_channels", channelId, "muteStatuses");
+        const querySnapshot = await getDocs(muteStatusesRef);
+        querySnapshot.forEach((doc) => {
+          console.log("Mute Statuses ID:", doc.id);
+          setMuteStatusID(doc.id);
+        });
       } catch (error) {
-        console.error('Error getting document:', error);
+        console.error("Error getting mute statuses:", error);
       }
     }
-  
-    checkMuteStatus(); // Call the function when the component mounts or when channelId changes
-  }, [channelId]); // Include channelId in the dependency array to run the effect when it changes
-  
 
-  useEffect(() => {
     if (channelId) {
-      const messagesCollectionRef = collection(
-        db,
-        "text_channels",
-        channelId,
-        "messages"
-      );
-      const unsubscribe = onSnapshot(messagesCollectionRef, (snapshot) => {
-        const user = auth.currentUser;
-        if (!user) return;
-        const userID = user.uid;
-
-        snapshot.docChanges().forEach((change) => {
-          if (change.type === "added") {
-            const messageData = change.doc.data();
-            if (messageData.userId !== user.uid && muteStatus[userID] === "unmuted") {
-              const audio = new Audio(rhea);
-              audio.play();
-            }
-          }
-        });
-      });
-
-      return () => unsubscribe();
+      getMuteStatusesId();
     }
-  }, [channelId, muteStatus]);
+  }, [channelId]);
+
 
   async function handleSendMessage(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -162,7 +160,6 @@ export default function MessageInput({ channelId }: MessageInputProps) {
         username: userDisplayName,
         userId: user.uid,
         userPhoto: profilePictureUrl,
-        sound: rhea,
       });
 
       setMessage("");

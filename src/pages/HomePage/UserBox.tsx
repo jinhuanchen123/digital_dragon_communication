@@ -7,6 +7,7 @@ import {
   doc,
   updateDoc,
   arrayUnion,
+  addDoc
 } from "firebase/firestore";
 import { auth, db } from "../Firebase/firebase";
 import UserBox_style from "./UserBox.module.css";
@@ -21,7 +22,7 @@ interface UserData {
 type MessageInputProps = {
   channelId: string;
 };
-
+const default_sound= "https://firebasestorage.googleapis.com/v0/b/digital-dragon-communication.appspot.com/o/sounds%2Frhea.mp3?alt=media&token=b750b51d-ada8-4649-a4b4-1898661957e4"
 const Chatbox: React.FC<MessageInputProps> = ({ channelId }) => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [searchResults, setSearchResults] = useState<UserData[]>([]);
@@ -66,10 +67,17 @@ const Chatbox: React.FC<MessageInputProps> = ({ channelId }) => {
     }
     try {
       const userChannelsRef = doc(db, "text_channels", channelId);
-      console.log("Updating document:", userChannelsRef.path);
+      const muteStatusRef=collection(db, "text_channels", channelId, "muteStatuses")
+      await addDoc(muteStatusRef,{
+        uid: user.uid,
+        username: user.displayName,
+        muteStatus:"unmute",
+        soundURL:default_sound,
+        soundName:"default",
+      })
 
       await updateDoc(userChannelsRef, {
-        members: arrayUnion(userId, user.uid), // Use a test string for debugging
+        members: arrayUnion(userId, user.uid), 
       });
 
       console.log("Update successful");

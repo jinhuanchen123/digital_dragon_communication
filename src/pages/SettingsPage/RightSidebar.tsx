@@ -12,16 +12,16 @@ function RightSidebar() {
 
         <ul>
           <li>
-            <Link to="/setting/profile">Profile</Link>
+            <Link to="/profile">Profile</Link>
           </li>
           <li>
-            <Link to="/setting/notifications">Notifications</Link>
+            <Link to="/notifications">Notifications</Link>
           </li>
           <li>
-            <Link to="/setting/privacy">Privacy</Link>
+            <Link to="/privacy">Privacy</Link>
           </li>
           <li>
-            <Link to="/setting/theme">Theme</Link>
+            <Link to="/theme">Theme</Link>
           </li>
           <li>
             <Link to="/logout">Logout</Link>
