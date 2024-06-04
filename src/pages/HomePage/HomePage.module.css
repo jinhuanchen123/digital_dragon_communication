@@ -1,42 +1,100 @@
-.container1_home{
-    display:flex;
-    width: 100vw;
-    height: 100vh;  
-    background-color: rgb(217, 217, 217);
-}
-.container1_LeftSide{
-    width: 180px;
-    height:100%;
-    display: flex;
-    flex-direction: column;
-}
-.container1_MiddleSide{
-    width: 900px;
-    height:100%;
-
-}
-.container1_RightSide{
-    width: 200px;
-    height:100%;
-    display:flex;
-    gap:20px;
-   
-}
-.profile_image{
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    margin-left:20px;
-
-}
-.avatarImage{
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    margin-left:20px;
-   
-}
-.displayName{
+.home {
+  background-color: rgb(217, 217, 217);
+  width: 100vw;
+  height: 100vh;
   display: flex;
- 
+  justify-content: space-between;
+  padding: 1rem;
+}
+
+.leftSide {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  max-width: 14rem;
+  padding: 1rem;
+  /* border-right: 2px solid black; */
+  justify-content: space-between;
+  align-items: center;
+}
+
+.icon_function {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.userIconStyle,
+.settingIconStyle {
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
+}
+
+.channelComponents {
+  display: flex;
+  flex-direction: column;
+}
+
+.MiddleSide {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 768px;
+  /* border-right: 2px solid black; */
+  justify-content: space-between;
+  align-items: center;
+  max-height: 100%;
+}
+
+.messageWindow {
+  width: 100%;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column-reverse;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.messageTitle {
+  display: flex;
+  justify-content: space-between;
+}
+
+.deleteBtn {
+  font-size: small;
+  font-weight: 600;
+
+  color: #512da8;
+
+  padding: 0.5rem;
+  border-radius: 20%;
+  margin-left: auto;
+}
+
+.Profile_Chat {
+  display: flex;
+  justify-content: flex-end;
+  margin: 20px;
+}
+
+.customIconStyle {
+  width: 50px;
+  height: 50px;
+}
+
+.profile_image,
+.avatarImage {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-left: 20px;
+}
+
+.RightSide {
+  max-width: 14rem;
+}
+
+.container1_RightSide {
+  display: flex;
 }

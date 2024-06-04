@@ -1,0 +1,17 @@
+.member {
+  display: flex;
+  gap: 20px;
+}
+
+.profile_image {
+  display: flex;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin-left: 20px;
+}
+
+.container {
+  max-height: 400px;
+  overflow-y: auto;
+}

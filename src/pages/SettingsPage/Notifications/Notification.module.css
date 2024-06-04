@@ -12,11 +12,15 @@
 .header {
     display: flex; /* Use flexbox */
     align-items: center; /* Vertically center the items */
+
     padding: 0;
     margin: 0;
+
     width: 100vw;
     height: 180px;
+
     background-color: #512da8;
+    font-size: 4rem;
 }
 
 .header1 {

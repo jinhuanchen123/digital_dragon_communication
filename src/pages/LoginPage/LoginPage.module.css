@@ -4,27 +4,6 @@
 
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap");
 
-/*-----------------------------------*\
-  - STYLING
-\*-----------------------------------*/
-
-:root {
-  /**
- - COLOR PALETTE
- */
-
-  --standard-purple: rgb(107, 0, 107);
-  --darker-blue: rgb(32, 57, 92);
-  --standard-white: rgb(255, 255, 255);
-  --light-aquamarine: rgb(157, 205, 204);
-  --shaded-blue: rgb(45, 54, 65);
-  --shadow-turquoise: rgb(139, 184, 180);
-}
-
-/**
- - BODY
- */
-
 .fullWrapper {
   background-color: #c9d6ff;
   background: linear-gradient(to right, #e2e2e2, #c9d6ff);
@@ -80,17 +59,22 @@
 }
 
 .container button {
-  background-color: #512da8;
+  /* background-color: #512da8; */
   color: #fff;
   font-size: 12px;
   padding: 10px 45px;
-  border: 1px solid transparent;
+  border: 1px solid;
   border-radius: 8px;
   font-weight: 600;
   letter-spacing: 0.5px;
   text-transform: uppercase;
   margin-top: 10px;
   cursor: pointer;
+}
+
+.container button:disabled {
+  background-color: rgba(81, 45, 169, 0.5);
+  cursor: default;
 }
 
 .container button.hidden {
@@ -289,13 +273,16 @@
 .formHeading {
   text-align: center;
   margin-bottom: -5px;
+  color: black;
+  font-size: 2rem;
+  font-weight: 600;
 }
 
 .error {
   color: red;
 }
 
-.container >* .forgotPassword {
+.container>* .forgotPassword {
   background-color: transparent;
   color: black;
   text-decoration: underline;
